@@ -26,7 +26,7 @@ public class MainApplication extends Application
 
     public void showLoginPage() throws IOException
     {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/login-view.fxml"));
         Parent root = fxmlLoader.load();
 
         LoginController controller = fxmlLoader.getController();
@@ -47,6 +47,6 @@ public class MainApplication extends Application
 
     public static void main(String[] args)
     {
-        launch(args);
+        launch();
     }
 }
