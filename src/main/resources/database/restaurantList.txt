@@ -1,0 +1,4 @@
+1,KFC,4.3,$$$,98531,Chicken,Fast Food,Family Meals
+2,IHOP,4.3,$$,77494,Breakfast and Brunch,Family Meals,Burgers
+3,Starbucks,4.9,$,99218,Coffee and Tea,Breakfast and Brunch,Bakery
+4,McDonalds,4.7,$,98346,Burgers,Fast Food,

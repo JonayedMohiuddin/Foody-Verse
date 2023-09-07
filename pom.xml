@@ -61,7 +61,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.jonayed.restaurantdatabasesystem/controllers.MainApplication
+                                com.jonayed.restaurantdatabasesystem/client.ClientApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

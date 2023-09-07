@@ -1,27 +1,48 @@
-package controllers;
+package client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import server.SocketWrapper;
 
 import java.io.IOException;
 
-public class MainApplication extends Application
+public class ClientApplication extends Application
 {
+    // Application reference
     private Stage stage;
-
     public Stage getStage()
     {
         return stage;
+    }
+
+    private SocketWrapper socketWrapper;
+    public SocketWrapper getSocketWrapper()
+    {
+        return socketWrapper;
     }
 
     @Override
     public void start(Stage primaryStage) throws IOException
     {
         stage = primaryStage;
+        connectToServer();
         showLoginPage();
+    }
+
+    public void connectToServer()
+    {
+        try
+        {
+            socketWrapper = new SocketWrapper("127.0.0.1", 44444);
+        }
+        catch (IOException e)
+        {
+            System.err.println("Class : ClientApplication | Method : connectToServer");
+            System.err.println("Error : " + e.getMessage());
+        }
     }
 
     public void showLoginPage() throws IOException
