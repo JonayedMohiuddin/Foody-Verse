@@ -1,17 +1,15 @@
 package client;
 
-import client.ClientApplication;
-import dto.LoginRequestDTO;
+import dto.ClientLoginRequestDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 
-public class LoginController
+public class ClientLoginController
 {
     public PasswordField userLoginPasswordField;
     public TextField userLoginUsernameField;
@@ -43,7 +41,7 @@ public class LoginController
         String name = userLoginUsernameField.getText();
         String password = userLoginPasswordField.getText();
         System.out.println("Name : " + name + " Password : " + password);
-        LoginRequestDTO loginRequestDTO = new LoginRequestDTO(name, password);
+        ClientLoginRequestDTO loginRequestDTO = new ClientLoginRequestDTO(name, password);
         try
         {
             application.getSocketWrapper().write(loginRequestDTO);

@@ -1,6 +1,5 @@
 package client;
 
-import dto.ConnectionRequestDTO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +9,7 @@ import server.SocketWrapper;
 
 import java.io.IOException;
 
-public class ClientApplication extends Application
+public class RestaurantApplication extends Application
 {
     // Application reference
     private Stage stage;
@@ -41,17 +40,17 @@ public class ClientApplication extends Application
         }
         catch (IOException e)
         {
-            System.err.println("Class : ClientApplication | Method : connectToServer");
+            System.err.println("Class : RestaurantApplication | Method : connectToServer");
             System.err.println("Error : " + e.getMessage());
         }
     }
 
     public void showLoginPage() throws IOException
     {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/client-login-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/restaurant-login-view.fxml"));
         Parent root = fxmlLoader.load();
 
-        ClientLoginController controller = fxmlLoader.getController();
+        RestaurantLoginController controller = fxmlLoader.getController();
         controller.setApplication(this);
         controller.init();
 

@@ -2,12 +2,12 @@ package dto;
 
 import java.io.Serializable;
 
-public class LoginRequestDTO implements Serializable
+public class RestaurantLoginRequestDTO implements Serializable
 {
     private String username;
     private String password;
 
-    public LoginRequestDTO(String username, String password)
+    public RestaurantLoginRequestDTO(String username, String password)
     {
         this.username = username;
         this.password = password;

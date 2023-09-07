@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.LoginController">
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.RestaurantLoginController">
    <children>
       <ImageView fx:id="loginBGImage" fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
          <image>
@@ -32,10 +32,23 @@
             <RowConstraints maxHeight="278.3999938964844" minHeight="10.0" percentHeight="15.0" prefHeight="278.3999938964844" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
+            <Label contentDisplay="CENTER" prefHeight="39.0" prefWidth="222.0" text="Restaurant Login" textAlignment="CENTER" GridPane.halignment="LEFT">
+               <font>
+                  <Font name="ArtifaktElement-Medium" size="27.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="50.0" />
+               </GridPane.margin>
+            </Label>
+            <Label contentDisplay="CENTER" prefHeight="35.0" prefWidth="189.0" text="Welcome to RDS" textAlignment="CENTER" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
             <GridPane alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.rowIndex="2">
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="20.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="20.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="15.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="25.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="5.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="45.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="10.0" />
@@ -50,7 +63,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <children>
-                  <Label contentDisplay="CENTER" text="Username" textAlignment="CENTER" GridPane.columnIndex="1">
+                  <Label contentDisplay="CENTER" text="Restaurant Name" textAlignment="CENTER" GridPane.columnIndex="1">
                      <font>
                         <Font name="System Bold" size="17.0" />
                      </font>
@@ -60,42 +73,29 @@
                         <Font name="System Bold" size="17.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="userLoginUsernameField" prefHeight="26.0" prefWidth="328.0" promptText="Enter Your Username Here" GridPane.columnIndex="3" />
+                  <TextField fx:id="restaurantLoginUsernameField" prefHeight="26.0" prefWidth="328.0" promptText="Enter Your Username Here" GridPane.columnIndex="3" />
+                  <PasswordField fx:id="restaurantLoginPasswordField" promptText="Enter Your Password Here" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <children>
+                        <Button fx:id="restaurantLoginResetButton" mnemonicParsing="false" onAction="#restaurantLoginResetButtonPressed" text="Reset" />
+                     </children>
+                  </HBox>
                   <HBox alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" GridPane.columnIndex="3" GridPane.rowIndex="3">
                      <children>
-                        <Button fx:id="userLoginRegisterButton" mnemonicParsing="false" onAction="#userLoginRegisterButtonPressed" text="Register">
+                        <Button fx:id="restaurantLoginRegisterButton" mnemonicParsing="false" onAction="#restaurantLoginRegisterButtonPressed" text="Register">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="userLoginLoginButton" mnemonicParsing="false" onAction="#userLoginLoginButtonPressed" text="Login">
+                        <Button fx:id="restaurantLoginLoginButton" mnemonicParsing="false" onAction="#restaurantLoginLoginButtonPressed" text="Login">
                            <HBox.margin>
                               <Insets left="60.0" />
                            </HBox.margin>
                         </Button>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                     <children>
-                        <Button fx:id="userLoginResetButton" mnemonicParsing="false" onAction="#userLoginResetButtonPressed" text="Reset" />
-                     </children>
-                  </HBox>
-                  <PasswordField fx:id="userLoginPasswordField" promptText="Enter Your Password Here" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                </children>
             </GridPane>
-            <Label contentDisplay="CENTER" prefHeight="35.0" prefWidth="189.0" text="Welcome to RDS" textAlignment="CENTER" GridPane.rowIndex="1">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-            <Label contentDisplay="CENTER" prefHeight="35.0" prefWidth="189.0" text="User login" textAlignment="CENTER" GridPane.halignment="LEFT">
-               <font>
-                  <Font name="ArtifaktElement-Medium" size="27.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets left="50.0" />
-               </GridPane.margin>
-            </Label>
          </children>
       </GridPane>
    </children>
