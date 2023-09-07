@@ -5,7 +5,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-
+import models.Restaurant;
+import util.FileOperations;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -32,16 +33,61 @@ public class ServerController implements Runnable
     // Client Maps
     private ConcurrentHashMap<String, SocketWrapper> clientMap;
     private ConcurrentHashMap<String, SocketWrapper> restaurantMap;
+    // Modules
+    private ConcurrentHashMap<Integer, Restaurant> restaurantList;
+    // User and Restaurant Infos
+    private ConcurrentHashMap<String, String> userInfos;
+    private ConcurrentHashMap<String, String> restaurantInfos;
+    // Getters and Setters
+    public ServerSocket getServerSocket()
+    {
+        return serverSocket;
+    }
+    public ConcurrentHashMap<String, SocketWrapper> getClientMap()
+    {
+        return clientMap;
+    }
+    public ConcurrentHashMap<String, SocketWrapper> getRestaurantMap()
+    {
+        return restaurantMap;
+    }
+    public ConcurrentHashMap<Integer, Restaurant> getRestaurantList()
+    {
+        return restaurantList;
+    }
+    public ConcurrentHashMap<String, String> getUserInfos()
+    {
+        return userInfos;
+    }
+    public ConcurrentHashMap<String, String> getRestaurantInfos()
+    {
+        return restaurantInfos;
+    }
 
     public void setApplication(ServerApplication application)
     {
         this.application = application;
     }
 
+    // Initialization
     public void init()
     {
         serverPort = 44444;
         clientMap = new ConcurrentHashMap<>();
+        restaurantMap = new ConcurrentHashMap<>();
+
+        try
+        {
+            userInfos = FileOperations.readUserinfo();
+            restaurantInfos = FileOperations.readRestaurantInfo();
+            restaurantList = FileOperations.readRestaurants();
+        }
+        catch (IOException e)
+        {
+            System.out.println("Class : ServerController | Method : init");
+            System.out.println("Error : " + e.getMessage());
+        }
+
         thread = new Thread(this, "Server Thread");
         thread.start();
     }
@@ -61,16 +107,13 @@ public class ServerController implements Runnable
             System.err.println("Error : " + e.getMessage());
         }
     }
-
     public void addRestaurantButtonClicked(ActionEvent actionEvent)
     {
     }
-
     public void updateLastOperationText(String lastOperation)
     {
         lastOperationText.setText("Last successful operation : " + lastOperation);
     }
-
     public void updateIPAdrressText()
     {
         try
@@ -84,10 +127,19 @@ public class ServerController implements Runnable
             ipAddressText.setText("IP Address : ERROR");
         }
     }
-
     public void updatePortText()
     {
         portText.setText("Port : " + serverPort);
+    }
+
+    public void updateLastOperationTextThreadSafe(String lastOperation)
+    {
+        Platform.runLater(() -> {
+            // The following is necessary to update JavaFX UI components from user created threads
+            // You can't update java UI components from user created threads
+            // This ensures that the UI components are updated from the JavaFX Application Thread
+            updateLastOperationText(lastOperation);
+        });
     }
 
     public void run()
@@ -108,15 +160,9 @@ public class ServerController implements Runnable
                 SocketWrapper socketWrapper = new SocketWrapper(clientSocket);
 
                 System.out.println("Client Connection Request Received");
-                // The following is necessary to update JavaFX UI components from user created threads
-                // You can't update java UI components from user created threads
-                // This ensures that the UI components are updated from the JavaFX Application Thread
-                new ServerReadThread(socketWrapper, clientMap, restaurantMap);
-
-                Platform.runLater(() -> {
-                    updateLastOperationText("Server made a connection.");
-                });
-                System.out.println("Server accepted a client.");
+                new ServerReadThread(this, socketWrapper);
+                updateLastOperationTextThreadSafe("Server made a connection.");
+                System.out.println("Server made a connection.");
             }
         } catch (IOException e)
         {

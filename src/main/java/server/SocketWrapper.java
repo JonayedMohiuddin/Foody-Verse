@@ -18,13 +18,13 @@ public class SocketWrapper
         this.objectInputStream = new ObjectInputStream(socket.getInputStream());
     }
 
-    SocketWrapper(Socket socket) throws IOException
+    public SocketWrapper(Socket socket) throws IOException
     {
         this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         this.objectInputStream = new ObjectInputStream(socket.getInputStream());
     }
 
-    Object read() throws ClassNotFoundException, IOException
+    public Object read() throws ClassNotFoundException, IOException
     {
         return objectInputStream.readUnshared();
     }

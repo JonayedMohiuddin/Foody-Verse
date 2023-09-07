@@ -1,9 +1,11 @@
 package server;
 
 import dto.ClientLoginRequestDTO;
+import dto.LoginResponseDTO;
 import dto.RestaurantLoginRequestDTO;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,14 +13,12 @@ public class ServerReadThread implements Runnable
 {
     Thread thread;
     SocketWrapper socketWrapper;
-    ConcurrentHashMap<String, SocketWrapper> clientMap;
-    ConcurrentHashMap<String, SocketWrapper> restaurantMap;
+    ServerController serverController;
 
-    ServerReadThread(SocketWrapper socketWrapper, ConcurrentHashMap<String, SocketWrapper> clientMap, ConcurrentHashMap<String, SocketWrapper> restaurantMap)
+    ServerReadThread(ServerController serverController,SocketWrapper socketWrapper)
     {
         this.socketWrapper = socketWrapper;
-        this.clientMap = clientMap;
-        this.restaurantMap = restaurantMap;
+        this.serverController = serverController;
         thread = new Thread(this, "Server Read Thread");
         thread.start();
     }
@@ -34,14 +34,46 @@ public class ServerReadThread implements Runnable
                 if(obj instanceof ClientLoginRequestDTO)
                 {
                     ClientLoginRequestDTO loginRequest = (ClientLoginRequestDTO) obj;
-                    System.out.println("Client Login Request Received");
                     System.out.println(loginRequest);
+                    if (serverController.getClientMap().get(loginRequest.getUsername()) != null)
+                    {
+                        System.out.println("Client already logged in");
+                        socketWrapper.write(new LoginResponseDTO(false, "Client already logged in."));
+                    }
+                    else if (loginRequest.getPassword().equals(serverController.getUserInfos().get(loginRequest.getUsername())))
+                    {
+                        System.out.println("Client logged in");
+                        socketWrapper.write(new LoginResponseDTO(true, "Authentication Successful"));
+                        serverController.getClientMap().put(loginRequest.getUsername(), socketWrapper);
+                        serverController.updateLastOperationTextThreadSafe("Client " + loginRequest.getUsername() + " logged in.");
+                    }
+                    else
+                    {
+                        System.out.println("Client login failed");
+                        socketWrapper.write(new LoginResponseDTO(false, "Wrong username or password."));
+                    }
                 }
                 else if(obj instanceof RestaurantLoginRequestDTO)
                 {
                     RestaurantLoginRequestDTO loginRequest = (RestaurantLoginRequestDTO) obj;
-                    System.out.println("Restaurant Login Request Received");
                     System.out.println(loginRequest);
+                    if (serverController.getRestaurantMap().get(loginRequest.getUsername()) != null)
+                    {
+                        System.out.println("Restaurant already logged in");
+                        socketWrapper.write(new LoginResponseDTO(false, "Authentication failed. Restaurant already logged in."));
+                    }
+                    else if (loginRequest.getPassword().equals(serverController.getRestaurantInfos().get(loginRequest.getUsername())))
+                    {
+                        System.out.println("Restaurant logged in");
+                        socketWrapper.write(new LoginResponseDTO(true, "Authentication Successful"));
+                        serverController.getRestaurantMap().put(loginRequest.getUsername(), socketWrapper);
+                        serverController.updateLastOperationTextThreadSafe("Restaurant " + loginRequest.getUsername() + " logged in.");
+                    }
+                    else
+                    {
+                        System.out.println("Restaurant login failed");
+                        socketWrapper.write(new LoginResponseDTO(false, "Wrong username or password."));
+                    }
                 }
             }
         }

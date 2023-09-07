@@ -26,6 +26,6 @@ public class RestaurantLoginRequestDTO implements Serializable
     @Override
     public String toString()
     {
-        return "LoginRequestDTO {" + "username='" + username + '\'' + ", password='" + password + '\'' + '}';
+        return "RestaurantLoginRequestDTO {" + "username='" + username + '\'' + ", password='" + password + '\'' + '}';
     }
 }

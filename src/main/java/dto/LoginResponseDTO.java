@@ -8,7 +8,7 @@ public class LoginResponseDTO implements Serializable
     private String message;
 //    private UserProfileDTO userProfileDTO; // Optional : Might add later.
 
-    LoginResponseDTO(boolean status, String message)
+    public LoginResponseDTO(boolean status, String message)
     {
         this.status = status;
         this.message = message;

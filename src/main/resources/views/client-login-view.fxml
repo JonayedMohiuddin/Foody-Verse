@@ -96,6 +96,11 @@
                   <Insets left="50.0" />
                </GridPane.margin>
             </Label>
+            <Label fx:id="loginMessageText" text="Placeholder Text" GridPane.rowIndex="3">
+               <font>
+                  <Font name="Berlin Sans FB" size="16.0" />
+               </font>
+            </Label>
          </children>
       </GridPane>
    </children>
