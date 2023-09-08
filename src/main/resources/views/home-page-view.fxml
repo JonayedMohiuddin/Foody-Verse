@@ -36,9 +36,9 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="searchBoxFeild" promptText="Search restaurants" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <TextField fx:id="searchBoxField" promptText="Search restaurants" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <GridPane.margin>
-                  <Insets left="20.0" />
+                  <Insets left="10.0" />
                </GridPane.margin>
             </TextField>
             <FlowPane alignment="CENTER_RIGHT" GridPane.columnIndex="4">
@@ -60,14 +60,14 @@
             </FlowPane>
             <FlowPane alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.valignment="CENTER">
                <children>
-                  <Label alignment="TOP_LEFT" prefHeight="18.0" text="Filter">
+                  <Label alignment="TOP_LEFT" prefHeight="18.0" text="Filter Search">
                      <font>
-                        <Font name="Consolas" size="14.0" />
+                        <Font name="Constantia" size="14.0" />
                      </font>
                   </Label>
                   <ChoiceBox fx:id="clientHomePageFilterChoiceBox" accessibleRole="BUTTON" prefWidth="150.0">
                      <FlowPane.margin>
-                        <Insets left="20.0" />
+                        <Insets left="10.0" />
                      </FlowPane.margin>
                   </ChoiceBox>
                   <Label alignment="TOP_LEFT" text="Search">
@@ -75,7 +75,7 @@
                         <Font name="Consolas" size="14.0" />
                      </font>
                      <padding>
-                        <Insets left="40.0" />
+                        <Insets left="20.0" />
                      </padding>
                   </Label>
                </children>
@@ -86,11 +86,11 @@
          <content>
             <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="800.0">
                <children>
-                  <Label text="All Restaurants">
+                  <Label fx:id="homePageFlowPaneTitleText" text="All Restaurants">
                      <font>
                         <Font name="Lucida Sans Demibold Italic" size="20.0" />
                      </font></Label>
-                  <FlowPane fx:id="onlineRestaurantFlowPane" minHeight="200.0" VBox.vgrow="ALWAYS" />
+                  <FlowPane fx:id="homePageFlowPane" minHeight="200.0" VBox.vgrow="ALWAYS" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
