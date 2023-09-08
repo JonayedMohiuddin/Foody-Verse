@@ -1,8 +1,7 @@
 package server;
 
-import dto.ClientLoginRequestDTO;
-import dto.LoginResponseDTO;
-import dto.RestaurantLoginRequestDTO;
+import dto.*;
+import javafx.scene.chart.PieChart;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,6 +72,18 @@ public class ServerReadThread implements Runnable
                     {
                         System.out.println("Restaurant login failed");
                         socketWrapper.write(new LoginResponseDTO(false, "Wrong username or password."));
+                    }
+                }
+                else if(obj instanceof DatabaseRequestDTO)
+                {
+                    DatabaseRequestDTO databaseRequestDTO = (DatabaseRequestDTO) obj;
+                    System.out.println(databaseRequestDTO);
+
+                    if(databaseRequestDTO.getRequestType() == DatabaseRequestDTO.RequestType.RESTAURANT_LIST)
+                    {
+                        RestaurantListDTO restaurantListDTO = new RestaurantListDTO(serverController.getRestaurantList());
+                        System.out.println(restaurantListDTO);
+                        socketWrapper.write(restaurantListDTO);
                     }
                 }
             }

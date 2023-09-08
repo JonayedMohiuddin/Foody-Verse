@@ -23,4 +23,10 @@ public class LoginResponseDTO implements Serializable
     {
         return message;
     }
+
+    @Override
+    public String toString()
+    {
+        return "LoginResponseDTO{" + "status=" + status + ", message='" + message + '\'' + '}';
+    }
 }

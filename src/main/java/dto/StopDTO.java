@@ -15,4 +15,10 @@ public class StopDTO implements Serializable
     {
         return status;
     }
+
+    @Override
+    public String toString()
+    {
+        return "StopDTO {}";
+    }
 }

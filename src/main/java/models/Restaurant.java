@@ -1,9 +1,10 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Restaurant
+public class Restaurant implements Serializable
 {
     private int id;
     private String name;

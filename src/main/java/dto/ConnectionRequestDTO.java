@@ -1,5 +1,12 @@
 package dto;
 
-public class ConnectionRequestDTO
+import java.io.Serializable;
+
+public class ConnectionRequestDTO implements Serializable
 {
+    @Override
+    public String toString()
+    {
+        return "ConnectionRequestDTO{}";
+    }
 }

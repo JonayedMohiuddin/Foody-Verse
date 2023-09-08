@@ -62,6 +62,22 @@ public class ClientApplication extends Application
         stage.show();
     }
 
+    public void showHomePage() throws IOException
+    {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/home-page-view.fxml"));
+        Parent root = fxmlLoader.load();
+
+        HomePageController controller = fxmlLoader.getController();
+        controller.setApplication(this);
+        controller.init();
+
+        stage.setTitle("Login or Signup");
+        stage.setScene(new Scene(root, 800, 600));
+        stage.setMinWidth(400);
+        stage.setMinHeight(300);
+        stage.show();
+    }
+
     public void showSignUpPage()
     {
 
