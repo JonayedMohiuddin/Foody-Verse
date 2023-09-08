@@ -164,7 +164,8 @@ public class ServerController implements Runnable
                 updateLastOperationTextThreadSafe("Server made a connection.");
                 System.out.println("Server made a connection.");
             }
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             System.err.println("Class : ServerController | Method : init");
             System.err.println("Error : " + e.getMessage());

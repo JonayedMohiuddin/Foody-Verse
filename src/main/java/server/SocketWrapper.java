@@ -38,6 +38,6 @@ public class SocketWrapper
     {
         objectOutputStream.close();
         objectInputStream.close();
-        socket.close();
+        if(this.socket != null) socket.close();
     }
 }

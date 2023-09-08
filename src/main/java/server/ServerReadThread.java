@@ -13,6 +13,7 @@ public class ServerReadThread implements Runnable
     Thread thread;
     SocketWrapper socketWrapper;
     ServerController serverController;
+    String clientName;
 
     ServerReadThread(ServerController serverController,SocketWrapper socketWrapper)
     {
@@ -43,6 +44,7 @@ public class ServerReadThread implements Runnable
                     {
                         System.out.println("Client logged in");
                         socketWrapper.write(new LoginResponseDTO(true, "Authentication Successful"));
+                        clientName = loginRequest.getUsername();
                         serverController.getClientMap().put(loginRequest.getUsername(), socketWrapper);
                         serverController.updateLastOperationTextThreadSafe("Client " + loginRequest.getUsername() + " logged in.");
                     }
@@ -82,7 +84,6 @@ public class ServerReadThread implements Runnable
                     if(databaseRequestDTO.getRequestType() == DatabaseRequestDTO.RequestType.RESTAURANT_LIST)
                     {
                         RestaurantListDTO restaurantListDTO = new RestaurantListDTO(serverController.getRestaurantList());
-                        System.out.println(restaurantListDTO);
                         socketWrapper.write(restaurantListDTO);
                     }
                 }
@@ -90,8 +91,20 @@ public class ServerReadThread implements Runnable
         }
         catch (ClassNotFoundException | IOException e)
         {
-            System.err.println("Class : ServerReadThread | Method : run");
-            System.err.println("Error : " + e.getMessage());
+            System.out.println("Class : ServerReadThread | Method : run");
+            System.out.println("Error : " + e.getMessage());
+            System.out.println("Closing connection with client");
+
+            try
+            {
+                serverController.getClientMap().remove(clientName);
+                socketWrapper.closeConnection();
+            }
+            catch (IOException ex)
+            {
+                System.err.println("Class : ServerReadThread | Method : run | While closing connection");
+                System.err.println("Error : " + ex.getMessage());
+            }
         }
     }
 }

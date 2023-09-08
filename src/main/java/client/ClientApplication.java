@@ -1,6 +1,5 @@
 package client;
 
-import dto.ConnectionRequestDTO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,6 +22,16 @@ public class ClientApplication extends Application
     public SocketWrapper getSocketWrapper()
     {
         return socketWrapper;
+    }
+
+    private String userName;
+    public String getUserName()
+    {
+        return userName;
+    }
+    public void setUserName(String userName)
+    {
+        this.userName = userName;
     }
 
     @Override
@@ -67,7 +76,7 @@ public class ClientApplication extends Application
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/home-page-view.fxml"));
         Parent root = fxmlLoader.load();
 
-        HomePageController controller = fxmlLoader.getController();
+        ClientHomePageController controller = fxmlLoader.getController();
         controller.setApplication(this);
         controller.init();
 

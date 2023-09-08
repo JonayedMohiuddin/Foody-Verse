@@ -69,6 +69,7 @@ public class ClientLoginController
                     loginMessageText.setText(loginResponseDTO.getMessage());
                     loginMessageText.setStyle("-fx-text-fill: green");
 
+                    application.setUserName(name);
                     application.showHomePage();
                 }
                 else

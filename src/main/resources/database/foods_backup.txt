@@ -268,6 +268,7 @@
 54,Cappuccino,Coffee,3.49
 54,Iced Coffee,Coffee,3.99
 54,Chocolate Croissant,Bakery,2.99
+54,Cheesecake,Bakery,4.99
 55,Chocolate Sundae,Desserts,5.99
 55,Strawberry Cheesecake,Desserts,4.99
 55,Apple Pie a la Mode,Desserts,4.99
@@ -317,7 +318,7 @@
 64,Cappuccino,Coffee,3.49
 64,Iced Coffee,Coffee,3.99
 64,Chocolate Croissant,Bakery,2.99
-64,Cheesecake,Bakery,2.00
+64,Cheesecake,Bakery,
 65,Chocolate Sundae,Desserts,5.99
 65,Strawberry Cheesecake,Desserts,4.99
 65,Apple Pie a la Mode,Desserts,4.99

@@ -114,6 +114,11 @@ public class FileOperations
             String line = reader.readLine();
             if (line == null) break;
             String[] tokens = line.split(",");
+            if(tokens.length != 4)
+            {
+                System.err.println("Error in reading foods. Line : " + line);
+                continue;
+            }
             foods.add(new Food(Integer.parseInt(tokens[0]), tokens[1], tokens[2], Double.parseDouble(tokens[3])));
         }
         reader.close();
