@@ -1,102 +1,191 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ClientHomePageController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="100.0" prefWidth="100.0" />
-  </columnConstraints>
-  <rowConstraints>
-      <RowConstraints minHeight="10.0" percentHeight="2.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" percentHeight="8.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-  </rowConstraints>
+
+<GridPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ClientHomePageController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+   </rowConstraints>
    <children>
-      <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="600.0" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="2.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="38.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="32.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="21.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="2.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+      <AnchorPane prefHeight="650.0" prefWidth="900.0">
          <children>
-            <TextField fx:id="searchBoxField" promptText="Search restaurants" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-               <GridPane.margin>
-                  <Insets left="10.0" />
-               </GridPane.margin>
+            <Rectangle height="136.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="900.0">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.6925926208496094" green="0.8514197468757629" blue="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.4707317073170731">
+                           <color>
+                              <Color red="0.7107992172241211" green="0.9052631855010986" blue="0.7432098984718323" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.9111111164093018" green="1.0" blue="0.9259259104728699" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Rectangle>
+            <Label layoutX="20.0" layoutY="33.0" text="Foody-Verse" textFill="#ff2525">
+               <font>
+                  <Font name="Corbel Bold" size="30.0" />
+               </font>
+            </Label>
+            <TextField fx:id="searchTextField" layoutX="209.0" layoutY="31.0" onKeyPressed="#searchFieldKeyPressed" prefHeight="40.0" prefWidth="390.0" promptText="Search restaurants">
+               <font>
+                  <Font name="Calibri Light" size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
             </TextField>
-            <FlowPane alignment="CENTER_RIGHT" GridPane.columnIndex="4">
+            <TextField fx:id="rangeSearchMinField" layoutX="209.0" layoutY="31.0" onKeyPressed="#rangeSearchMinFieldKeyPressed" prefHeight="40.0" prefWidth="178.0" promptText="Minimum Range" visible="false">
+               <font>
+                  <Font name="Calibri Light" size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+            </TextField>
+            <Label fx:id="rangeSearchSeparator" alignment="CENTER" layoutX="389.0" layoutY="22.0" prefHeight="58.0" prefWidth="30.0" text="-" textAlignment="CENTER" visible="false">
+               <font>
+                  <Font name="Calibri Light" size="50.0" />
+               </font>
+            </Label>
+            <TextField fx:id="rangeSearchMaxField" layoutX="422.0" layoutY="31.0" onKeyPressed="#rangeSearchMaxFieldKeyPressed" prefHeight="40.0" prefWidth="178.0" promptText="Maximum Range" visible="false">
+               <font>
+                  <Font name="Calibri Light" size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+            </TextField>
+            <Button layoutX="599.0" layoutY="31.0" mnemonicParsing="false" onAction="#searchButtonClicked" prefHeight="40.0" prefWidth="65.0" text="Search">
+               <font>
+                  <Font name="Verdana" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button layoutX="684.0" layoutY="31.0" mnemonicParsing="false" onAction="#searchResetButtonClicked" prefHeight="40.0" prefWidth="66.0" text="Reset">
+               <font>
+                  <Font name="Verdana" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <GridPane layoutX="777.0" layoutY="33.0" prefHeight="36.0" prefWidth="115.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <Label fx:id="homepageUserNameText" text="Username" wrapText="true">
+                  <Label fx:id="usernameLabel" alignment="CENTER" text="Username" textAlignment="CENTER">
                      <font>
-                        <Font name="Candara" size="15.0" />
+                        <Font name="Calibri Light" size="18.0" />
                      </font>
-                     <FlowPane.margin>
-                        <Insets right="40.0" />
-                     </FlowPane.margin>
                   </Label>
-                  <Button fx:id="homePageLogOutButton" mnemonicParsing="false" onAction="#homePageLogOutButtonClicked" text="Log Out">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Button>
                </children>
-            </FlowPane>
-            <FlowPane alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.valignment="CENTER">
+            </GridPane>
+            <Button layoutX="69.0" layoutY="84.0" mnemonicParsing="false" onAction="#logoutButtonClicked" prefHeight="30.0" prefWidth="66.0" text="Logout">
+               <font>
+                  <Font name="Verdana" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Label layoutX="209.0" layoutY="91.0" text="Filter Search">
+               <font>
+                  <Font name="Calibri Light" size="15.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="searchFilterChoiceBox" layoutX="299.0" layoutY="86.0" prefHeight="26.0" prefWidth="153.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ChoiceBox>
+            <Label layoutX="493.0" layoutY="90.0" text="View">
+               <font>
+                  <Font name="Calibri Light" size="15.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="viewChoiceBox" layoutX="537.0" layoutY="87.0" prefHeight="26.0" prefWidth="128.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ChoiceBox>
+            <Button layoutX="789.0" layoutY="82.0" mnemonicParsing="false" onAction="#cartButtonClicked" prefHeight="36.0" prefWidth="91.0" text="My Cart">
+               <font>
+                  <Font name="Verdana" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <GridPane layoutX="-0.800000011920929" layoutY="135.1999969482422">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <Label alignment="TOP_LEFT" prefHeight="18.0" text="Filter Search">
-                     <font>
-                        <Font name="Constantia" size="14.0" />
-                     </font>
-                  </Label>
-                  <ChoiceBox fx:id="clientHomePageFilterChoiceBox" accessibleRole="BUTTON" prefWidth="150.0">
-                     <FlowPane.margin>
-                        <Insets left="10.0" />
-                     </FlowPane.margin>
-                  </ChoiceBox>
-                  <Label alignment="TOP_LEFT" text="Search">
-                     <font>
-                        <Font name="Consolas" size="14.0" />
-                     </font>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                  </Label>
+                  <ScrollPane hbarPolicy="NEVER" maxWidth="1.7976931348623157E308" prefHeight="514.0" prefWidth="900.0" vbarPolicy="ALWAYS">
+                     <content>
+                        <VBox maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="900.0">
+                           <children>
+                              <Label fx:id="flowpaneTitleLabel" text="All Restaurants">
+                                 <font>
+                                    <Font name="Lucida Sans Italic" size="20.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="10.0" left="20.0" top="10.0" />
+                                 </padding>
+                              </Label>
+                              <FlowPane fx:id="flowpane" maxWidth="865.0" prefHeight="200.0" prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets left="20.0" />
+                                 </VBox.margin>
+                              </FlowPane>
+                           </children>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
                </children>
-            </FlowPane>
+            </GridPane>
          </children>
-      </GridPane>
-      <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
-         <content>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="800.0">
-               <children>
-                  <Label fx:id="homePageFlowPaneTitleText" text="All Restaurants">
-                     <font>
-                        <Font name="Lucida Sans Demibold Italic" size="20.0" />
-                     </font></Label>
-                  <FlowPane fx:id="homePageFlowPane" minHeight="200.0" VBox.vgrow="ALWAYS" />
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-               </padding>
-            </VBox>
-         </content>
-      </ScrollPane>
+      </AnchorPane>
    </children>
 </GridPane>

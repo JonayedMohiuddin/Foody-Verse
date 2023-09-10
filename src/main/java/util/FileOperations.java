@@ -88,9 +88,9 @@ public class FileOperations
 
             String[] tokens = line.split(",");
 
-            int categoryCount = tokens.length - 5;
+            int categoryCount = tokens.length - 6;
             String[] categories = new String[categoryCount];
-            System.arraycopy(tokens, 5, categories, 0, categoryCount);
+            System.arraycopy(tokens, 6, categories, 0, categoryCount);
 
             restaurants.put(Integer.parseInt(tokens[0]), new Restaurant(Integer.parseInt(tokens[0]), tokens[1], Double.parseDouble(tokens[3]), tokens[4], tokens[5], categories));
         }
