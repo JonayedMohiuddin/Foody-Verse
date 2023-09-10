@@ -14,8 +14,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import models.Food;
 import models.Restaurant;
@@ -468,7 +466,7 @@ public class ClientHomePageController
             ArrayList<Double> range = readRangeFromSearchBoxes();
             if (range.size() < 2) return;
             DecimalFormat decimalFormat = new DecimalFormat("#.##"); // to omit trailing .0 looks ugly
-            flowpaneTitleLabel.setText("Restaurants with rating " + decimalFormat.format(range.get(0)) + " - " + decimalFormat.format(range.get(1)));
+            flowpaneTitleLabel.setText("Restaurants with rating " + decimalFormat.format(range.get(0)) + " to " + decimalFormat.format(range.get(1)));
             ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByRating(range.get(0), range.get(1), restaurantList);
             resetFlowPane();
             addRestaurantListToFlowPane(restaurants);
@@ -492,7 +490,7 @@ public class ClientHomePageController
             ArrayList<Double> range = readRangeFromSearchBoxes();
             if (range.size() < 2) return;
             DecimalFormat decimalFormat = new DecimalFormat("#.##"); // to omit trailing .0 looks ugly
-            flowpaneTitleLabel.setText("Foods with price " + decimalFormat.format(range.get(0)) + "$ - " + decimalFormat.format(range.get(1)) + "$");
+            flowpaneTitleLabel.setText("Foods with price " + decimalFormat.format(range.get(0)) + "$ to " + decimalFormat.format(range.get(1)) + "$");
             ArrayList<Food> foods = RestaurantSearches.searchFoodByPriceRange(range.get(0), range.get(1), foodList);
             resetFlowPane();
             addFoodListToFlowPane(foods);
@@ -565,8 +563,9 @@ public class ClientHomePageController
         }
     }
 
-    public void searchResetButtonClicked(ActionEvent actionEvent)
+    public void resetButtonClicked(ActionEvent actionEvent)
     {
+        flowpaneTitleLabel.setText("All Restaurants");
         resetFlowPane();
         addRestaurantListToFlowPane();
         viewChoiceBox.setValue(Options.VIEW_RESTAURANT);
