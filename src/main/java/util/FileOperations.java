@@ -119,7 +119,8 @@ public class FileOperations
                 System.err.println("Error in reading foods. Line : " + line);
                 continue;
             }
-            foods.add(new Food(Integer.parseInt(tokens[0]), tokens[1], tokens[2], Double.parseDouble(tokens[3])));
+//            foods.add(new Food(Integer.parseInt(tokens[0]), tokens[1], tokens[2], Double.parseDouble(tokens[3])));
+            foods.add(new Food(Integer.parseInt(tokens[0]), tokens[2], tokens[1], Double.parseDouble(tokens[3])));
         }
         reader.close();
 
@@ -131,7 +132,7 @@ public class FileOperations
         BufferedWriter writer = new BufferedWriter(new FileWriter(RESTAURANTS_FILE_NAME));
         for (Restaurant restaurant : restaurants.values())
         {
-            writer.write(restaurant.getId() + "," + restaurant.getName() + "," + restaurant.getScore() + "," + restaurant.getPrice() + "," + restaurant.getZipCode() + ",");
+            writer.write(restaurant.getId() + "," + restaurant.getName() + "," + restaurant.getScore() + "," + restaurant.getPrice() + "," + restaurant.getZipcode() + ",");
             for (int i = 0; i < restaurant.getCategories().size(); i++)
             {
                 writer.write(restaurant.getCategories().get(i));

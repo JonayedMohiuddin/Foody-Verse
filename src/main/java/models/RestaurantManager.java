@@ -189,7 +189,7 @@ public class RestaurantManager
         ArrayList<Restaurant> searchList = new ArrayList<>();
         for (Restaurant restaurant : restaurantList)
         {
-            if (restaurant.getZipCode().equalsIgnoreCase(zipcode))
+            if (restaurant.getZipcode().equalsIgnoreCase(zipcode))
             {
                 searchList.add(restaurant);
             }

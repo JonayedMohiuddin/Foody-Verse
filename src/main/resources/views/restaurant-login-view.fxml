@@ -68,12 +68,12 @@
                         <Font name="System Bold" size="17.0" />
                      </font>
                   </Label>
+                  <TextField fx:id="restaurantLoginUsernameField" prefHeight="26.0" prefWidth="328.0" promptText="Enter Your Username Here" GridPane.columnIndex="3" />
                   <Label contentDisplay="CENTER" text="Password" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Bold" size="17.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="restaurantLoginUsernameField" prefHeight="26.0" prefWidth="328.0" promptText="Enter Your Username Here" GridPane.columnIndex="3" />
                   <PasswordField fx:id="restaurantLoginPasswordField" promptText="Enter Your Password Here" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                   <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <children>

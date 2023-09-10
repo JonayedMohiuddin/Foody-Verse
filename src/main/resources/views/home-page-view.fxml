@@ -19,7 +19,6 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
 <GridPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ClientHomePageController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -162,7 +161,7 @@
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <ScrollPane hbarPolicy="NEVER" maxWidth="1.7976931348623157E308" prefHeight="514.0" prefWidth="900.0" vbarPolicy="ALWAYS">
+                  <ScrollPane fx:id="scrollpane" hbarPolicy="NEVER" maxWidth="1.7976931348623157E308" prefHeight="514.0" prefWidth="900.0" vbarPolicy="ALWAYS">
                      <content>
                         <VBox maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="900.0">
                            <children>
@@ -176,7 +175,7 @@
                               </Label>
                               <FlowPane fx:id="flowpane" maxWidth="865.0" prefHeight="200.0" prefWidth="200.0">
                                  <VBox.margin>
-                                    <Insets left="20.0" />
+                                    <Insets bottom="30.0" left="20.0" />
                                  </VBox.margin>
                               </FlowPane>
                            </children>
@@ -185,6 +184,32 @@
                   </ScrollPane>
                </children>
             </GridPane>
+            <Label alignment="CENTER" layoutX="801.0" layoutY="14.0" text="Welcome!" textAlignment="CENTER">
+               <font>
+                  <Font name="Calibri Light" size="16.0" />
+               </font>
+               <textFill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.41604939103126526" green="0.20370370149612427" blue="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.42195121951219505">
+                           <color>
+                              <Color red="0.06736841797828674" green="0.5684210658073425" blue="0.12582455575466156" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="1.0" green="0.007407407276332378" blue="0.8014814853668213" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </textFill>
+            </Label>
          </children>
       </AnchorPane>
    </children>

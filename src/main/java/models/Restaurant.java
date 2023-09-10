@@ -68,7 +68,7 @@ public class Restaurant implements Serializable
     {
         return price;
     }
-    public String getZipCode()
+    public String getZipcode()
     {
         return zipCode;
     }

@@ -7,26 +7,30 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import models.Food;
 import models.Restaurant;
 import models.RestaurantSearches;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientHomePageController
 {
+    // CHANGABLE LABELS
     public Label usernameLabel;
-
     // SEARCH BAR
     public TextField searchTextField;
     public ChoiceBox<String> viewChoiceBox;
@@ -34,21 +38,31 @@ public class ClientHomePageController
     public TextField rangeSearchMinField;
     public Label rangeSearchSeparator;
     public TextField rangeSearchMaxField;
-
     // FLOW PANE
     public Label flowpaneTitleLabel;
     public FlowPane flowpane;
-
+    public ScrollPane scrollpane;
+    // CLIENT APPLICATION REFERENCE
     ClientApplication application;
-    ConcurrentHashMap<Integer, Restaurant> restaurantList;
-    ArrayList<Food> foodList;
+    // SEARCH OPTIONS
     ArrayList<String> restaurantSearchOptions;
     ArrayList<String> foodSearchOptions;
     String currentViewType;
     String currentSearchFilterType;
+    // DATA
+    ConcurrentHashMap<Integer, Restaurant> restaurantList;
+    ArrayList<Food> foodList;
+    // ASSETS
+    // IMAGES
+    Image restaurantImageMedium;
+    Image restaurantImageLarge;
+    Image foodImage;
+    // FONTS
+    Font robotoBoldFont15;
+    Font robotoRegularFont20;
     Font robotoRegularFont15;
     Font robotoRegularFont12;
-    Font robotoBoldFont15;
+    Font robotoLightFont20;
     Font robotoLightFont15;
 
     public void setApplication(ClientApplication application)
@@ -59,19 +73,24 @@ public class ClientHomePageController
     public void init()
     {
         System.out.println("Client Home Page");
+
+        // CHANGE USERNAME LABEL
         usernameLabel.setText(application.getUserName());
 
+        // LOAD IMAGES
+        restaurantImageMedium = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 175, 125, false, false);
+        restaurantImageLarge = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 263, 188, false, false);
+        foodImage = new Image("file:src/main/resources/assets/Burger.jpg", 175, 125, false, false);
+
         // LOAD FONTS
-        robotoRegularFont15 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Regular.ttf"), 15);
         robotoBoldFont15 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Bold.ttf"), 15);
         robotoLightFont15 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Light.ttf"), 15);
+        robotoLightFont20 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Light.ttf"), 20);
         robotoRegularFont12 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Regular.ttf"), 12);
-        if (robotoRegularFont15 == null || robotoBoldFont15 == null || robotoLightFont15 == null || robotoRegularFont12 == null)
-        {
-            System.err.println("Class : HomePageController | Method : init | Couldn't load fonts.");
-        }
+        robotoRegularFont15 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Regular.ttf"), 15);
+        robotoRegularFont20 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Regular.ttf"), 20);
 
-        // Request for database
+        // REQUEST FOR DATABASE
         DatabaseRequestDTO databaseRequestDTO = new DatabaseRequestDTO(DatabaseRequestDTO.RequestType.RESTAURANT_LIST);
         try
         {
@@ -82,6 +101,7 @@ public class ClientHomePageController
             System.err.println("Error : " + e.getMessage());
         }
 
+        // READ DATABASE - RESTAURANT LIST
         try
         {
             Object obj = application.getSocketWrapper().read();
@@ -105,22 +125,13 @@ public class ClientHomePageController
 
         // POPULATE RESTAURANT SEARCH OPTIONS
         restaurantSearchOptions = new ArrayList<>();
-        restaurantSearchOptions.addAll(Arrays.asList(
-                Options.RESTAURANT_NAME,
-                Options.RESTAURANT_RATING,
-                Options.RESTAURANT_PRICE,
-                Options.RESTAURANT_CATEGORY,
-                Options.RESTAURANT_ZIPCODE
-        ));
+        restaurantSearchOptions.addAll(Arrays.asList(Options.RESTAURANT_NAME, Options.RESTAURANT_RATING, Options.RESTAURANT_PRICE, Options.RESTAURANT_CATEGORY, Options.RESTAURANT_ZIPCODE));
 
         // POPULATE FOOD SEARCH OPTIONS
         foodSearchOptions = new ArrayList<>();
-        foodSearchOptions.addAll(Arrays.asList(
-                Options.FOOD_NAME,
-                Options.FOOD_CATEGORY,
-                Options.FOOD_PRICE
-        ));
+        foodSearchOptions.addAll(Arrays.asList(Options.FOOD_NAME, Options.FOOD_CATEGORY, Options.FOOD_PRICE));
 
+        // CREATE CHOICE BOXES WITH THE CHOICE OPTIONS AND ATTACH LISTENERS FOR CHANGES
         searchFilterChoiceBox.getItems().addAll(restaurantSearchOptions);
         searchFilterChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null)
@@ -132,10 +143,7 @@ public class ClientHomePageController
         currentSearchFilterType = Options.RESTAURANT_NAME;
         searchFilterChoiceBox.setValue(Options.RESTAURANT_NAME);
 
-        viewChoiceBox.getItems().addAll(
-                Options.VIEW_RESTAURANT,
-                Options.VIEW_FOOD
-        );
+        viewChoiceBox.getItems().addAll(Options.VIEW_RESTAURANT, Options.VIEW_FOOD);
         viewChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null)
             {
@@ -143,6 +151,8 @@ public class ClientHomePageController
                 handleViewOptionChange(newValue);
             }
         });
+
+        // SET DEFAULT CHOICE BOX VALUES
         currentViewType = Options.VIEW_RESTAURANT;
         viewChoiceBox.setValue(Options.VIEW_RESTAURANT);
     }
@@ -154,12 +164,14 @@ public class ClientHomePageController
 
         if (newValue.equals(Options.VIEW_RESTAURANT))
         {
+            resetFlowPane();
             addRestaurantListToFlowPane();
             searchFilterChoiceBox.getItems().addAll(restaurantSearchOptions);
             searchFilterChoiceBox.setValue(Options.RESTAURANT_NAME);
         }
         else if (newValue.equals(Options.VIEW_FOOD))
         {
+            resetFlowPane();
             addFoodListToFlowPane();
             searchFilterChoiceBox.getItems().addAll(foodSearchOptions);
             searchFilterChoiceBox.setValue(Options.FOOD_NAME);
@@ -168,7 +180,7 @@ public class ClientHomePageController
 
     private void handleFilterOptionChange(String newValue)
     {
-        if(currentSearchFilterType.equals(Options.RESTAURANT_RATING) || currentSearchFilterType.equals(Options.FOOD_PRICE))
+        if (currentSearchFilterType.equals(Options.RESTAURANT_RATING) || currentSearchFilterType.equals(Options.FOOD_PRICE))
         {
             System.out.println("Switching search box");
             switchSearchBox();
@@ -209,79 +221,109 @@ public class ClientHomePageController
         }
     }
 
+    public void addRestaurantDetailHeading(Restaurant restaurant)
+    {
+        StackPane imageContainer = new StackPane();
+        ImageView restaurantImageView = new ImageView(restaurantImageLarge);
+        imageContainer.getChildren().add(restaurantImageView);
+
+        VBox restaurantInfoBox = new VBox();
+
+        Label restaurantNameLabel = new Label("Name : " + restaurant.getName());
+        restaurantNameLabel.setFont(robotoRegularFont20);
+        restaurantNameLabel.setAlignment(Pos.CENTER_LEFT);
+
+        Label restaurantRatingLabel = new Label("Rating : " + restaurant.getScore() + " / 5");
+        restaurantRatingLabel.setFont(robotoRegularFont20);
+        restaurantRatingLabel.setAlignment(Pos.CENTER_LEFT);
+
+        String categories = "";
+        for(int i = 0; i < restaurant.getCategories().size(); i++)
+        {
+            categories += restaurant.getCategories().get(i);
+            if(i != restaurant.getCategories().size()-1) categories += ", ";
+        }
+        Label restaurantCategoryLabel = new Label("Categories : " + categories);
+        restaurantCategoryLabel.setFont(robotoRegularFont20);
+        restaurantCategoryLabel.setAlignment(Pos.CENTER_LEFT);
+
+        Label restaurantPriceLabel = new Label("Price Category : " + restaurant.getPrice());
+        restaurantPriceLabel.setFont(robotoRegularFont20);
+        restaurantPriceLabel.setAlignment(Pos.CENTER_LEFT);
+
+        Label restaurantZipcode = new Label("Zipcode : " + restaurant.getZipcode());
+        restaurantZipcode.setFont(robotoRegularFont20);
+        restaurantZipcode.setAlignment(Pos.CENTER_LEFT);
+
+        restaurantInfoBox.getChildren().addAll(restaurantNameLabel, restaurantRatingLabel, restaurantCategoryLabel, restaurantPriceLabel, restaurantZipcode);
+        flowpane.getChildren().addAll(imageContainer, restaurantInfoBox);
+    }
+
+    public void restaurantClicked(Restaurant restaurant)
+    {
+
+        flowpaneTitleLabel.setText("Restaurant " + restaurant.getName());
+        resetFlowPane();
+        addRestaurantDetailHeading(restaurant);
+        addFoodListToFlowPane(restaurant.getFoodList());
+    }
+
+    public void foodClicked(Food food)
+    {
+
+    }
+
     public void resetFlowPane()
     {
         flowpane.getChildren().clear();
+        scrollpane.setVvalue(0);
     }
 
     public void addRestaurantListToFlowPane()
     {
-        resetFlowPane();
         for (Restaurant restaurant : restaurantList.values())
         {
             addRestaurantToFlowPane(restaurant);
         }
     }
 
-    public void addRestaurantListToFlowPane(ArrayList<Restaurant> restaurantList)
+    public void addRestaurantListToFlowPane(ArrayList<Restaurant> restaurants)
     {
-        resetFlowPane();
-        for (Restaurant restaurant : restaurantList)
+        for (Restaurant restaurant : restaurants)
         {
             addRestaurantToFlowPane(restaurant);
         }
     }
 
+    public void addFoodListToFlowPane(ArrayList<Food> foods)
+    {
+        for (Food food : foods)
+        {
+            addFoodToFlowPane(food);
+        }
+    }
+
     public void addFoodListToFlowPane()
     {
-        resetFlowPane();
         for (Food food : foodList)
         {
             addFoodToFlowPane(food);
         }
     }
 
-    public void addFoodToFlowPane(Food food)
-    {
-        VBox foodBox = new VBox();
-
-        ImageView imageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
-        imageView.setFitWidth(175);
-        imageView.setFitHeight(125);
-
-        Label foodNameLabel = new Label(food.getName());
-//        restaurantNameLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; - fx-font-family: Calibri Light;");
-        foodNameLabel.setFont(robotoBoldFont15);
-        foodNameLabel.setAlignment(Pos.CENTER_LEFT);
-        foodNameLabel.setMaxWidth(175);
-
-        Label foodCategory = new Label(food.getCategory());
-        foodCategory.setFont(robotoRegularFont12);
-        foodCategory.setAlignment(Pos.CENTER_LEFT);
-        foodCategory.setMaxWidth(175);
-
-        Label foodPrice = new Label(food.getPrice() + "  $");
-        foodCategory.setFont(robotoRegularFont12);
-        foodCategory.setAlignment(Pos.CENTER_LEFT);
-        foodCategory.setMaxWidth(175);
-
-        foodBox.getChildren().addAll(imageView, foodNameLabel, foodCategory, foodPrice);
-        foodBox.setPadding(new Insets(20, 30, 0, 10));
-
-        flowpane.getChildren().add(foodBox);
-    }
-
     public void addRestaurantToFlowPane(Restaurant restaurant)
     {
         VBox restaurantBox = new VBox();
 
-        ImageView imageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
-        imageView.setFitWidth(175);
-        imageView.setFitHeight(125);
-
+        ImageView imageView = new ImageView(restaurantImageMedium);
         imageView.setOnMouseClicked(event -> {
-            System.out.println("Restaurant image clicked. Restaurant name : " + restaurant.getName());
+            System.out.println("Restaurant clicked. Restaurant name : " + restaurant.getName());
+            restaurantClicked(restaurant);
         });
+
+//        ImageView imageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
+//        imageView.setFitWidth(175);
+//        imageView.setFitHeight(125);
 
         Label restaurantNameLabel = new Label(restaurant.getName());
 //        restaurantNameLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; - fx-font-family: Calibri Light;");
@@ -305,7 +347,7 @@ public class ClientHomePageController
         categoryLabel.setAlignment(Pos.CENTER_LEFT);
         categoryLabel.setMaxWidth(175);
 
-        Label zipcodeLabel = new Label("Zipcode " + restaurant.getZipCode());
+        Label zipcodeLabel = new Label("Zipcode " + restaurant.getZipcode());
         zipcodeLabel.setFont(robotoRegularFont12);
         zipcodeLabel.setAlignment(Pos.CENTER_LEFT);
         zipcodeLabel.setMaxWidth(175);
@@ -316,16 +358,45 @@ public class ClientHomePageController
         flowpane.getChildren().add(restaurantBox);
     }
 
-    public void homePageLogOutButtonClicked(ActionEvent actionEvent)
+    public void addFoodToFlowPane(Food food)
     {
+        VBox foodBox = new VBox();
 
+        ImageView imageView = new ImageView(foodImage);
+        imageView.setOnMouseClicked(event -> {
+            System.out.println("Food clicked. Food name : " + food.getName());
+            foodClicked(food);
+        });
+
+//        ImageView imageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
+//        imageView.setFitWidth(175);
+//        imageView.setFitHeight(125);
+
+        Label foodNameLabel = new Label(food.getName());
+//        restaurantNameLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; - fx-font-family: Calibri Light;");
+        foodNameLabel.setFont(robotoBoldFont15);
+        foodNameLabel.setAlignment(Pos.CENTER_LEFT);
+        foodNameLabel.setMaxWidth(175);
+
+        Label foodCategory = new Label(food.getCategory());
+        foodCategory.setFont(robotoRegularFont12);
+        foodCategory.setAlignment(Pos.CENTER_LEFT);
+        foodCategory.setMaxWidth(175);
+
+        Label foodPrice = new Label(food.getPrice() + "  $");
+        foodCategory.setFont(robotoRegularFont12);
+        foodCategory.setAlignment(Pos.CENTER_LEFT);
+        foodCategory.setMaxWidth(175);
+
+        foodBox.getChildren().addAll(imageView, foodNameLabel, foodCategory, foodPrice);
+        foodBox.setPadding(new Insets(20, 30, 0, 10));
+
+        flowpane.getChildren().add(foodBox);
     }
 
-    public void searchResetButtonClicked(ActionEvent actionEvent)
+    public void homePageLogOutButtonClicked(ActionEvent actionEvent)
     {
-        addRestaurantListToFlowPane();
-        viewChoiceBox.setValue(Options.VIEW_RESTAURANT);
-        searchFilterChoiceBox.setValue(Options.RESTAURANT_NAME);
+        System.out.println("Logout button clicked");
     }
 
     public void cartButtonClicked(ActionEvent actionEvent)
@@ -338,50 +409,127 @@ public class ClientHomePageController
         System.out.println("Logout button clicked");
     }
 
+    // ======================================================================================================
+    // SEARCH RELATED METHODS
+    // ======================================================================================================
+
     public void search()
     {
-        System.out.println("Search button pressed. Searching : " + searchTextField.getText());
+        System.out.println("Searching (filter : " + currentSearchFilterType + ") : " + searchTextField.getText());
 
-        if(currentSearchFilterType.equals(Options.RESTAURANT_NAME))
+        if (currentSearchFilterType.equals(Options.RESTAURANT_NAME))
         {
-           ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByName(searchTextField.getText(), restaurantList);
-           addRestaurantListToFlowPane(restaurants);
-        }
-        else if(currentSearchFilterType.equals(Options.RESTAURANT_CATEGORY))
-        {
-            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByCattegory(searchTextField.getText(), restaurantList);
+            flowpaneTitleLabel.setText("Restaurants with name " + searchTextField.getText());
+            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByName(searchTextField.getText(), restaurantList);
+            resetFlowPane();
             addRestaurantListToFlowPane(restaurants);
         }
-        else if(currentSearchFilterType.equals(Options.RESTAURANT_PRICE))
+        else if (currentSearchFilterType.equals(Options.RESTAURANT_CATEGORY))
+        {
+            flowpaneTitleLabel.setText("Restaurants with category " + searchTextField.getText());
+            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByCattegory(searchTextField.getText(), restaurantList);
+            resetFlowPane();
+            addRestaurantListToFlowPane(restaurants);
+        }
+        else if (currentSearchFilterType.equals(Options.RESTAURANT_PRICE))
         {
             String opt = "";
-            if("cheap".contains(searchTextField.getText()))
+            if ("cheap".contains(searchTextField.getText()) || "$".equals(searchTextField.getText()))
             {
                 opt = "$";
             }
-            else if("medium".contains(searchTextField.getText()))
+            else if ("medium".contains(searchTextField.getText()) || "$$".equals(searchTextField.getText()))
             {
                 opt = "$$";
             }
-            else if("expensive".contains(searchTextField.getText()))
+            else if ("expensive".contains(searchTextField.getText()) || "$$$".equals(searchTextField.getText()))
             {
                 opt = "$$$";
             }
             else
             {
-                opt = searchTextField.getText();
+                return;
             }
+            flowpaneTitleLabel.setText("Restaurants with price category " + opt);
 
-
+            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantByPrice(opt, restaurantList);
+            resetFlowPane();
+            addRestaurantListToFlowPane(restaurants);
+        }
+        else if (currentSearchFilterType.equals(Options.RESTAURANT_ZIPCODE))
+        {
+            flowpaneTitleLabel.setText("Restaurants with zipcode " + searchTextField.getText());
+            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByZipcode(searchTextField.getText(), restaurantList);
+            resetFlowPane();
+            addRestaurantListToFlowPane(restaurants);
+        }
+        else if (currentSearchFilterType.equals(Options.RESTAURANT_RATING))
+        {
+            ArrayList<Double> range = readRangeFromSearchBoxes();
+            if (range.size() < 2) return;
+            DecimalFormat decimalFormat = new DecimalFormat("#.##"); // to omit trailing .0 looks ugly
+            flowpaneTitleLabel.setText("Restaurants with rating " + decimalFormat.format(range.get(0)) + " - " + decimalFormat.format(range.get(1)));
+            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByRating(range.get(0), range.get(1), restaurantList);
+            resetFlowPane();
+            addRestaurantListToFlowPane(restaurants);
+        }
+        else if (currentSearchFilterType.equals(Options.FOOD_NAME))
+        {
+            flowpaneTitleLabel.setText("Foods with name " + searchTextField.getText());
+            ArrayList<Food> foods = RestaurantSearches.searchFoodByName(searchTextField.getText(), foodList);
+            resetFlowPane();
+            addFoodListToFlowPane(foods);
+        }
+        else if (currentSearchFilterType.equals(Options.FOOD_CATEGORY))
+        {
+            flowpaneTitleLabel.setText("Foods with category " + searchTextField.getText());
+            ArrayList<Food> foods = RestaurantSearches.searchFoodByCategory(searchTextField.getText(), foodList);
+            resetFlowPane();
+            addFoodListToFlowPane(foods);
+        }
+        else if (currentSearchFilterType.equals(Options.FOOD_PRICE))
+        {
+            ArrayList<Double> range = readRangeFromSearchBoxes();
+            if (range.size() < 2) return;
+            DecimalFormat decimalFormat = new DecimalFormat("#.##"); // to omit trailing .0 looks ugly
+            flowpaneTitleLabel.setText("Foods with price " + decimalFormat.format(range.get(0)) + "$ - " + decimalFormat.format(range.get(1)) + "$");
+            ArrayList<Food> foods = RestaurantSearches.searchFoodByPriceRange(range.get(0), range.get(1), foodList);
+            resetFlowPane();
+            addFoodListToFlowPane(foods);
+        }
+        else
+        {
+            System.err.println("Class : HomePageController | Method : search | Invalid search filter type, How?? IMPOSSIBLE! CDI");
         }
     }
 
-    public void switchSearchBox()
+    public ArrayList<Double> readRangeFromSearchBoxes()
     {
-        searchTextField.setVisible(!searchTextField.isVisible());
-        rangeSearchMinField.setVisible(!rangeSearchMinField.isVisible());
-        rangeSearchSeparator.setVisible(!rangeSearchSeparator.isVisible());
-        rangeSearchMaxField.setVisible(!rangeSearchMaxField.isVisible());
+        ArrayList<Double> range = new ArrayList<>();
+        Double min, max;
+
+        try
+        {
+            rangeSearchMinField.setStyle("");
+            min = Double.parseDouble(rangeSearchMinField.getText());
+            range.add(min);
+        } catch (NumberFormatException e)
+        {
+            System.out.println("Class : HomePageController | Method : search | While parsing rating range, min is not a number");
+            rangeSearchMinField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
+        }
+
+        try
+        {
+            rangeSearchMaxField.setStyle("");
+            max = Double.parseDouble(rangeSearchMaxField.getText());
+            range.add(max);
+        } catch (NumberFormatException e)
+        {
+            System.out.println("Class : HomePageController | Method : search | While parsing rating range, max is not a number");
+            rangeSearchMaxField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
+        }
+        return range;
     }
 
     public void searchButtonClicked(ActionEvent actionEvent)
@@ -417,6 +565,36 @@ public class ClientHomePageController
         }
     }
 
+    public void searchResetButtonClicked(ActionEvent actionEvent)
+    {
+        resetFlowPane();
+        addRestaurantListToFlowPane();
+        viewChoiceBox.setValue(Options.VIEW_RESTAURANT);
+        searchFilterChoiceBox.setValue(Options.RESTAURANT_NAME);
+        searchTextField.setText("");
+        rangeSearchMinField.setText("");
+        rangeSearchMaxField.setText("");
+    }
+
+    public void switchSearchBox()
+    {
+        searchTextField.setVisible(!searchTextField.isVisible());
+        rangeSearchMinField.setVisible(!rangeSearchMinField.isVisible());
+        rangeSearchSeparator.setVisible(!rangeSearchSeparator.isVisible());
+        rangeSearchMaxField.setVisible(!rangeSearchMaxField.isVisible());
+
+        searchTextField.setText("");
+        rangeSearchMinField.setText("");
+        rangeSearchMaxField.setText("");
+
+        rangeSearchMinField.setStyle("");
+        rangeSearchMaxField.setStyle("");
+    }
+
+    // ======================================================================================================
+    // UTIL METHODS AND CLASSES
+    // ======================================================================================================
+
     ArrayList<Food> generateFoodList()
     {
         ArrayList<Food> foodList = new ArrayList<>();
@@ -432,13 +610,13 @@ public class ClientHomePageController
     private static final class Options
     {
         public static String RESTAURANT_NAME = "Name";
-        public static String RESTAURANT_RATING = "Rating";
-        public static String RESTAURANT_PRICE = "Price";
+        public static String RESTAURANT_RATING = "Rating Range";
+        public static String RESTAURANT_PRICE = "Price Category";
         public static String RESTAURANT_CATEGORY = "Category";
         public static String RESTAURANT_ZIPCODE = "Zipcode";
 
-        // SPACE AFTER FOOD TO DIFFERENTIATE THESE OPTIONS FROM RESTAURANT OPTIONS
-        // THERE MIGHT BE A BETTER WAY TO DO THIS, BUT FEELLING LAZY
+        // SPACE AFTER FOOD TO DIFFERENTIATE THESE OPTIONS FROM RESTAURANT OPTIONS IN CHOICE BOX
+        // THERE MIGHT BE A BETTER WAY TO DO THIS, BUT FEELLING LAZY :P
         // TODO : FIND A BETTER WAY TO DO THIS
         public static String FOOD_NAME = "Name ";
         public static String FOOD_CATEGORY = "Category ";
@@ -448,3 +626,64 @@ public class ClientHomePageController
         public static String VIEW_FOOD = "Food";
     }
 }
+
+/* TODO : SEE LATER
+import javafx.animation.ScaleTransition;
+        import javafx.application.Application;
+        import javafx.scene.Scene;
+        import javafx.scene.image.Image;
+        import javafx.scene.image.ImageView;
+        import javafx.scene.layout.StackPane;
+        import javafx.stage.Stage;
+        import javafx.util.Duration;
+
+public class HoverZoomEffectExample extends Application {
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Hover Zoom Effect Example");
+
+        Image image = new Image("file:src/main/resources/assets/Burger.jpg");
+        ImageView imageView = new ImageView(image);
+
+        // Set the initial scale
+        double initialScale = 1.0;
+        imageView.setScaleX(initialScale);
+        imageView.setScaleY(initialScale);
+
+        // Define the zoom-in and zoom-out scales
+        double zoomInScale = 1.2; // Scale factor for zooming in
+        double zoomOutScale = 1.0; // Initial scale (no zoom)
+
+        // Create ScaleTransition for zooming in
+        ScaleTransition zoomInTransition = new ScaleTransition(Duration.millis(300), imageView);
+        zoomInTransition.setToX(zoomInScale);
+        zoomInTransition.setToY(zoomInScale);
+
+        // Create ScaleTransition for zooming out
+        ScaleTransition zoomOutTransition = new ScaleTransition(Duration.millis(300), imageView);
+        zoomOutTransition.setToX(zoomOutScale);
+        zoomOutTransition.setToY(zoomOutScale);
+
+        // Add mouse event handlers
+        imageView.setOnMouseEntered(event -> {
+            // Play zoom-in animation on mouse hover
+            zoomInTransition.play();
+        });
+
+        imageView.setOnMouseExited(event -> {
+            // Play zoom-out animation when the mouse moves away
+            zoomOutTransition.play();
+        });
+
+        StackPane root = new StackPane(imageView);
+        Scene scene = new Scene(root, 400, 300);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+}
+*/
