@@ -5,15 +5,14 @@ import dto.RestaurantListDTO;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import models.Food;
 import models.Restaurant;
@@ -23,12 +22,14 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientHomePageController
 {
     // CHANGABLE LABELS
     public Label usernameLabel;
+
     // SEARCH BAR
     public TextField searchTextField;
     public ChoiceBox<String> viewChoiceBox;
@@ -36,25 +37,43 @@ public class ClientHomePageController
     public TextField rangeSearchMinField;
     public Label rangeSearchSeparator;
     public TextField rangeSearchMaxField;
+
     // FLOW PANE
     public Label flowpaneTitleLabel;
     public FlowPane flowpane;
     public ScrollPane scrollpane;
+
     // CLIENT APPLICATION REFERENCE
     ClientApplication application;
+
     // SEARCH OPTIONS
     ArrayList<String> restaurantSearchOptions;
     ArrayList<String> foodSearchOptions;
     String currentViewType;
     String currentSearchFilterType;
-    // DATA
+
+    // MY CART //
+
+    // CART DETAILS
+    ConcurrentHashMap<Integer, HashMap<Food, Integer>> cartFoodList; // Map<Restaurant ID, Map<Food, Count>>
+    double cartTotalPrice = 0;
+    int cartTotalItems = 0;
+
+    // CART NOTIFICATION ICON
+    public Circle cartItemCountBg;
+    public Label cartItemCountLabel;
+
+    // DATABASE
     ConcurrentHashMap<Integer, Restaurant> restaurantList;
     ArrayList<Food> foodList;
-    // ASSETS
+
+    // ASSETS //
+
     // IMAGES
     Image restaurantImageMedium;
     Image restaurantImageLarge;
     Image foodImage;
+
     // FONTS
     Font robotoBoldFont20;
     Font robotoBoldFont15;
@@ -71,6 +90,10 @@ public class ClientHomePageController
 
     public void init()
     {
+        cartItemCountBg.setVisible(false);
+        cartItemCountLabel.setVisible(false);
+        cartFoodList = new ConcurrentHashMap<>();
+
         System.out.println("Client Home Page");
 
         // CHANGE USERNAME LABEL
@@ -230,9 +253,45 @@ public class ClientHomePageController
         addFoodListToFlowPane(restaurant.getFoodList());
     }
 
+    // Add to cart
     public void foodClicked(Food food)
     {
+        System.out.println("Food clicked. Food name : " + food.getName());
 
+        cartTotalItems++;
+        cartTotalPrice += food.getPrice();
+        cartItemCountLabel.setText(String.valueOf(cartTotalItems));
+        cartItemCountLabel.setVisible(true);
+        cartItemCountBg.setVisible(true);
+
+        // Get or default : If the key is present, return the value, else return the default value
+        // var x = getOrDefault(key, defaultValue);
+        // So, x = key if key is present, else x = defaultValue
+
+        Integer restaurantId = food.getRestaurantId();
+        HashMap<Food, Integer> foodCountMap = cartFoodList.getOrDefault(restaurantId, new HashMap<>());
+        cartFoodList.put(restaurantId, foodCountMap);
+        foodCountMap.put(food, foodCountMap.getOrDefault(food, 0) + 1);
+
+//        Large but simplistic code
+//        if(cartFoodList.contains(food.getRestaurantId()))
+//        {
+//            HashMap<Food, Integer> foodCountMap = cartFoodList.get(food.getRestaurantId());
+//            if(foodCountMap.containsKey(food))
+//            {
+//                foodCountMap.put(food, foodCountMap.get(food) + 1);
+//            }
+//            else
+//            {
+//                foodCountMap.put(food, 1);
+//            }
+//        }
+//        else
+//        {
+//            HashMap<Food, Integer> foodCountMap = new HashMap<>();
+//            foodCountMap.put(food, 1);
+//            cartFoodList.put(food.getRestaurantId(), foodCountMap);
+//        }
     }
 
     public void resetFlowPane()
@@ -273,6 +332,14 @@ public class ClientHomePageController
         }
     }
 
+    public void backButtonClickedOnRestaurantMenu()
+    {
+        resetFlowPane();
+        addRestaurantListToFlowPane();
+        viewChoiceBox.setValue(Options.VIEW_RESTAURANT);
+        searchFilterChoiceBox.setValue(Options.RESTAURANT_NAME);
+    }
+
     // FlowPane
     //     |---+ VBox
     //            |---+ HBox
@@ -291,7 +358,7 @@ public class ClientHomePageController
 
         VBox restaurantInfoBox = new VBox();
 
-        restaurantInfoBox.setPadding(new Insets(5, 300, 30, 30)); // top right bottom left
+        restaurantInfoBox.setPadding(new Insets(5, 150, 30, 30)); // top right bottom left
         restaurantInfoBox.setSpacing(12);
 
         // Descriptor : Content //
@@ -329,7 +396,7 @@ public class ClientHomePageController
         String categories = "";
         for(int i = 0; i < restaurant.getCategories().size(); i++)
         {
-            categories += restaurant.getCategories().get(i);
+            categories = categories + restaurant.getCategories().get(i);
             if(i != restaurant.getCategories().size()-1) categories += ", ";
         }
         Label restaurantCategoryLabelDescriptor = new Label("Categories : ");
@@ -371,8 +438,13 @@ public class ClientHomePageController
 
         restaurantZipcodeContainer.getChildren().addAll(restaurantZipcodeDescriptor, restaurantZipcodeContent);
 
+        Button backButton = new Button("Back");
+        backButton.setFont(robotoBoldFont15);
+        backButton.setAlignment(Pos.TOP_LEFT);
+        backButton.setOnMouseClicked(event -> backButtonClickedOnRestaurantMenu());
+
         restaurantInfoBox.getChildren().addAll(restaurantNameContainer, restaurantRatingContainer, restaurantCategoryContainer, restaurantPriceContainer, restaurantZipcodeContainer);
-        flowpane.getChildren().addAll(imageContainer, restaurantInfoBox);
+        flowpane.getChildren().addAll(imageContainer, restaurantInfoBox, backButton);
     }
 
     public void addRestaurantToFlowPane(Restaurant restaurant)
@@ -429,7 +501,6 @@ public class ClientHomePageController
 
         ImageView imageView = new ImageView(foodImage);
         imageView.setOnMouseClicked(event -> {
-            System.out.println("Food clicked. Food name : " + food.getName());
             foodClicked(food);
         });
 
