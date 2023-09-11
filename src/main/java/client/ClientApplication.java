@@ -25,7 +25,7 @@ public class ClientApplication extends Application
     }
 
     private String userName;
-    public String getUserName()
+    public String getUsername()
     {
         return userName;
     }
@@ -72,10 +72,27 @@ public class ClientApplication extends Application
 
     public void showHomePage() throws IOException
     {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/home-page-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/client-home-view.fxml"));
         Parent root = fxmlLoader.load();
 
-        ClientHomePageController controller = fxmlLoader.getController();
+        ClientHomeController controller = fxmlLoader.getController();
+        controller.setApplication(this);
+        controller.init();
+
+        stage.setTitle("Login or Signup");
+        stage.setScene(new Scene(root, 900, 650));
+        stage.setMinWidth(900);
+        stage.setMinHeight(650);
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    public void showCartPage() throws IOException
+    {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/client-cart-view.fxml"));
+        Parent root = fxmlLoader.load();
+
+        ClientHomeController controller = fxmlLoader.getController();
         controller.setApplication(this);
         controller.init();
 

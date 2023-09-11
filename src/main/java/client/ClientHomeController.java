@@ -10,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
@@ -25,7 +24,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ClientHomePageController
+public class ClientHomeController
 {
     // CHANGABLE LABELS
     public Label usernameLabel;
@@ -97,7 +96,7 @@ public class ClientHomePageController
         System.out.println("Client Home Page");
 
         // CHANGE USERNAME LABEL
-        usernameLabel.setText(application.getUserName());
+        usernameLabel.setText(application.getUsername());
 
         // LOAD IMAGES
         restaurantImageMedium = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 175, 125, false, false);
@@ -538,6 +537,7 @@ public class ClientHomePageController
     public void cartButtonClicked(ActionEvent actionEvent)
     {
         System.out.println("Cart button clicked");
+        application.showCartPage();
     }
 
     public void logoutButtonClicked(ActionEvent actionEvent)
