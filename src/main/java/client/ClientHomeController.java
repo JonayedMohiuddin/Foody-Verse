@@ -10,7 +10,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import models.Food;
@@ -41,27 +44,23 @@ public class ClientHomeController
     public Label flowpaneTitleLabel;
     public FlowPane flowpane;
     public ScrollPane scrollpane;
-
+    // CART NOTIFICATION ICON
+    public Circle cartItemCountBg;
+    public Label cartItemCountLabel;
+    public Button restaurantViewBackButton;
     // CLIENT APPLICATION REFERENCE
     ClientApplication application;
-
     // SEARCH OPTIONS
     ArrayList<String> restaurantSearchOptions;
     ArrayList<String> foodSearchOptions;
-    String currentViewType;
-    String currentSearchFilterType;
 
     // MY CART //
-
+    String currentViewType;
+    String currentSearchFilterType;
     // CART DETAILS
     ConcurrentHashMap<Integer, HashMap<Food, Integer>> cartFoodList; // Map<Restaurant ID, Map<Food, Count>>
     double cartTotalPrice = 0;
     int cartTotalItems = 0;
-
-    // CART NOTIFICATION ICON
-    public Circle cartItemCountBg;
-    public Label cartItemCountLabel;
-
     // DATABASE
     ConcurrentHashMap<Integer, Restaurant> restaurantList;
     ArrayList<Food> foodList;
@@ -87,8 +86,10 @@ public class ClientHomeController
         this.application = application;
     }
 
-    public void init()
+    public void init(boolean isDatabaseLoaded)
     {
+        restaurantViewBackButton.setVisible(false);
+
         cartItemCountBg.setVisible(false);
         cartItemCountLabel.setVisible(false);
         cartFoodList = new ConcurrentHashMap<>();
@@ -113,36 +114,56 @@ public class ClientHomeController
         robotoRegularFont20 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Regular.ttf"), 20);
 
         // REQUEST FOR DATABASE
-        DatabaseRequestDTO databaseRequestDTO = new DatabaseRequestDTO(DatabaseRequestDTO.RequestType.RESTAURANT_LIST);
-        try
+        if(isDatabaseLoaded)
         {
-            application.getSocketWrapper().write(databaseRequestDTO);
-        } catch (IOException e)
-        {
-            System.err.println("Class : HomePageController | Method : init | While sending restaurant list request to server");
-            System.err.println("Error : " + e.getMessage());
-        }
-
-        // READ DATABASE - RESTAURANT LIST
-        try
-        {
-            Object obj = application.getSocketWrapper().read();
-            if (obj instanceof RestaurantListDTO)
+            DatabaseRequestDTO databaseRequestDTO = new DatabaseRequestDTO(DatabaseRequestDTO.RequestType.RESTAURANT_LIST);
+            try
             {
-                RestaurantListDTO restaurantListDTO = (RestaurantListDTO) obj;
-                restaurantList = restaurantListDTO.getRestaurantList();
-                foodList = generateFoodList();
-                System.out.println("RestaurantListDTO received");
+                application.getSocketWrapper().write(databaseRequestDTO);
+            } catch (IOException e)
+            {
+                System.err.println("Class : HomePageController | Method : init | While sending restaurant list request to server");
+                System.err.println("Error : " + e.getMessage());
             }
-            else
+
+            // READ DATABASE - RESTAURANT LIST
+            try
+            {
+                Object obj = application.getSocketWrapper().read();
+                if (obj instanceof RestaurantListDTO)
+                {
+                    RestaurantListDTO restaurantListDTO = (RestaurantListDTO) obj;
+                    restaurantList = restaurantListDTO.getRestaurantList();
+                    foodList = generateFoodList();
+                    application.setRestaurantList(restaurantList);
+                    application.setFoodList(foodList);
+                    System.out.println("RestaurantListDTO received");
+                }
+                else
+                {
+                    System.err.println("Class : HomePageController | Method : init | While reading restaurant list from server");
+                    System.err.println("Expected Restaurant List DTO but got something else");
+                }
+            } catch (IOException | ClassNotFoundException e)
             {
                 System.err.println("Class : HomePageController | Method : init | While reading restaurant list from server");
-                System.err.println("Expected Restaurant List DTO but got something else");
+                System.err.println("Error : " + e.getMessage());
             }
-        } catch (IOException | ClassNotFoundException e)
+        }
+        else
         {
-            System.err.println("Class : HomePageController | Method : init | While reading restaurant list from server");
-            System.err.println("Error : " + e.getMessage());
+            restaurantList = application.getRestaurantList();
+            foodList = application.getFoodList();
+            cartFoodList = application.getCartFoodList();
+            for (HashMap<Food, Integer> foodAndCount : cartFoodList.values())
+            {
+                for (Food food : foodAndCount.keySet())
+                {
+                    cartTotalPrice += food.getPrice() * foodAndCount.get(food);
+                    cartTotalItems += foodAndCount.get(food);
+                }
+            }
+            updateCartNotification();
         }
 
         // POPULATE RESTAURANT SEARCH OPTIONS
@@ -250,6 +271,23 @@ public class ClientHomeController
         resetFlowPane();
         addRestaurantDetailHeading(restaurant);
         addFoodListToFlowPane(restaurant.getFoodList());
+        restaurantViewBackButton.setVisible(true);
+    }
+
+    public void updateCartNotification()
+    {
+        if(cartTotalItems == 0)
+        {
+            cartItemCountBg.setVisible(false);
+            cartItemCountLabel.setVisible(false);
+            return;
+        }
+        else
+        {
+            cartItemCountLabel.setText(String.valueOf(cartTotalItems));
+            cartItemCountLabel.setVisible(true);
+            cartItemCountBg.setVisible(true);
+        }
     }
 
     // Add to cart
@@ -259,9 +297,7 @@ public class ClientHomeController
 
         cartTotalItems++;
         cartTotalPrice += food.getPrice();
-        cartItemCountLabel.setText(String.valueOf(cartTotalItems));
-        cartItemCountLabel.setVisible(true);
-        cartItemCountBg.setVisible(true);
+        updateCartNotification();
 
         // Get or default : If the key is present, return the value, else return the default value
         // var x = getOrDefault(key, defaultValue);
@@ -331,20 +367,19 @@ public class ClientHomeController
         }
     }
 
-    public void backButtonClickedOnRestaurantMenu()
-    {
-        resetFlowPane();
-        addRestaurantListToFlowPane();
-        viewChoiceBox.setValue(Options.VIEW_RESTAURANT);
-        searchFilterChoiceBox.setValue(Options.RESTAURANT_NAME);
-    }
+//    public void backButtonClickedOnRestaurantMenu()
+//    {
+//        resetFlowPane();
+//        addRestaurantListToFlowPane();
+//        viewChoiceBox.setValue(Options.VIEW_RESTAURANT);
+//        searchFilterChoiceBox.setValue(Options.RESTAURANT_NAME);
+//    }
 
     // FlowPane
     //     |---+ VBox
     //            |---+ HBox
     //                   |---+ Descriptor Label
     //                   |---+ Content Label
-
     public void addRestaurantDetailHeading(Restaurant restaurant)
     {
         Font descriptorFont = robotoBoldFont20;
@@ -383,7 +418,7 @@ public class ClientHomeController
         restaurantRatingLabelDescriptor.setAlignment(Pos.CENTER_LEFT);
         restaurantRatingLabelDescriptor.setMinWidth(descriptorWidth);
 
-        Label restaurantRatingLabelContent = new Label( + restaurant.getScore() + " / 5");
+        Label restaurantRatingLabelContent = new Label(+restaurant.getScore() + " / 5");
         restaurantRatingLabelContent.setFont(contentFont);
         restaurantRatingLabelContent.setAlignment(Pos.CENTER_LEFT);
 
@@ -393,10 +428,10 @@ public class ClientHomeController
         HBox restaurantCategoryContainer = new HBox();
 
         String categories = "";
-        for(int i = 0; i < restaurant.getCategories().size(); i++)
+        for (int i = 0; i < restaurant.getCategories().size(); i++)
         {
             categories = categories + restaurant.getCategories().get(i);
-            if(i != restaurant.getCategories().size()-1) categories += ", ";
+            if (i != restaurant.getCategories().size() - 1) categories += ", ";
         }
         Label restaurantCategoryLabelDescriptor = new Label("Categories : ");
         restaurantCategoryLabelDescriptor.setFont(descriptorFont);
@@ -437,13 +472,17 @@ public class ClientHomeController
 
         restaurantZipcodeContainer.getChildren().addAll(restaurantZipcodeDescriptor, restaurantZipcodeContent);
 
-        Button backButton = new Button("Back");
-        backButton.setFont(robotoBoldFont15);
-        backButton.setAlignment(Pos.TOP_LEFT);
-        backButton.setOnMouseClicked(event -> backButtonClickedOnRestaurantMenu());
+//        VBox backButtonContainer = new VBox();
+
+//        Button backButton = new Button("Back");
+//        backButton.setFont(robotoBoldFont15);
+//        backButton.setAlignment(Pos.TOP_RIGHT);
+//        backButton.setOnMouseClicked(event -> backButtonClickedOnRestaurantMenu());
+
+//        backButtonContainer.getChildren().add(backButton);
 
         restaurantInfoBox.getChildren().addAll(restaurantNameContainer, restaurantRatingContainer, restaurantCategoryContainer, restaurantPriceContainer, restaurantZipcodeContainer);
-        flowpane.getChildren().addAll(imageContainer, restaurantInfoBox, backButton);
+        flowpane.getChildren().addAll(imageContainer, restaurantInfoBox); // ), backButtonContainer);
     }
 
     public void addRestaurantToFlowPane(Restaurant restaurant)
@@ -475,7 +514,7 @@ public class ClientHomeController
         for (int i = 0; i < restaurant.getCategories().size(); i++)
         {
             categoriesString += restaurant.getCategories().get(i);
-            if (i != restaurant.getCategories().size() - 1)  categoriesString += ", ";
+            if (i != restaurant.getCategories().size() - 1) categoriesString += ", ";
         }
 
         Label categoryLabel = new Label(categoriesString);
@@ -537,7 +576,16 @@ public class ClientHomeController
     public void cartButtonClicked(ActionEvent actionEvent)
     {
         System.out.println("Cart button clicked");
-        application.showCartPage();
+        try
+        {
+            application.setCartFoodList(cartFoodList);
+            application.showCartPage();
+        }
+        catch (IOException e)
+        {
+            System.err.println("Class : HomePageController | Method : cartButtonClicked | While showing cart page");
+            System.err.println("Error : " + e.getMessage());
+        }
     }
 
     public void logoutButtonClicked(ActionEvent actionEvent)
@@ -711,6 +759,7 @@ public class ClientHomeController
         searchTextField.setText("");
         rangeSearchMinField.setText("");
         rangeSearchMaxField.setText("");
+        restaurantViewBackButton.setVisible(false);
     }
 
     public void switchSearchBox()
@@ -742,6 +791,19 @@ public class ClientHomeController
         }
 
         return foodList;
+    }
+
+    public void restaurantViewBackButtonClicked(ActionEvent event)
+    {
+        flowpaneTitleLabel.setText("All Restaurants");
+        resetFlowPane();
+        addRestaurantListToFlowPane();
+        viewChoiceBox.setValue(Options.VIEW_RESTAURANT);
+        searchFilterChoiceBox.setValue(Options.RESTAURANT_NAME);
+        searchTextField.setText("");
+        rangeSearchMinField.setText("");
+        rangeSearchMaxField.setText("");
+        restaurantViewBackButton.setVisible(false);
     }
 
     private static final class Options

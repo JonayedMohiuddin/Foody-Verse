@@ -70,7 +70,7 @@ public class ClientLoginController
                     loginMessageText.setStyle("-fx-text-fill: green");
 
                     application.setUserName(name);
-                    application.showHomePage();
+                    application.showHomePage(true);
                 }
                 else
                 {
