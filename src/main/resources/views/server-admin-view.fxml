@@ -1,102 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="600.0" maxWidth="900.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.ServerController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" percentHeight="55.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-  </rowConstraints>
+
+<AnchorPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.ServerController">
    <children>
-      <GridPane GridPane.columnIndex="1" GridPane.rowIndex="3">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="47.5" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="5.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="47.5" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" percentHeight="12.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" percentHeight="88.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Label text="Clients Online" GridPane.halignment="CENTER" GridPane.valignment="TOP">
-               <font>
-                  <Font name="Arial" size="20.0" />
-               </font>
-            </Label>
-            <Label text="Restaurants Online" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP">
-               <font>
-                  <Font name="Arial" size="20.0" />
-               </font>
-            </Label>
-            <ListView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-         </children>
-      </GridPane>
-      <GridPane GridPane.columnIndex="1" GridPane.rowIndex="5">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Button fx:id="shutdownServerButton" mnemonicParsing="false" onAction="#shutdownServerButtonClicked" text="Shutdown Server" textFill="RED" GridPane.halignment="CENTER" />
-            <Button fx:id="addRestaurantButton" mnemonicParsing="false" onAction="#addRestaurantButtonClicked" text="Add Restaurant" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-         </children>
-      </GridPane>
-      <GridPane style="-fx-border-color: black; -fx-border-width: 1px; -fx-grid-lines-visible: true;" GridPane.columnIndex="1" GridPane.rowIndex="1">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="48.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="27.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Label fx:id="serverStatusText" text="Server Online" textFill="#00a40e" GridPane.halignment="CENTER">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="ipAddressText" text="IP Address : 127.0.0.1" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="portText" text="Port : 4242" GridPane.columnIndex="2" GridPane.halignment="CENTER">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-         </children>
-      </GridPane>
-      <Label fx:id="lastOperationText" text="Last successful operation : No operation." wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="6">
-         <GridPane.margin>
-            <Insets left="20.0" />
-         </GridPane.margin>
+      <Label layoutX="38.0" layoutY="130.0" text="Clients Online">
          <font>
-            <Font name="Calibri" size="13.0" />
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="297.0" layoutY="130.0" text="Restaurants Online">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <ListView layoutX="35.0" layoutY="170.0" prefHeight="422.0" prefWidth="235.0" />
+      <Button fx:id="addRestaurantButton" layoutX="671.0" layoutY="566.0" mnemonicParsing="false" onAction="#addRestaurantButtonClicked" text="Add Restaurant" />
+      <Label fx:id="serverStatusText" layoutX="184.0" layoutY="33.0" text="Server Online" textFill="#00a40e">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="ipAddressText" layoutX="686.0" layoutY="19.0" prefHeight="27.0" prefWidth="199.0" text="IP Address : 127.0.0.1" wrapText="true">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="portText" layoutX="686.0" layoutY="51.0" prefHeight="27.0" prefWidth="118.0" text="Port : 4242">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="shutdownServerButton" layoutX="47.0" layoutY="34.0" mnemonicParsing="false" onAction="#shutdownServerButtonClicked" text="Shutdown Server" textFill="RED" />
+      <Label fx:id="lastOperationText" layoutX="368.0" layoutY="37.0" text="Last successful operation : No operation." wrapText="true">
+         <font>
+            <Font name="Calibri" size="15.0" />
+         </font>
+      </Label>
+      <ListView layoutX="297.0" layoutY="170.0" prefHeight="422.0" prefWidth="235.0" />
+      <Label layoutX="236.0" layoutY="130.0" text="999">
+         <font>
+            <Font name="Arial" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="498.0" layoutY="130.0" text="999">
+         <font>
+            <Font name="Arial" size="20.0" />
          </font>
       </Label>
    </children>
-</GridPane>
+</AnchorPane>

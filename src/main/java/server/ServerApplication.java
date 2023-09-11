@@ -34,9 +34,9 @@ public class ServerApplication extends Application
         controller.init();
 
         stage.setTitle("Admin Page");
-        stage.setScene(new Scene(root, 600, 400));
-        stage.setMinWidth(400);
-        stage.setMinHeight(300);
+        stage.setScene(new Scene(root, 900, 650));
+        stage.setMinWidth(900);
+        stage.setMinHeight(650);
         stage.show();
     }
 

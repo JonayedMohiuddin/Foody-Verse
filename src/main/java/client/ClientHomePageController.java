@@ -56,6 +56,7 @@ public class ClientHomePageController
     Image restaurantImageLarge;
     Image foodImage;
     // FONTS
+    Font robotoBoldFont20;
     Font robotoBoldFont15;
     Font robotoRegularFont20;
     Font robotoRegularFont15;
@@ -82,6 +83,7 @@ public class ClientHomePageController
 
         // LOAD FONTS
         robotoBoldFont15 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Bold.ttf"), 15);
+        robotoBoldFont20 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Bold.ttf"), 20);
         robotoLightFont15 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Light.ttf"), 15);
         robotoLightFont20 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Light.ttf"), 20);
         robotoRegularFont12 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Regular.ttf"), 12);
@@ -219,44 +221,6 @@ public class ClientHomePageController
         }
     }
 
-    public void addRestaurantDetailHeading(Restaurant restaurant)
-    {
-        StackPane imageContainer = new StackPane();
-        ImageView restaurantImageView = new ImageView(restaurantImageLarge);
-        imageContainer.getChildren().add(restaurantImageView);
-
-        VBox restaurantInfoBox = new VBox();
-
-        Label restaurantNameLabel = new Label("Name : " + restaurant.getName());
-        restaurantNameLabel.setFont(robotoRegularFont20);
-        restaurantNameLabel.setAlignment(Pos.CENTER_LEFT);
-
-        Label restaurantRatingLabel = new Label("Rating : " + restaurant.getScore() + " / 5");
-        restaurantRatingLabel.setFont(robotoRegularFont20);
-        restaurantRatingLabel.setAlignment(Pos.CENTER_LEFT);
-
-        String categories = "";
-        for(int i = 0; i < restaurant.getCategories().size(); i++)
-        {
-            categories += restaurant.getCategories().get(i);
-            if(i != restaurant.getCategories().size()-1) categories += ", ";
-        }
-        Label restaurantCategoryLabel = new Label("Categories : " + categories);
-        restaurantCategoryLabel.setFont(robotoRegularFont20);
-        restaurantCategoryLabel.setAlignment(Pos.CENTER_LEFT);
-
-        Label restaurantPriceLabel = new Label("Price Category : " + restaurant.getPrice());
-        restaurantPriceLabel.setFont(robotoRegularFont20);
-        restaurantPriceLabel.setAlignment(Pos.CENTER_LEFT);
-
-        Label restaurantZipcode = new Label("Zipcode : " + restaurant.getZipcode());
-        restaurantZipcode.setFont(robotoRegularFont20);
-        restaurantZipcode.setAlignment(Pos.CENTER_LEFT);
-
-        restaurantInfoBox.getChildren().addAll(restaurantNameLabel, restaurantRatingLabel, restaurantCategoryLabel, restaurantPriceLabel, restaurantZipcode);
-        flowpane.getChildren().addAll(imageContainer, restaurantInfoBox);
-    }
-
     public void restaurantClicked(Restaurant restaurant)
     {
 
@@ -309,6 +273,108 @@ public class ClientHomePageController
         }
     }
 
+    // FlowPane
+    //     |---+ VBox
+    //            |---+ HBox
+    //                   |---+ Descriptor Label
+    //                   |---+ Content Label
+
+    public void addRestaurantDetailHeading(Restaurant restaurant)
+    {
+        Font descriptorFont = robotoBoldFont20;
+        Font contentFont = robotoRegularFont20;
+        int descriptorWidth = 150;
+
+        GridPane imageContainer = new GridPane();
+        ImageView restaurantImageView = new ImageView(restaurantImageLarge);
+        imageContainer.getChildren().add(restaurantImageView);
+
+        VBox restaurantInfoBox = new VBox();
+
+        restaurantInfoBox.setPadding(new Insets(5, 300, 30, 30)); // top right bottom left
+        restaurantInfoBox.setSpacing(12);
+
+        // Descriptor : Content //
+        // Name
+        HBox restaurantNameContainer = new HBox();
+
+        Label restaurantNameLabelDescriptor = new Label("Name : ");
+        restaurantNameLabelDescriptor.setFont(descriptorFont);
+        restaurantNameLabelDescriptor.setAlignment(Pos.CENTER_LEFT);
+        restaurantNameLabelDescriptor.setMinWidth(descriptorWidth);
+
+        Label restaurantNameLabelContent = new Label(restaurant.getName());
+        restaurantNameLabelContent.setFont(contentFont);
+        restaurantNameLabelContent.setAlignment(Pos.CENTER_LEFT);
+
+        restaurantNameContainer.getChildren().addAll(restaurantNameLabelDescriptor, restaurantNameLabelContent);
+
+        // Rating
+        HBox restaurantRatingContainer = new HBox();
+
+        Label restaurantRatingLabelDescriptor = new Label("Rating : ");
+        restaurantRatingLabelDescriptor.setFont(descriptorFont);
+        restaurantRatingLabelDescriptor.setAlignment(Pos.CENTER_LEFT);
+        restaurantRatingLabelDescriptor.setMinWidth(descriptorWidth);
+
+        Label restaurantRatingLabelContent = new Label( + restaurant.getScore() + " / 5");
+        restaurantRatingLabelContent.setFont(contentFont);
+        restaurantRatingLabelContent.setAlignment(Pos.CENTER_LEFT);
+
+        restaurantRatingContainer.getChildren().addAll(restaurantRatingLabelDescriptor, restaurantRatingLabelContent);
+
+        // Categories
+        HBox restaurantCategoryContainer = new HBox();
+
+        String categories = "";
+        for(int i = 0; i < restaurant.getCategories().size(); i++)
+        {
+            categories += restaurant.getCategories().get(i);
+            if(i != restaurant.getCategories().size()-1) categories += ", ";
+        }
+        Label restaurantCategoryLabelDescriptor = new Label("Categories : ");
+        restaurantCategoryLabelDescriptor.setFont(descriptorFont);
+        restaurantCategoryLabelDescriptor.setAlignment(Pos.CENTER_LEFT);
+        restaurantCategoryLabelDescriptor.setMinWidth(descriptorWidth);
+
+        Label restaurantCategoryLabelContent = new Label(categories);
+        restaurantCategoryLabelContent.setFont(contentFont);
+        restaurantCategoryLabelContent.setAlignment(Pos.CENTER_LEFT);
+
+        restaurantCategoryContainer.getChildren().addAll(restaurantCategoryLabelDescriptor, restaurantCategoryLabelContent);
+
+        // Price
+        HBox restaurantPriceContainer = new HBox();
+
+        Label restaurantPriceLabelDescriptor = new Label("Price : ");
+        restaurantPriceLabelDescriptor.setFont(descriptorFont);
+        restaurantPriceLabelDescriptor.setAlignment(Pos.CENTER_LEFT);
+        restaurantPriceLabelDescriptor.setMinWidth(descriptorWidth);
+
+        Label restaurantPriceLabelContent = new Label(restaurant.getPrice());
+        restaurantPriceLabelContent.setFont(contentFont);
+        restaurantPriceLabelContent.setAlignment(Pos.CENTER_LEFT);
+
+        restaurantPriceContainer.getChildren().addAll(restaurantPriceLabelDescriptor, restaurantPriceLabelContent);
+
+        // Zipcode
+        HBox restaurantZipcodeContainer = new HBox();
+
+        Label restaurantZipcodeDescriptor = new Label("Zipcode : ");
+        restaurantZipcodeDescriptor.setFont(descriptorFont);
+        restaurantZipcodeDescriptor.setAlignment(Pos.CENTER_LEFT);
+        restaurantZipcodeDescriptor.setMinWidth(descriptorWidth);
+
+        Label restaurantZipcodeContent = new Label(restaurant.getZipcode());
+        restaurantZipcodeContent.setFont(contentFont);
+        restaurantZipcodeContent.setAlignment(Pos.CENTER_LEFT);
+
+        restaurantZipcodeContainer.getChildren().addAll(restaurantZipcodeDescriptor, restaurantZipcodeContent);
+
+        restaurantInfoBox.getChildren().addAll(restaurantNameContainer, restaurantRatingContainer, restaurantCategoryContainer, restaurantPriceContainer, restaurantZipcodeContainer);
+        flowpane.getChildren().addAll(imageContainer, restaurantInfoBox);
+    }
+
     public void addRestaurantToFlowPane(Restaurant restaurant)
     {
         VBox restaurantBox = new VBox();
@@ -335,9 +401,10 @@ public class ClientHomePageController
         ratingAndPriceLabel.setMaxWidth(175);
 
         String categoriesString = "";
-        for (String category : restaurant.getCategories())
+        for (int i = 0; i < restaurant.getCategories().size(); i++)
         {
-            categoriesString += category + ", ";
+            categoriesString += restaurant.getCategories().get(i);
+            if (i != restaurant.getCategories().size() - 1)  categoriesString += ", ";
         }
 
         Label categoryLabel = new Label(categoriesString);
