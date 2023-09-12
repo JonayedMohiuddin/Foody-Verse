@@ -98,3 +98,4 @@
 98,Asian Eats,asianeats123,4.2,$$,1217,Asian
 99,Cafe Culture,cafeculture101,4.9,$$,1209,Cafe
 100,Steakhouse Grill,steakhousegrill456,4.5,$$$,1213,Steakhouse
+101,a,a,3.3,$$,123112,Asian,Steakhouse,Chinese

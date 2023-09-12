@@ -1,4 +1,4 @@
-package client;
+package restaurant;
 
 import server.SocketWrapper;
 

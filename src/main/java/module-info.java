@@ -19,4 +19,6 @@ module com.jonayed.restaurantdatabasesystem {
 
     exports util;
     opens util to javafx.fxml;
+    exports restaurant;
+    opens restaurant to javafx.fxml;
 }

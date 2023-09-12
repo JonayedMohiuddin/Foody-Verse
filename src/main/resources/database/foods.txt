@@ -498,3 +498,18 @@
 100,Mint Chocolate Chip Ice Cream,Desserts,4.99
 100,Root Beer Float,Desserts,3.99
 100,Banana Split,Desserts,6.99
+101,Tandoori Chicken,Indian,10.99
+101,Butter Chicken,Indian,11.99
+101,Chicken Korma,Indian,12.99
+101,Lamb Biryani,Indian,13.99
+101,Garlic Naan,Indian,3.99
+101,Taco Platter,Mexican,9.99
+101,Enchiladas Supreme,Mexican,10.99
+101,Quesadilla Delight,Mexican,11.99
+101,Churros,Mexican,4.99
+101,Sopapillas,Mexican,4.99
+101,Kung Pao Chicken,Chinese,9.99
+101,Mongolian Beef,Chinese,10.99
+101,Szechuan Shrimp,Chinese,11.99
+101,Vegetable Spring Rolls,Chinese,4.99
+101,Peking Duck,Chinese,14.99

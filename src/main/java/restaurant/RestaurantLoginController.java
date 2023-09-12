@@ -1,4 +1,4 @@
-package client;
+package restaurant;
 
 import dto.LoginResponseDTO;
 import dto.RestaurantLoginRequestDTO;
@@ -34,11 +34,7 @@ public class RestaurantLoginController
         loginBGImage.fitHeightProperty().bind(application.getStage().heightProperty());
     }
 
-    public void restaurantLoginRegisterButtonPressed(ActionEvent actionEvent)
-    {
-    }
-
-    public void restaurantLoginPageLoginButtonPressed(ActionEvent actionEvent)
+    public void loginButtonPressed(ActionEvent actionEvent)
     {
         System.out.println("Login Button Pressed");
         String name = restaurantLoginUsernameField.getText();
@@ -48,7 +44,8 @@ public class RestaurantLoginController
         try
         {
             application.getSocketWrapper().write(restaurantLoginRequestDTO);
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             System.err.println("Class : LoginController | Method : restaurantLoginLoginButtonPressed");
             System.err.println("Error : " + e.getMessage());
@@ -57,7 +54,7 @@ public class RestaurantLoginController
         try
         {
             Object obj = application.getSocketWrapper().read();
-            if(obj instanceof LoginResponseDTO)
+            if (obj instanceof LoginResponseDTO)
             {
                 LoginResponseDTO loginResponseDTO = (LoginResponseDTO) obj;
                 if (loginResponseDTO.getStatus())
@@ -66,6 +63,9 @@ public class RestaurantLoginController
                     System.out.println(loginResponseDTO.getMessage());
                     loginMessageText.setText(loginResponseDTO.getMessage());
                     loginMessageText.setStyle("-fx-text-fill: green");
+
+                    application.username = name;
+                    application.showHomePage();
                 }
                 else
                 {
@@ -79,16 +79,22 @@ public class RestaurantLoginController
             {
                 System.out.println("Expected LoginResponseDTO but got something else.");
             }
-        } catch (IOException | ClassNotFoundException e)
+        }
+        catch (IOException | ClassNotFoundException e)
         {
             System.err.println("Class : LoginController | Method : restaurantLoginLoginButtonPressed | While reading login response from server");
             System.err.println("Error : " + e.getMessage());
         }
     }
 
-    public void restaurantLoginResetButtonPressed(ActionEvent actionEvent)
+    public void resetButtonPressed(ActionEvent actionEvent)
     {
         restaurantLoginUsernameField.setText("");
         restaurantLoginPasswordField.setText("");
+    }
+
+    public void registerButtonPressed(ActionEvent actionEvent)
+    {
+        System.out.println("Register Button Pressed");
     }
 }

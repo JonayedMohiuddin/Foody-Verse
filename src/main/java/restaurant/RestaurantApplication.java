@@ -1,10 +1,11 @@
-package client;
+package restaurant;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import models.Restaurant;
 import server.SocketWrapper;
 
 import java.io.IOException;
@@ -22,6 +23,18 @@ public class RestaurantApplication extends Application
     public SocketWrapper getSocketWrapper()
     {
         return socketWrapper;
+    }
+
+    public String username;
+
+    private Restaurant restaurant;
+    public Restaurant getRestaurant()
+    {
+        return restaurant;
+    }
+    public void setRestaurant(Restaurant restaurant)
+    {
+        this.restaurant = restaurant;
     }
 
     @Override
@@ -58,6 +71,21 @@ public class RestaurantApplication extends Application
         stage.setScene(new Scene(root, 600, 400));
         stage.setMinWidth(400);
         stage.setMinHeight(300);
+        stage.show();
+    }
+
+    public void showHomePage() throws IOException
+    {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/restaurant-home-view.fxml"));
+        Parent root = fxmlLoader.load();
+
+        RestaurantHomeController controller = fxmlLoader.getController();
+        controller.setApplication(this);
+        controller.init();
+
+        stage.setTitle("Home");
+        stage.setScene(new Scene(root, 900, 650));
+        stage.setResizable(false);
         stage.show();
     }
 

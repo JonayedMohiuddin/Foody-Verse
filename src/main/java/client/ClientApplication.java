@@ -153,4 +153,9 @@ public class ClientApplication extends Application
     {
         launch();
     }
+
+    public class FoodHBox
+    {
+
+    }
 }
