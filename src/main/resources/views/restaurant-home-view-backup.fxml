@@ -146,14 +146,14 @@
                               <Insets left="15.0" right="15.0" top="20.0" />
                            </padding>
                            <children>
-                              <HBox fx:id="row" prefHeight="200.0" prefWidth="780.0" VBox.vgrow="NEVER">
+                              <HBox fx:id="row" prefHeight="80.0" prefWidth="780.0" VBox.vgrow="NEVER">
                                  <VBox.margin>
                                     <Insets bottom="20.0" right="20.0" />
                                  </VBox.margin>
                                  <children>
-                                    <StackPane fx:id="rowStackPane" prefHeight="200.0" prefWidth="750.0">
+                                    <StackPane fx:id="rowStackPane" prefWidth="800.0">
                                        <children>
-                                          <Rectangle fx:id="rowBackgroundRect" arcHeight="5.0" arcWidth="5.0" height="200.0" stroke="BLACK" strokeType="INSIDE" width="750.0">
+                                          <Rectangle fx:id="rowBackgroundRect" arcHeight="5.0" arcWidth="5.0" height="80.0" stroke="BLACK" strokeType="INSIDE" width="750.0">
                                              <fill>
                                                 <LinearGradient endX="1.0" endY="1.0">
                                                    <stops>
@@ -164,16 +164,16 @@
                                                       </Stop>
                                                       <Stop offset="1.0">
                                                          <color>
-                                                            <Color red="0.6784313917160034" green="0.6392157077789307" blue="0.9686274528503418" opacity="0.4000000059604645" />
+                                                            <Color red="0.6786766648292542" green="0.6402000188827515" blue="0.9700000286102295" opacity="0.4000000059604645" />
                                                          </color>
                                                       </Stop>
                                                    </stops>
                                                 </LinearGradient>
                                              </fill>
                                           </Rectangle>
-                                          <HBox fx:id="rowHboxContent" prefHeight="200.0" prefWidth="750.0">
+                                          <HBox fx:id="rowHboxContent" prefHeight="100.0" prefWidth="200.0">
                                              <children>
-                                                <ImageView fx:id="foodImageView" fitHeight="180.0" fitWidth="220.0" pickOnBounds="true">
+                                                <ImageView fx:id="foodImageView" fitHeight="60.0" fitWidth="80.0" pickOnBounds="true">
                                                    <HBox.margin>
                                                       <Insets left="10.0" top="10.0" />
                                                    </HBox.margin>
@@ -181,71 +181,58 @@
                                                       <Image url="@../assets/Burger.jpg" />
                                                    </image>
                                                 </ImageView>
-                                                <VBox fx:id="foodDetailsVBox" prefHeight="180.0" prefWidth="518.0" spacing="12.0">
+                                                <VBox fx:id="foodDetailsVBox" prefHeight="80.0" prefWidth="299.0" spacing="10.0">
                                                    <padding>
                                                       <Insets top="10.0" />
                                                    </padding>
                                                    <HBox.margin>
-                                                      <Insets left="30.0" />
+                                                      <Insets left="20.0" />
                                                    </HBox.margin>
                                                    <children>
                                                       <Label fx:id="foodNameLabel" text="Food Name">
                                                          <font>
-                                                            <Font name="Calibri Bold" size="30.0" />
+                                                            <Font name="Calibri Bold" size="20.0" />
                                                          </font>
                                                       </Label>
-                                                      <HBox>
-                                                         <children>
-                                                            <VBox prefHeight="120.0" prefWidth="126.0" spacing="10.0">
-                                                               <children>
-                                                                  <Label fx:id="categoryNameLabel" text="Category : ">
-                                                                     <font>
-                                                                        <Font name="Calibri" size="20.0" />
-                                                                     </font>
-                                                                  </Label>
-                                                                  <Label fx:id="categoryNameLabel1" text="Price : ">
-                                                                     <font>
-                                                                        <Font name="Calibri" size="20.0" />
-                                                                     </font>
-                                                                  </Label>
-                                                                  <Label fx:id="categoryNameLabel11" text="Total Orders :">
-                                                                     <font>
-                                                                        <Font name="Calibri" size="20.0" />
-                                                                     </font>
-                                                                  </Label>
-                                                                  <Label fx:id="categoryNameLabel111" text="Total Profit :">
-                                                                     <font>
-                                                                        <Font name="Calibri" size="20.0" />
-                                                                     </font>
-                                                                  </Label>
-                                                               </children>
-                                                            </VBox>
-                                                            <VBox prefHeight="124.0" prefWidth="360.0" spacing="10.0">
-                                                               <children>
-                                                                  <Label fx:id="categoryNameLabel1" text="Spicy, Tasty Mashala">
-                                                                     <font>
-                                                                        <Font name="Calibri" size="20.0" />
-                                                                     </font>
-                                                                  </Label>
-                                                                  <Label fx:id="categoryNameLabel11" text="120 $">
-                                                                     <font>
-                                                                        <Font name="Calibri" size="20.0" />
-                                                                     </font>
-                                                                  </Label>
-                                                                  <Label fx:id="categoryNameLabel111" text="120 Units">
-                                                                     <font>
-                                                                        <Font name="Calibri" size="20.0" />
-                                                                     </font>
-                                                                  </Label>
-                                                                  <Label fx:id="categoryNameLabel1111" text="12000 $">
-                                                                     <font>
-                                                                        <Font name="Calibri" size="20.0" />
-                                                                     </font>
-                                                                  </Label>
-                                                               </children>
-                                                            </VBox>
-                                                         </children>
-                                                      </HBox>
+                                                      <Label fx:id="categoryNameLabel" text="Category Names">
+                                                         <font>
+                                                            <Font name="Calibri" size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                                <Rectangle fx:id="horizontalSeparatorLine" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="70.0" stroke="BLACK" strokeType="INSIDE" width="2.0">
+                                                   <HBox.margin>
+                                                      <Insets top="5.0" />
+                                                   </HBox.margin>
+                                                </Rectangle>
+                                                <VBox fx:id="orderDetailsVBox" alignment="CENTER" prefHeight="80.0" prefWidth="160.0" spacing="10.0">
+                                                   <padding>
+                                                      <Insets left="15.0" />
+                                                   </padding>
+                                                   <children>
+                                                      <Label fx:id="orderCountLabel" text="X 99">
+                                                         <font>
+                                                            <Font name="Calibri Bold" size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label fx:id="orderPriceLabel" text="12000 $">
+                                                         <font>
+                                                            <Font name="Calibri" size="20.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                                <VBox fx:id="buttonContainerVBox" alignment="CENTER_RIGHT" prefHeight="80.0" prefWidth="178.0">
+                                                   <children>
+                                                      <Button fx:id="deliverOrderButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="38.0" prefWidth="126.0" text="Deliver Order">
+                                                         <VBox.margin>
+                                                            <Insets right="25.0" />
+                                                         </VBox.margin>
+                                                         <font>
+                                                            <Font name="Corbel" size="18.0" />
+                                                         </font>
+                                                      </Button>
                                                    </children>
                                                 </VBox>
                                              </children>
