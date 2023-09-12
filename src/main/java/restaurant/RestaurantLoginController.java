@@ -32,6 +32,7 @@ public class RestaurantLoginController
     {
         loginBGImage.fitWidthProperty().bind(application.getStage().widthProperty());
         loginBGImage.fitHeightProperty().bind(application.getStage().heightProperty());
+        loginMessageText.setText("");
     }
 
     public void loginButtonPressed(ActionEvent actionEvent)

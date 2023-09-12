@@ -1,11 +1,13 @@
 package client;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import models.Food;
 import models.Restaurant;
 import server.SocketWrapper;
@@ -78,7 +80,17 @@ public class ClientApplication extends Application
     public void start(Stage primaryStage) throws IOException
     {
         stage = primaryStage;
+
         connectToServer();
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>()
+        {
+            @Override
+            public void handle(WindowEvent event)
+            {
+                disconnectFromServer();
+            }
+        });
+
         showLoginPage();
     }
 
@@ -90,7 +102,21 @@ public class ClientApplication extends Application
         }
         catch (IOException e)
         {
-            System.err.println("Class : ClientApplication | Method : connectToServer");
+            System.err.println("Class : ClientApplication | Method : connectToServer | While connecting to server");
+            System.err.println("Error : " + e.getMessage());
+        }
+    }
+
+    public void disconnectFromServer()
+    {
+        System.out.println("Disconnecting from server");
+        try
+        {
+            socketWrapper.closeConnection();
+        }
+        catch (IOException e)
+        {
+            System.err.println("Class : RestaurantApplication | Method : disconnectFromServer | While closing connection with server");
             System.err.println("Error : " + e.getMessage());
         }
     }

@@ -19,6 +19,8 @@ public class RestaurantHomeController
     public void init()
     {
         restaurantName.setText(application.username);
+
+        new RestaurantReadThread(application);
     }
 
     public void logoutButtonClicked(ActionEvent event)

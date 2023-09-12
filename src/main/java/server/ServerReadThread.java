@@ -4,7 +4,6 @@ import dto.*;
 import models.Restaurant;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerReadThread implements Runnable
@@ -14,12 +13,15 @@ public class ServerReadThread implements Runnable
     ServerController serverController;
     String clientName;
     int restaurantId; // if client is a restaurant
+    int clientType;
 
     ServerReadThread(ServerController serverController, SocketWrapper socketWrapper)
     {
         this.socketWrapper = socketWrapper;
         this.serverController = serverController;
-        thread = new Thread(this, "Server Read Thread");
+        this.clientType = ClientType.UNDEFINED;
+
+        thread = new Thread(this, "UNDEFINED # Server Read Thread");
         thread.start();
     }
 
@@ -34,6 +36,8 @@ public class ServerReadThread implements Runnable
                 // CLIENT LOGIN REQUEST RECEIVED
                 if (obj instanceof ClientLoginRequestDTO)
                 {
+                    clientType = ClientType.CLIENT;
+
                     ClientLoginRequestDTO loginRequest = (ClientLoginRequestDTO) obj;
                     System.out.println(loginRequest);
                     // CHECK IF USERNAME AND PASSWORD MATCH
@@ -52,6 +56,7 @@ public class ServerReadThread implements Runnable
                             System.out.println("Authentication successful " + clientName);
                             socketWrapper.write(new LoginResponseDTO(true, "Authentication Successful"));
                             clientName = loginRequest.getUsername();
+                            thread.setName(clientName + " # Server Read Thread");
                             serverController.getClientMap().put(loginRequest.getUsername(), socketWrapper);
                             serverController.updateLastOperationTextThreadSafe("Client " + loginRequest.getUsername() + " logged in.");
                         }
@@ -65,6 +70,8 @@ public class ServerReadThread implements Runnable
                 // RESTAURANT LOGIN REQUEST RECEIVED
                 else if (obj instanceof RestaurantLoginRequestDTO)
                 {
+                    clientType = ClientType.RESTAURANT;
+
                     RestaurantLoginRequestDTO loginRequest = (RestaurantLoginRequestDTO) obj;
                     System.out.println(loginRequest);
                     // CHECK IF USERNAME AND PASSWORD MATCH
@@ -79,6 +86,7 @@ public class ServerReadThread implements Runnable
                         else
                         {
                             clientName = loginRequest.getUsername();
+                            thread.setName(clientName + " # Server Read Thread");
 
                             // GET RESTAURANT ID
                             for (Restaurant restaurant : serverController.getRestaurantList().values())
@@ -114,7 +122,7 @@ public class ServerReadThread implements Runnable
                         RestaurantListDTO restaurantListDTO = new RestaurantListDTO(serverController.getRestaurantList());
                         socketWrapper.write(restaurantListDTO);
                     }
-                    else if(databaseRequestDTO.getRequestType() == DatabaseRequestDTO.RequestType.SINGLE_RESTAURANT)
+                    else if (databaseRequestDTO.getRequestType() == DatabaseRequestDTO.RequestType.SINGLE_RESTAURANT)
                     {
                         // JUST SEND THE RESTAURANT WITH THE GIVEN ID - DONT SEND THE WHOLE LIST
                         ConcurrentHashMap<Integer, Restaurant> restaurantList = new ConcurrentHashMap<>();
@@ -127,13 +135,20 @@ public class ServerReadThread implements Runnable
         }
         catch (ClassNotFoundException | IOException e)
         {
-            System.out.println("Class : ServerReadThread | Method : run");
+            System.out.println("Class : ServerReadThread | Method : run | Error in " + thread.getName() + " while reading from socket");
             System.out.println("Error : " + e.getMessage());
             System.out.println("Closing connection with client");
 
             try
             {
-                serverController.getClientMap().remove(clientName);
+                if (clientType == ClientType.CLIENT)
+                {
+                    serverController.getClientMap().remove(clientName);
+                }
+                else if (clientType == ClientType.RESTAURANT)
+                {
+                    serverController.getRestaurantMap().remove(clientName);
+                }
                 socketWrapper.closeConnection();
             }
             catch (IOException ex)
@@ -142,5 +157,12 @@ public class ServerReadThread implements Runnable
                 System.err.println("Error : " + ex.getMessage());
             }
         }
+    }
+
+    class ClientType
+    {
+        public static final int UNDEFINED = -1;
+        public static final int CLIENT = 0;
+        public static final int RESTAURANT = 1;
     }
 }
