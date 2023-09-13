@@ -1,5 +1,7 @@
 package restaurant;
 
+import dto.DatabaseRequestDTO;
+import dto.DatabaseDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -16,10 +18,14 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import models.Food;
+import models.Restaurant;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class RestaurantHomeController
 {
-    public Label restaurantName;
+    public Label restaurantNameLabel;
 
     public Button pendingOrdersButton;
     public Button foodListButton;
@@ -28,7 +34,8 @@ public class RestaurantHomeController
 
     public Label pendingOrderCountLabel;
     public Rectangle pendingOrderCountBg;
-    public VBox pendingOrderListVBox;
+
+    public VBox displayVBox;
 
     int currentWindow = WindowType.UNDEFINED;
     private FXMLLoader homePageLoader;
@@ -56,8 +63,42 @@ public class RestaurantHomeController
     Font robotoLightFont20;
     Font robotoLightFont15;
 
+    private Restaurant restaurant;
+    private String restaurantName;
+
     public void init()
     {
+        try
+        {
+            DatabaseRequestDTO databaseRequestDTO = new DatabaseRequestDTO(DatabaseRequestDTO.RequestType.SINGLE_RESTAURANT);
+            application.getSocketWrapper().write(databaseRequestDTO);
+            System.out.println("Restaurant database request sent");
+        }
+        catch (IOException e)
+        {
+            System.out.println("Class : RestaurantHomeController | Method : init | While writing to server");
+            System.out.println("Error : " + e.getMessage());
+        }
+
+        try
+        {
+            DatabaseDTO databaseDTO = (DatabaseDTO) application.getSocketWrapper().read();
+            this.restaurant = databaseDTO.getSingleRestaurant();
+
+            application.setRestaurant(restaurant);
+            this.restaurantName = restaurant.getName();
+
+            System.out.println("Restaurant database received");
+            restaurant.print();
+        }
+        catch (IOException | ClassNotFoundException e)
+        {
+            System.out.println("Class : RestaurantHomeController | Method : init | While reading from server");
+            System.out.println("Error : " + e.getMessage());
+        }
+
+        restaurantNameLabel.setText(restaurantName);
+
         // LOAD IMAGES
         restaurantImageMedium = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 175, 125, false, false);
         restaurantImageLarge = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 263, 188, false, false);
@@ -72,7 +113,7 @@ public class RestaurantHomeController
         robotoRegularFont15 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Regular.ttf"), 15);
         robotoRegularFont20 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Regular.ttf"), 20);
 
-        addPendingOrderRow(new Food(1, "Spicy", "Burger", 100), 99);
+        addFoodListRow(new Food(1, "Spicy", "Burger", 120), 23);
 
         switchInternalWindow(WindowType.ORDERS);
         new RestaurantReadThread(application);
@@ -106,18 +147,27 @@ public class RestaurantHomeController
         if (window == WindowType.ORDERS)
         {
             pendingOrdersButton.setStyle("-fx-background-color: #c7a84a; -fx-text-fill: #000000;");
+            displayVBox.getChildren().clear();
+            displayVBox.setSpacing(10);
+            fillPendingRequest();
         }
         else if (window == WindowType.FOOD_LIST)
         {
             foodListButton.setStyle("-fx-background-color: #c7a84a; -fx-text-fill: #000000;");
+            displayVBox.setSpacing(15);
+            displayVBox.getChildren().clear();
+
+            fillFoodList(application.getRestaurant().getFoodList());
         }
         else if (window == WindowType.HISTORY)
         {
             historyButton.setStyle("-fx-background-color: #c7a84a; -fx-text-fill: #000000;");
+            displayVBox.setSpacing(10);
         }
         else if (window == WindowType.ADD_FOODS)
         {
             addFoodButton.setStyle("-fx-background-color: #c7a84a; -fx-text-fill: #000000;");
+            displayVBox.setSpacing(10);
         }
 
         currentWindow = window;
@@ -145,6 +195,19 @@ public class RestaurantHomeController
 
     public void logoutButtonClicked(ActionEvent event)
     {
+    }
+
+    public void fillPendingRequest()
+    {
+
+    }
+
+    public void fillFoodList(ArrayList<Food> foodList)
+    {
+        for (Food food : foodList)
+        {
+            addFoodListRow(food, -1);
+        }
     }
 
     public void addPendingOrderRow(Food food, int orderCount)
@@ -240,7 +303,116 @@ public class RestaurantHomeController
 
 
         row.getChildren().add(rowStackPane);
-        pendingOrderListVBox.getChildren().add(row);
+        displayVBox.getChildren().add(row);
+
+//        StackPane rowStackPane = new StackPane();
+//        rowStackPane.setPrefWidth(800);
+//        rowStackPane.setPrefHeight(80);
+
+//        Rectangle rowBackgroundRect = new Rectangle();
+//        rowBackgroundRect.setWidth(800);
+//        rowBackgroundRect.setHeight(80);
+//        rowBackgroundRect.setArcWidth(10);
+//        rowBackgroundRect.setArcHeight(10);
+//        rowBackgroundRect.setFill(javafx.scene.paint.Color.valueOf(new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE, new Stop(0, Color.RED), new Stop(1, Color.BLUE))
+    }
+
+    public void addFoodListRow(Food food, int totalOrderCount)
+    {
+        HBox row = new HBox();
+        row.setPrefWidth(780);
+        row.setPrefHeight(200);
+        row.setMinWidth(780);
+        row.setMinHeight(200);
+        row.setStyle("-fx-border-insets: 0 20px 20px 0px;");
+
+        StackPane rowStackPane = new StackPane();
+        rowStackPane.setPrefWidth(750);
+        rowStackPane.setPrefHeight(200);
+
+        Rectangle rowBackgroundRect = new Rectangle();
+        rowBackgroundRect.setWidth(750);
+        rowBackgroundRect.setHeight(200);
+        rowBackgroundRect.setArcWidth(10);
+        rowBackgroundRect.setArcHeight(10);
+        LinearGradient linearGradient = new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE, new Stop(0, Color.web("#4027ff", 0.4)), new Stop(1, Color.web("#ada3f7", 0.4)));
+        rowBackgroundRect.setFill(linearGradient);
+        rowBackgroundRect.setStroke(Color.web("#000000"));
+
+        HBox rowHBoxContent = new HBox();
+        rowHBoxContent.setPrefWidth(750);
+        rowHBoxContent.setPrefHeight(200);
+
+        VBox foodImageContainer = new VBox();
+        ImageView rowImageView = new ImageView(new Image("file:src/main/resources/assets/Burger.jpg", 175, 125, false, false));
+        rowImageView.setFitWidth(250);
+        rowImageView.setFitHeight(180);
+        rowImageView.minWidth(250);
+        rowImageView.minHeight(180);
+        rowImageView.maxWidth(250);
+        rowImageView.maxHeight(180);
+        rowImageView.setPreserveRatio(false);
+        foodImageContainer.setPadding(new Insets(10, 0, 0, 10));
+        foodImageContainer.getChildren().addAll(rowImageView);
+
+        VBox foodDetailsContainer = new VBox();
+        foodDetailsContainer.setPadding(new Insets(10, 0, 0, 30));
+        foodDetailsContainer.setPrefWidth(548);
+        foodDetailsContainer.setPrefHeight(180);
+        foodDetailsContainer.setSpacing(12);
+
+        Label foodNameLabel = new Label(food.getName());
+        foodNameLabel.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-font-family: Calibri;");
+        foodNameLabel.setMinWidth(450);
+
+        HBox foodOtherDetailsContainer = new HBox();
+
+        VBox foodDetailsDescriptionContainer = new VBox();
+        foodDetailsDescriptionContainer.setPrefWidth(140);
+        foodDetailsDescriptionContainer.setPrefHeight(120);
+        foodDetailsDescriptionContainer.setSpacing(10);
+
+        Label foodCategoryDescriptorLabel = new Label("Category : ");
+        foodCategoryDescriptorLabel.setStyle("-fx-font-size: 20px;-fx-font-weight: bold; -fx-font-family: Calibri;");
+
+        Label foodPriceDescriptorLabel = new Label("Price : ");
+        foodPriceDescriptorLabel.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;  -fx-font-family: Calibri");
+
+        Label foodTotalOrderDescriptorLabel = new Label("Total Order : ");
+        foodTotalOrderDescriptorLabel.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;  -fx-font-family: Calibri;");
+
+        Label foodTotalProfitDescriptorLabel = new Label("Total Profit : ");
+        foodTotalProfitDescriptorLabel.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;  -fx-font-family: Calibri;");
+
+        foodDetailsDescriptionContainer.getChildren().addAll(foodCategoryDescriptorLabel, foodPriceDescriptorLabel, foodTotalOrderDescriptorLabel, foodTotalProfitDescriptorLabel);
+
+        VBox foodDetailsContentContainer = new VBox();
+        foodDetailsContentContainer.setSpacing(10);
+
+        Label foodCategoryContentLabel = new Label(food.getCategory());
+        foodCategoryContentLabel.setStyle("-fx-font-size: 20px; -fx-font-family: Roboto;");
+
+        Label foodPriceContentLabel = new Label(food.getPrice() + " $");
+        foodPriceContentLabel.setStyle("-fx-font-size: 20; -fx-font-family: Roboto;");
+
+        Label foodTotalOrderContentLabel = new Label(Integer.toString(totalOrderCount));
+        foodTotalOrderContentLabel.setStyle("-fx-font-size: 20px; -fx-font-family: Roboto;");
+
+        Label foodTotalProfitContentLabel = new Label(food.getPrice() * totalOrderCount + " $");
+        foodTotalProfitContentLabel.setStyle("-fx-font-size: 20px; -fx-font-family: Roboto;");
+
+        foodDetailsContentContainer.getChildren().addAll(foodCategoryContentLabel, foodPriceContentLabel, foodTotalOrderContentLabel, foodTotalProfitContentLabel);
+
+        foodOtherDetailsContainer.getChildren().addAll(foodDetailsDescriptionContainer, foodDetailsContentContainer);
+
+        foodDetailsContainer.getChildren().addAll(foodNameLabel, foodOtherDetailsContainer);
+
+        rowHBoxContent.getChildren().addAll(foodImageContainer, foodDetailsContainer);
+
+        rowStackPane.getChildren().addAll(rowBackgroundRect, rowHBoxContent);
+
+        row.getChildren().add(rowStackPane);
+        displayVBox.getChildren().add(row);
 
 //        StackPane rowStackPane = new StackPane();
 //        rowStackPane.setPrefWidth(800);

@@ -21,7 +21,7 @@ public class ServerReadThread implements Runnable
         this.serverController = serverController;
         this.clientType = ClientType.UNDEFINED;
 
-        thread = new Thread(this, "UNDEFINED # Server Read Thread");
+        thread = new Thread(this, "SRT #U UNDEFINED");
         thread.start();
     }
 
@@ -39,31 +39,31 @@ public class ServerReadThread implements Runnable
                     clientType = ClientType.CLIENT;
 
                     ClientLoginRequestDTO loginRequest = (ClientLoginRequestDTO) obj;
-                    System.out.println(loginRequest);
+                    System.out.println(thread.getName() + " : " + loginRequest);
                     // CHECK IF USERNAME AND PASSWORD MATCH
                     if (loginRequest.getPassword().equals(serverController.getUserInfos().get(loginRequest.getUsername())))
                     {
                         // CHECK IF CLIENT ALREADY LOGGED IN
                         if (serverController.getClientMap().get(loginRequest.getUsername()) != null)
                         {
-                            System.out.println("Client already logged in");
+                            System.out.println(thread.getName() + " : Client already logged in");
                             socketWrapper.write(new LoginResponseDTO(false, "Client already logged in."));
                         }
                         else
                         {
                             clientName = loginRequest.getUsername();
 
-                            System.out.println("Authentication successful " + clientName);
+                            System.out.println(thread.getName() + " : Authentication successful " + clientName);
                             socketWrapper.write(new LoginResponseDTO(true, "Authentication Successful"));
                             clientName = loginRequest.getUsername();
-                            thread.setName(clientName + " # Server Read Thread");
+                            thread.setName("SRT C " + clientName);
                             serverController.getClientMap().put(loginRequest.getUsername(), socketWrapper);
                             serverController.updateLastOperationTextThreadSafe("Client " + loginRequest.getUsername() + " logged in.");
                         }
                     }
                     else
                     {
-                        System.out.println("Client login failed");
+                        System.out.println(thread.getName() + " : Client login failed");
                         socketWrapper.write(new LoginResponseDTO(false, "Wrong username or password."));
                     }
                 }
@@ -73,20 +73,20 @@ public class ServerReadThread implements Runnable
                     clientType = ClientType.RESTAURANT;
 
                     RestaurantLoginRequestDTO loginRequest = (RestaurantLoginRequestDTO) obj;
-                    System.out.println(loginRequest);
+                    System.out.println(thread.getName() + " : loginRequest");
                     // CHECK IF USERNAME AND PASSWORD MATCH
                     if (loginRequest.getPassword().equals(serverController.getRestaurantInfos().get(loginRequest.getUsername())))
                     {
                         // CHECK IF RESTAURANT ALREADY LOGGED IN
                         if (serverController.getRestaurantMap().get(loginRequest.getUsername()) != null)
                         {
-                            System.out.println("Restaurant already logged in");
+                            System.out.println(thread.getName() + " : Restaurant already logged in");
                             socketWrapper.write(new LoginResponseDTO(false, "Authentication failed. Restaurant already logged in."));
                         }
                         else
                         {
                             clientName = loginRequest.getUsername();
-                            thread.setName(clientName + " # Server Read Thread");
+                            thread.setName("SRT R " + clientName);
 
                             // GET RESTAURANT ID
                             for (Restaurant restaurant : serverController.getRestaurantList().values())
@@ -98,7 +98,7 @@ public class ServerReadThread implements Runnable
                                 }
                             }
 
-                            System.out.println("Authentication successful " + clientName);
+                            System.out.println(thread.getName() + " : Authentication successful " + clientName);
                             socketWrapper.write(new LoginResponseDTO(true, "Authentication Successful"));
                             serverController.getRestaurantMap().put(loginRequest.getUsername(), socketWrapper);
                             serverController.updateLastOperationTextThreadSafe("Restaurant " + loginRequest.getUsername() + " logged in.");
@@ -106,7 +106,7 @@ public class ServerReadThread implements Runnable
                     }
                     else
                     {
-                        System.out.println("Restaurant login failed");
+                        System.out.println(thread.getName() + " Restaurant login failed");
                         socketWrapper.write(new LoginResponseDTO(false, "Wrong username or password."));
                     }
                 }
@@ -114,30 +114,34 @@ public class ServerReadThread implements Runnable
                 else if (obj instanceof DatabaseRequestDTO)
                 {
                     DatabaseRequestDTO databaseRequestDTO = (DatabaseRequestDTO) obj;
-                    System.out.println(databaseRequestDTO);
+                    System.out.println(thread.getName() + " : " + databaseRequestDTO);
 
                     if (databaseRequestDTO.getRequestType() == DatabaseRequestDTO.RequestType.RESTAURANT_LIST)
                     {
                         // SEND THE WHOLE RESTAURANT LIST TO THE CLIENT
-                        RestaurantListDTO restaurantListDTO = new RestaurantListDTO(serverController.getRestaurantList());
-                        socketWrapper.write(restaurantListDTO);
+                        DatabaseDTO databaseDTO = new DatabaseDTO(serverController.getRestaurantList());
+                        socketWrapper.write(databaseDTO);
+                        System.out.println(thread.getName() + " : Database response sent. " + databaseDTO);
                     }
                     else if (databaseRequestDTO.getRequestType() == DatabaseRequestDTO.RequestType.SINGLE_RESTAURANT)
                     {
                         // JUST SEND THE RESTAURANT WITH THE GIVEN ID - DONT SEND THE WHOLE LIST
-                        ConcurrentHashMap<Integer, Restaurant> restaurantList = new ConcurrentHashMap<>();
-                        restaurantList.put(restaurantId, serverController.getRestaurantList().get(restaurantId));
-                        RestaurantListDTO restaurantListDTO = new RestaurantListDTO(restaurantList);
-                        socketWrapper.write(restaurantListDTO);
+                        DatabaseDTO databaseDTO = new DatabaseDTO(serverController.getRestaurantList().get(restaurantId));
+                        socketWrapper.write(databaseDTO);
+                        System.out.println(thread.getName() + " : Database response sent. " + databaseDTO);
+                    }
+                    else
+                    {
+                        System.out.println(thread.getName() + " Unknown database request type");
                     }
                 }
             }
         }
         catch (ClassNotFoundException | IOException e)
         {
-            System.out.println("Class : ServerReadThread | Method : run | Error in " + thread.getName() + " while reading from socket");
-            System.out.println("Error : " + e.getMessage());
-            System.out.println("Closing connection with client");
+            System.out.println(thread.getName() + " : Class : ServerReadThread | Method : run | Error in " + thread.getName() + " while reading from socket");
+            System.out.println(thread.getName() + " : Error : " + e.getMessage());
+            System.out.println(thread.getName() + " : Closing connection with client");
 
             try
             {

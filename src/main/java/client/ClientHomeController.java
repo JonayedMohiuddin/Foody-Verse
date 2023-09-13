@@ -1,7 +1,7 @@
 package client;
 
 import dto.DatabaseRequestDTO;
-import dto.RestaurantListDTO;
+import dto.DatabaseDTO;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -130,10 +130,10 @@ public class ClientHomeController
             try
             {
                 Object obj = application.getSocketWrapper().read();
-                if (obj instanceof RestaurantListDTO)
+                if (obj instanceof DatabaseDTO)
                 {
-                    RestaurantListDTO restaurantListDTO = (RestaurantListDTO) obj;
-                    restaurantList = restaurantListDTO.getRestaurantList();
+                    DatabaseDTO databaseDTO = (DatabaseDTO) obj;
+                    restaurantList = databaseDTO.getRestaurantList();
                     foodList = generateFoodList();
                     application.setRestaurantList(restaurantList);
                     application.setFoodList(foodList);

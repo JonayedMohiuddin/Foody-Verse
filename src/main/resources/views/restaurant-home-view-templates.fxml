@@ -66,7 +66,7 @@
                   <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label fx:id="restaurantName" text="Foody-Verse">
+                  <Label fx:id="restaurantNameLabel" text="Foody-Verse">
                      <font>
                         <Font name="Corbel Bold" size="25.0" />
                      </font>
@@ -141,7 +141,7 @@
                <children>
                   <ScrollPane hbarPolicy="NEVER" prefHeight="530.0" prefWidth="800.0">
                      <content>
-                        <VBox fx:id="pendingOrderListVBox" prefHeight="530.0" prefWidth="800.0">
+                        <VBox fx:id="displayVBox" prefHeight="530.0" prefWidth="800.0">
                            <padding>
                               <Insets left="15.0" right="15.0" top="20.0" />
                            </padding>
@@ -233,6 +233,114 @@
                                                             <Font name="Corbel" size="18.0" />
                                                          </font>
                                                       </Button>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </StackPane>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="row1" prefHeight="200.0" prefWidth="780.0">
+                                 <children>
+                                    <StackPane fx:id="rowStackPane1" prefHeight="200.0" prefWidth="750.0">
+                                       <children>
+                                          <Rectangle fx:id="rowBackgroundRect1" arcHeight="5.0" arcWidth="5.0" height="200.0" stroke="BLACK" strokeType="INSIDE" width="750.0">
+                                             <fill>
+                                                <LinearGradient endX="1.0" endY="1.0">
+                                                   <stops>
+                                                      <Stop>
+                                                         <color>
+                                                            <Color red="0.250980406999588" green="0.15294118225574493" blue="1.0" opacity="0.4000000059604645" />
+                                                         </color>
+                                                      </Stop>
+                                                      <Stop offset="1.0">
+                                                         <color>
+                                                            <Color red="0.6784313917160034" green="0.6392157077789307" blue="0.9686274528503418" opacity="0.4000000059604645" />
+                                                         </color>
+                                                      </Stop>
+                                                   </stops>
+                                                </LinearGradient>
+                                             </fill>
+                                          </Rectangle>
+                                          <HBox fx:id="rowHboxContent1" prefHeight="200.0" prefWidth="750.0">
+                                             <children>
+                                                <ImageView fx:id="foodImageView1" fitHeight="180.0" fitWidth="250.0" pickOnBounds="true">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" top="10.0" />
+                                                   </HBox.margin>
+                                                   <image>
+                                                      <Image url="@../assets/Burger.jpg" />
+                                                   </image>
+                                                </ImageView>
+                                                <VBox fx:id="foodDetailsVBox1" prefHeight="180.0" prefWidth="548.0" spacing="12.0">
+                                                   <padding>
+                                                      <Insets left="30.0" top="10.0" />
+                                                   </padding>
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                   <children>
+                                                      <Label fx:id="foodNameLabel1" text="Food Name">
+                                                         <font>
+                                                            <Font name="Calibri Bold" size="30.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <HBox>
+                                                         <children>
+                                                            <VBox prefHeight="120.0" prefWidth="126.0" spacing="10.0">
+                                                               <children>
+                                                                  <Label fx:id="categoryNameLabel2" text="Category : ">
+                                                                     <font>
+                                                                        <Font name="Calibri" size="20.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                                  <Label fx:id="categoryNameLabel1" text="Price : ">
+                                                                     <font>
+                                                                        <Font name="Calibri" size="20.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                                  <Label fx:id="categoryNameLabel11" text="Total Orders :">
+                                                                     <font>
+                                                                        <Font name="Calibri" size="20.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                                  <Label fx:id="categoryNameLabel111" text="Total Profit :">
+                                                                     <font>
+                                                                        <Font name="Calibri" size="20.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                            </VBox>
+                                                            <VBox prefHeight="124.0" prefWidth="360.0" spacing="10.0">
+                                                               <children>
+                                                                  <Label fx:id="categoryNameLabel1" text="Spicy, Tasty Mashala">
+                                                                     <font>
+                                                                        <Font name="Calibri" size="20.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                                  <Label fx:id="categoryNameLabel11" text="120 $">
+                                                                     <font>
+                                                                        <Font name="Calibri" size="20.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                                  <Label fx:id="categoryNameLabel111" text="120 Units">
+                                                                     <font>
+                                                                        <Font name="Calibri" size="20.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                                  <Label fx:id="categoryNameLabel1111" text="12000 $">
+                                                                     <font>
+                                                                        <Font name="Calibri" size="20.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                               <padding>
+                                                                  <Insets left="10.0" />
+                                                               </padding>
+                                                            </VBox>
+                                                         </children>
+                                                      </HBox>
                                                    </children>
                                                 </VBox>
                                              </children>
