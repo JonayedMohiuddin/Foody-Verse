@@ -50,7 +50,26 @@ public class ClientHomeController
     public Button restaurantViewBackButton;
     // CLIENT APPLICATION REFERENCE
     ClientApplication application;
+
     // SEARCH OPTIONS
+    private static final class Options
+    {
+        public static String RESTAURANT_NAME = "Name";
+        public static String RESTAURANT_RATING = "Rating Range";
+        public static String RESTAURANT_PRICE = "Price Category";
+        public static String RESTAURANT_CATEGORY = "Category";
+        public static String RESTAURANT_ZIPCODE = "Zipcode";
+
+        // SPACE AFTER FOOD TO DIFFERENTIATE THESE OPTIONS FROM RESTAURANT OPTIONS IN CHOICE BOX
+        // THERE MIGHT BE A BETTER WAY TO DO THIS, BUT FEELLING LAZY :P
+        // TODO : FIND A BETTER WAY TO DO THIS
+        public static String FOOD_NAME = "Name ";
+        public static String FOOD_CATEGORY = "Category ";
+        public static String FOOD_PRICE = "Price Range ";
+
+        public static String VIEW_RESTAURANT = "Restaurant";
+        public static String VIEW_FOOD = "Food";
+    }
     ArrayList<String> restaurantSearchOptions;
     ArrayList<String> foodSearchOptions;
 
@@ -806,25 +825,6 @@ public class ClientHomeController
         rangeSearchMinField.setText("");
         rangeSearchMaxField.setText("");
         restaurantViewBackButton.setVisible(false);
-    }
-
-    private static final class Options
-    {
-        public static String RESTAURANT_NAME = "Name";
-        public static String RESTAURANT_RATING = "Rating Range";
-        public static String RESTAURANT_PRICE = "Price Category";
-        public static String RESTAURANT_CATEGORY = "Category";
-        public static String RESTAURANT_ZIPCODE = "Zipcode";
-
-        // SPACE AFTER FOOD TO DIFFERENTIATE THESE OPTIONS FROM RESTAURANT OPTIONS IN CHOICE BOX
-        // THERE MIGHT BE A BETTER WAY TO DO THIS, BUT FEELLING LAZY :P
-        // TODO : FIND A BETTER WAY TO DO THIS
-        public static String FOOD_NAME = "Name ";
-        public static String FOOD_CATEGORY = "Category ";
-        public static String FOOD_PRICE = "Price Range ";
-
-        public static String VIEW_RESTAURANT = "Restaurant";
-        public static String VIEW_FOOD = "Food";
     }
 }
 

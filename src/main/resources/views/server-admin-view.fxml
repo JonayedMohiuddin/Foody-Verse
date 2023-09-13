@@ -1,57 +1,287 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.ServerController">
+<AnchorPane prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="server.ServerController">
    <children>
-      <Label layoutX="38.0" layoutY="130.0" text="Clients Online">
+      <Rectangle height="60.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="500.0">
+         <fill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.6925926208496094" green="0.8514197468757629" blue="1.0" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.4707317073170731">
+                     <color>
+                        <Color red="0.7107992172241211" green="0.9052631855010986" blue="0.7432098984718323" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.7631224764468372">
+                     <color>
+                        <Color red="0.9111111164093018" green="1.0" blue="0.9259259104728699" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="1.0" green="0.5777778029441833" blue="0.5777778029441833" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Rectangle>
+      <Label layoutX="16.0" layoutY="10.0" text="Foody-Verse" textFill="#ff2525" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="10.0">
          <font>
-            <Font name="Arial" size="20.0" />
+            <Font name="Corbel Bold" size="25.0" />
          </font>
       </Label>
-      <Label layoutX="297.0" layoutY="130.0" text="Restaurants Online">
+      <Button layoutX="367.0" layoutY="12.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="118.0" text="Shutdown Server" textFill="#f70000">
          <font>
-            <Font name="Arial" size="20.0" />
+            <Font name="Corbel Bold" size="13.0" />
+         </font>
+      </Button>
+      <Circle fill="#0cef41" layoutX="210.0" layoutY="30.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+      <Button layoutX="343.0" layoutY="72.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="141.0" text="Add Restaurant" textFill="#2200ff">
+         <font>
+            <Font name="Corbel Bold" size="16.0" />
+         </font>
+      </Button>
+      <Label layoutX="86.0" layoutY="101.0" text="Registered Restaurants">
+         <font>
+            <Font name="Calibri" size="16.0" />
          </font>
       </Label>
-      <ListView layoutX="35.0" layoutY="170.0" prefHeight="422.0" prefWidth="235.0" />
-      <Button fx:id="addRestaurantButton" layoutX="671.0" layoutY="566.0" mnemonicParsing="false" onAction="#addRestaurantButtonClicked" text="Add Restaurant" />
-      <Label fx:id="serverStatusText" layoutX="184.0" layoutY="33.0" text="Server Online" textFill="#00a40e">
+      <Label layoutX="259.0" layoutY="96.0" text="999">
          <font>
-            <Font size="18.0" />
+            <Font name="Monospaced Regular" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="ipAddressText" layoutX="686.0" layoutY="19.0" prefHeight="27.0" prefWidth="199.0" text="IP Address : 127.0.0.1" wrapText="true">
+      <StackPane layoutY="128.0" prefHeight="471.0" prefWidth="500.0">
+         <children>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <ListView layoutX="30.0" layoutY="45.0" prefHeight="214.0" prefWidth="200.0" />
+                  <ListView layoutX="30.0" layoutY="298.0" prefHeight="150.0" prefWidth="436.0" />
+                  <ListView layoutX="266.0" layoutY="45.0" prefHeight="214.0" prefWidth="200.0" />
+                  <Label layoutX="59.0" layoutY="14.0" text="Clients Online">
+                     <font>
+                        <Font name="Calibri" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="297.0" layoutY="14.0" text="Restaurants Online">
+                     <font>
+                        <Font name="Calibri" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="69.0" layoutY="270.0" text="Server Log">
+                     <font>
+                        <Font name="Calibri" size="15.0" />
+                     </font>
+                  </Label>
+                  <GridPane layoutX="183.0" layoutY="8.0" prefHeight="30.0" prefWidth="46.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label fx:id="clientOnlineCount" contentDisplay="CENTER" text="999" GridPane.halignment="RIGHT">
+                           <font>
+                              <Font name="Calibri Bold" size="22.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </GridPane>
+                  <GridPane layoutX="419.0" layoutY="8.0" prefHeight="30.0" prefWidth="46.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label fx:id="restaurantOnlineCount" contentDisplay="CENTER" text="999" GridPane.halignment="RIGHT">
+                           <font>
+                              <Font name="Calibri Bold" size="22.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </GridPane>
+                  <ImageView fitHeight="23.0" fitWidth="30.0" layoutX="30.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/user-icon.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="23.0" fitWidth="30.0" layoutX="266.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/restaurant-icon.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="23.0" fitWidth="30.0" layoutX="33.0" layoutY="268.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/log-icon.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="addRestaurantMenu" prefHeight="200.0" prefWidth="200.0" visible="false">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="462.0" layoutX="40.0" layoutY="-6.0" strokeType="INSIDE" strokeWidth="3.0" width="421.0">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0" startX="0.4166666802131769" startY="0.2765151226159298">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.699999988079071" green="0.8650000095367432" blue="1.0" opacity="0.8500000238418579" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.5568000078201294" green="0.8700000047683716" blue="0.5933399796485901" opacity="0.800000011920929" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                     <stroke>
+                        <LinearGradient endX="1.0" endY="1.0" startX="0.4166666802131769" startY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.13122807443141937" green="0.46247953176498413" blue="0.5368421077728271" opacity="0.699999988079071" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.18926316499710083" green="0.10853800922632217" blue="0.9157894849777222" opacity="0.699999988079071" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </stroke>
+                  </Rectangle>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" height="42.0" layoutX="40.0" layoutY="-7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="421.0">
+                     <fill>
+                        <LinearGradient endX="1.0" endY="1.0" startX="0.4166666802131769" startY="0.2765151226159298">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.17080000042915344" green="0.5481330156326294" blue="0.6100000143051147" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.3700000047683716" green="0.30000001192092896" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </fill>
+                  </Rectangle>
+                  <Button layoutX="399.0" layoutY="1.0" mnemonicParsing="false" onAction="#addRestaurantMenuCancelButtonPressed" text="Cancel">
+                     <font>
+                        <Font name="Corbel Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="92.0" layoutY="2.0" text="Add Restaurant">
+                     <font>
+                        <Font name="Monospace 821 Bold BT" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="60.0" layoutY="61.0" text="Name">
+                     <font>
+                        <Font name="Calibri Bold" size="22.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="addRestaurantNameTextField" layoutX="169.0" layoutY="56.0" prefHeight="36.0" prefWidth="273.0" promptText="Restaurant name" />
+                  <Label layoutX="60.0" layoutY="133.0" text="Price Category">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="priceCategoryChoiceBox" layoutX="180.0" layoutY="126.0" prefHeight="36.0" prefWidth="64.0" />
+                  <Label layoutX="268.0" layoutY="133.0" text="Zipcode">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="addRestaurantZipcodeTextField" layoutX="343.0" layoutY="126.0" prefHeight="36.0" prefWidth="100.0" promptText="Zipcode" />
+                  <Label layoutX="60.0" layoutY="203.0" text="Rating">
+                     <font>
+                        <Font name="Calibri Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="addRestaurantZipcodeTextField" layoutX="169.0" layoutY="197.0" prefHeight="36.0" prefWidth="273.0" promptText="Restaurant Rating (0 - 5)" />
+                  <Label layoutX="60.0" layoutY="275.0" text="Category">
+                     <font>
+                        <Font name="Calibri Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="addRestaurantCategoryTextField" layoutX="169.0" layoutY="269.0" prefHeight="36.0" prefWidth="238.0" promptText="Category Name" />
+                  <Button fx:id="addRestaurantAddCategory" layoutX="407.0" layoutY="268.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" text="+">
+                     <font>
+                        <Font name="Arial Black" size="17.0" />
+                     </font>
+                  </Button>
+                  <ListView fx:id="addRestaurantCategoryListView" layoutX="168.0" layoutY="317.0" prefHeight="122.0" prefWidth="238.0" />
+                  <Button fx:id="addRestaurantRemoveCategory" layoutX="407.0" layoutY="317.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="36.0" text="-" textFill="RED">
+                     <font>
+                        <Font name="Arial Black" size="17.0" />
+                     </font>
+                  </Button>
+                  <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="51.0" layoutY="-3.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/restaurant-icon.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
+      <Label layoutX="228.0" layoutY="19.0" prefHeight="22.0" prefWidth="91.0" text="Server Online" textFill="#0e8c38">
          <font>
-            <Font size="18.0" />
+            <Font name="Calibri Bold" size="15.0" />
          </font>
       </Label>
-      <Label fx:id="portText" layoutX="686.0" layoutY="51.0" prefHeight="27.0" prefWidth="118.0" text="Port : 4242">
+      <Label layoutX="86.0" layoutY="72.0" text="Registered Clients ">
          <font>
-            <Font size="18.0" />
+            <Font name="Calibri" size="16.0" />
          </font>
       </Label>
-      <Button fx:id="shutdownServerButton" layoutX="47.0" layoutY="34.0" mnemonicParsing="false" onAction="#shutdownServerButtonClicked" text="Shutdown Server" textFill="RED" />
-      <Label fx:id="lastOperationText" layoutX="368.0" layoutY="37.0" text="Last successful operation : No operation." wrapText="true">
+      <Label layoutX="259.0" layoutY="67.0" text="999">
          <font>
-            <Font name="Calibri" size="15.0" />
+            <Font name="Monospaced Regular" size="20.0" />
          </font>
       </Label>
-      <ListView layoutX="297.0" layoutY="170.0" prefHeight="422.0" prefWidth="235.0" />
-      <Label layoutX="236.0" layoutY="130.0" text="999">
-         <font>
-            <Font name="Arial" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="498.0" layoutY="130.0" text="999">
-         <font>
-            <Font name="Arial" size="20.0" />
-         </font>
-      </Label>
+      <ImageView fitHeight="23.0" fitWidth="30.0" layoutX="56.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/user-icon.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="23.0" fitWidth="30.0" layoutX="56.0" layoutY="98.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/restaurant-icon.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

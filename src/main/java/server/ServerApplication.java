@@ -32,7 +32,7 @@ public class ServerApplication extends Application
         stage.setScene(new Scene(root, 900, 650));
         stage.setMinWidth(900);
         stage.setMinHeight(650);
-//        stage.show();
+        stage.show();
     }
 
     public static void main(String[] args)
