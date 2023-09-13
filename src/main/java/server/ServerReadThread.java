@@ -1,9 +1,11 @@
 package server;
 
 import dto.*;
+import models.Food;
 import models.Restaurant;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerReadThread implements Runnable
@@ -33,6 +35,8 @@ public class ServerReadThread implements Runnable
         {
             while ((obj = socketWrapper.read()) != null)
             {
+                System.out.println(thread.getName() + " : " + obj);
+
                 // CLIENT LOGIN REQUEST RECEIVED
                 if (obj instanceof ClientLoginRequestDTO)
                 {
@@ -57,6 +61,7 @@ public class ServerReadThread implements Runnable
                             socketWrapper.write(new LoginResponseDTO(true, "Authentication Successful"));
                             clientName = loginRequest.getUsername();
                             thread.setName("SRT C " + clientName);
+
                             serverController.getClientMap().put(loginRequest.getUsername(), socketWrapper);
                             serverController.updateLastOperationTextThreadSafe("Client " + loginRequest.getUsername() + " logged in.");
                         }
@@ -89,6 +94,7 @@ public class ServerReadThread implements Runnable
                             thread.setName("SRT R " + clientName);
 
                             // GET RESTAURANT ID
+                            restaurantId = -1;
                             for (Restaurant restaurant : serverController.getRestaurantList().values())
                             {
                                 if (restaurant.getName().equals(loginRequest.getUsername()))
@@ -98,8 +104,17 @@ public class ServerReadThread implements Runnable
                                 }
                             }
 
+                            // CHECK IF RESTAURANT ID FOUND
+                            if(restaurantId == -1)
+                            {
+                                System.out.println(thread.getName() + " : Restaurant ID not found");
+                                socketWrapper.write(new LoginResponseDTO(false, "Authentication failed. Restaurant ID not found."));
+                                continue;
+                            }
+
                             System.out.println(thread.getName() + " : Authentication successful " + clientName);
                             socketWrapper.write(new LoginResponseDTO(true, "Authentication Successful"));
+
                             serverController.getRestaurantMap().put(loginRequest.getUsername(), socketWrapper);
                             serverController.updateLastOperationTextThreadSafe("Restaurant " + loginRequest.getUsername() + " logged in.");
                         }
@@ -135,11 +150,50 @@ public class ServerReadThread implements Runnable
                         System.out.println(thread.getName() + " Unknown database request type");
                     }
                 }
+                // CLIENT TO SERVER CART ORDER RECEIVED -> SEND THE ORDER TO THE RESTAURANT
+                else if(obj instanceof ClientToServerCartOrderDTO)
+                {
+                    ClientToServerCartOrderDTO cartOrderDTO = (ClientToServerCartOrderDTO) obj;
+
+                    System.out.println(thread.getName() + " : " + cartOrderDTO);
+                    ConcurrentHashMap<Integer, HashMap<Food, Integer>> cartFoodList = cartOrderDTO.getCartFoodList();
+
+                    System.out.println();
+                    System.out.println(thread.getName() + " : Cart Food List");
+                    for (Integer restaurantId : cartFoodList.keySet())
+                    {
+                        String restaurantName = serverController.getRestaurantList().get(restaurantId).getName();
+                        System.out.println(thread.getName() + " : Restaurant : " + restaurantName);
+                        for (Food food : cartFoodList.get(restaurantId).keySet())
+                        {
+                            System.out.println(thread.getName() + " : " + food.getName() + " : " + cartFoodList.get(restaurantId).get(food));
+                        }
+                    }
+                    System.out.println();
+
+                    for (Integer restaurantId : cartFoodList.keySet())
+                    {
+                        String restaurantName = serverController.getRestaurantList().get(restaurantId).getName();
+                        ServerToRestaurantCartOrderDTO serverToRestaurantCartOrderDTO = new ServerToRestaurantCartOrderDTO(clientName, cartFoodList.get(restaurantId));
+
+                        if(serverController.getRestaurantMap().containsKey(restaurantName))
+                        {
+                            serverController.getRestaurantMap().get(restaurantName).write(serverToRestaurantCartOrderDTO);
+                            System.out.println(thread.getName() + " : Order sent to restaurant " + restaurantName);
+                            System.out.println(thread.getName() + " : " + serverToRestaurantCartOrderDTO);
+                            System.out.println();
+                        }
+                        else
+                        {
+                            System.out.println(thread.getName() + " : Restaurant " + restaurantName + " is offline");
+                        }
+                    }
+                }
             }
         }
         catch (ClassNotFoundException | IOException e)
         {
-            System.out.println(thread.getName() + " : Class : ServerReadThread | Method : run | Error in " + thread.getName() + " while reading from socket");
+            System.out.println(thread.getName() + " : Class : ServerReadThread | Method : run | Error in " + thread.getName() + " while reading/writing from socket");
             System.out.println(thread.getName() + " : Error : " + e.getMessage());
             System.out.println(thread.getName() + " : Closing connection with client");
 

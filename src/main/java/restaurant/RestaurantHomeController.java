@@ -22,6 +22,8 @@ import models.Restaurant;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RestaurantHomeController
 {
@@ -37,15 +39,16 @@ public class RestaurantHomeController
 
     public VBox displayVBox;
 
-    int currentWindow = WindowType.UNDEFINED;
-    private FXMLLoader homePageLoader;
-
-    private RestaurantApplication application;
-
-    public void setApplication(RestaurantApplication application)
+    // WINDOW
+    public class WindowType
     {
-        this.application = application;
+        public static final int UNDEFINED = -1;
+        public static final int ORDERS = 0;
+        public static final int FOOD_LIST = 1;
+        public static final int HISTORY = 2;
+        public static final int ADD_FOODS = 3;
     }
+    int currentWindow = WindowType.UNDEFINED;
 
     // ASSETS //
 
@@ -63,11 +66,16 @@ public class RestaurantHomeController
     Font robotoLightFont20;
     Font robotoLightFont15;
 
+    // DATABASE
     private Restaurant restaurant;
     private String restaurantName;
+    ConcurrentHashMap<String, HashMap<Food, Integer>> pendingOrdersList;
+    int pendingOrderCount = 0;
 
     public void init()
     {
+        pendingOrdersList = new ConcurrentHashMap<>();
+
         try
         {
             DatabaseRequestDTO databaseRequestDTO = new DatabaseRequestDTO(DatabaseRequestDTO.RequestType.SINGLE_RESTAURANT);
@@ -113,10 +121,11 @@ public class RestaurantHomeController
         robotoRegularFont15 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Regular.ttf"), 15);
         robotoRegularFont20 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Regular.ttf"), 20);
 
-        addFoodListRow(new Food(1, "Spicy", "Burger", 120), 23);
-
         switchInternalWindow(WindowType.ORDERS);
-        new RestaurantReadThread(application);
+
+        updatePendingOrderNotification();
+
+        new RestaurantReadThread(application, this);
     }
 
     public void switchInternalWindow(int window)
@@ -193,13 +202,75 @@ public class RestaurantHomeController
         switchInternalWindow(WindowType.ORDERS);
     }
 
+    public void updatePendingOrdersList(String username, HashMap<Food, Integer> foodCountMap)
+    {
+        if(pendingOrdersList.containsKey(username))
+        {
+            HashMap<Food, Integer> existingFoodCountMap = pendingOrdersList.get(username);
+            for (Food food : foodCountMap.keySet())
+            {
+                if(existingFoodCountMap.containsKey(food))
+                {
+                    existingFoodCountMap.put(food, existingFoodCountMap.get(food) + foodCountMap.get(food));
+                }
+                else
+                {
+                    existingFoodCountMap.put(food, foodCountMap.get(food));
+                }
+            }
+            pendingOrdersList.put(username, existingFoodCountMap);
+        }
+        else
+        {
+            pendingOrdersList.put(username, foodCountMap);
+        }
+
+        pendingOrderCount = 0;
+        for (HashMap<Food, Integer> foodCount : pendingOrdersList.values())
+        {
+            for (Food food : foodCount.keySet())
+            {
+                pendingOrderCount += foodCount.get(food);
+            }
+        }
+        updatePendingOrderNotification();
+
+        if(currentWindow == WindowType.ORDERS)
+        {
+            displayVBox.getChildren().clear();
+            fillPendingRequest();
+        }
+    }
+
+    public void updatePendingOrderNotification()
+    {
+        if(pendingOrderCount == 0)
+        {
+            pendingOrderCountLabel.setVisible(false);
+            pendingOrderCountBg.setVisible(false);
+        }
+        else
+        {
+            pendingOrderCountLabel.setText(Integer.toString(pendingOrderCount));
+            pendingOrderCountLabel.setVisible(true);
+            pendingOrderCountBg.setVisible(true);
+        }
+    }
+
     public void logoutButtonClicked(ActionEvent event)
     {
     }
 
     public void fillPendingRequest()
     {
-
+        for (String username : pendingOrdersList.keySet())
+        {
+            HashMap<Food, Integer> foodCountMap = pendingOrdersList.get(username);
+            for (Food food : foodCountMap.keySet())
+            {
+                addPendingOrderRow(food, foodCountMap.get(food));
+            }
+        }
     }
 
     public void fillFoodList(ArrayList<Food> foodList)
@@ -426,12 +497,9 @@ public class RestaurantHomeController
 //        rowBackgroundRect.setFill(javafx.scene.paint.Color.valueOf(new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE, new Stop(0, Color.RED), new Stop(1, Color.BLUE))
     }
 
-    public class WindowType
+    private RestaurantApplication application;
+    public void setApplication(RestaurantApplication application)
     {
-        public static final int UNDEFINED = -1;
-        public static final int ORDERS = 0;
-        public static final int FOOD_LIST = 1;
-        public static final int HISTORY = 2;
-        public static final int ADD_FOODS = 3;
+        this.application = application;
     }
 }

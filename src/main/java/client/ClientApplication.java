@@ -79,6 +79,8 @@ public class ClientApplication extends Application
     @Override
     public void start(Stage primaryStage) throws IOException
     {
+        restaurantList = new ConcurrentHashMap<>();
+
         stage = primaryStage;
 
         connectToServer();

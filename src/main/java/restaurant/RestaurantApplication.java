@@ -7,39 +7,43 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import models.Food;
 import models.Restaurant;
 import server.SocketWrapper;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RestaurantApplication extends Application
 {
     public String username;
-    // Application reference
-    private Stage stage;
-    private SocketWrapper socketWrapper;
-    private Restaurant restaurant;
-
-    public static void main(String[] args)
+    public String getUsername()
     {
-        launch();
+        return username;
+    }
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
+
+    private SocketWrapper socketWrapper;
+    public SocketWrapper getSocketWrapper()
+    {
+        return socketWrapper;
     }
 
     public Stage getStage()
     {
         return stage;
     }
+    private Stage stage;
 
-    public SocketWrapper getSocketWrapper()
-    {
-        return socketWrapper;
-    }
-
+    private Restaurant restaurant;
     public Restaurant getRestaurant()
     {
         return restaurant;
     }
-
     public void setRestaurant(Restaurant restaurant)
     {
         this.restaurant = restaurant;
@@ -121,10 +125,8 @@ public class RestaurantApplication extends Application
         stage.show();
     }
 
-    public void showSignUpPage()
+    public static void main(String[] args)
     {
-
+        launch();
     }
-
-
 }

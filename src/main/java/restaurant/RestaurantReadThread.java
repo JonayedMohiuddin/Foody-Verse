@@ -1,8 +1,13 @@
 package restaurant;
 
+import dto.ClientToServerCartOrderDTO;
+import dto.ServerToRestaurantCartOrderDTO;
+import javafx.application.Platform;
+import models.Food;
 import server.SocketWrapper;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class RestaurantReadThread implements Runnable
 {
@@ -10,9 +15,13 @@ public class RestaurantReadThread implements Runnable
     SocketWrapper socketWrapper;
     String restaurantName;
     String threadName;
+    RestaurantApplication restaurantApplication;
+    RestaurantHomeController restaurantHomeController;
 
-    RestaurantReadThread(RestaurantApplication restaurantApplication)
+    RestaurantReadThread(RestaurantApplication restaurantApplication, RestaurantHomeController restaurantHomeController)
     {
+        this.restaurantApplication = restaurantApplication;
+        this.restaurantHomeController = restaurantHomeController;
         this.socketWrapper = restaurantApplication.getSocketWrapper();
         this.restaurantName = restaurantApplication.username;
         this.threadName = restaurantName + " # ReadThread";
@@ -30,6 +39,25 @@ public class RestaurantReadThread implements Runnable
             {
                 System.out.println(threadName + " : Reading from socket");
                 object = socketWrapper.read();
+
+                if(object instanceof ServerToRestaurantCartOrderDTO)
+                {
+                    ServerToRestaurantCartOrderDTO serverToRestaurantCartOrderDTO = (ServerToRestaurantCartOrderDTO) object;
+                    String username = serverToRestaurantCartOrderDTO.getUsername();
+                    HashMap<Food, Integer> foodCountMap = serverToRestaurantCartOrderDTO.getCartFoodList();
+
+                    System.out.println(threadName + " : Received cart order from server. User : " + username);
+                    for (Food food : foodCountMap.keySet())
+                    {
+                        System.out.println(food.getName() + " : " + foodCountMap.get(food));
+                    }
+                    System.out.println();
+
+                    Platform.runLater(() -> restaurantHomeController.updatePendingOrdersList(username, foodCountMap));
+
+                    System.out.println(threadName + " : Received cart order from server. User : " + username);
+                    System.out.println(threadName + " : " + serverToRestaurantCartOrderDTO);
+                }
             }
         }
         catch (IOException | ClassNotFoundException e)

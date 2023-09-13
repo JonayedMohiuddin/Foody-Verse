@@ -513,3 +513,18 @@
 101,Szechuan Shrimp,Chinese,11.99
 101,Vegetable Spring Rolls,Chinese,4.99
 101,Peking Duck,Chinese,14.99
+102,Tandoori Chicken,Indian,10.99
+102,Butter Chicken,Indian,11.99
+102,Chicken Korma,Indian,12.99
+102,Lamb Biryani,Indian,13.99
+102,Garlic Naan,Indian,3.99
+102,Taco Platter,Mexican,9.99
+102,Enchiladas Supreme,Mexican,10.99
+102,Quesadilla Delight,Mexican,11.99
+102,Churros,Mexican,4.99
+102,Sopapillas,Mexican,4.99
+102,Kung Pao Chicken,Chinese,9.99
+102,Mongolian Beef,Chinese,10.99
+102,Szechuan Shrimp,Chinese,11.99
+102,Vegetable Spring Rolls,Chinese,4.99
+102,Peking Duck,Chinese,14.99

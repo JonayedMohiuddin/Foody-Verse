@@ -47,10 +47,7 @@ public class ServerController implements Runnable
     {
         return clientMap;
     }
-    public ConcurrentHashMap<String, SocketWrapper> getRestaurantMap()
-    {
-        return restaurantMap;
-    }
+    public ConcurrentHashMap<String, SocketWrapper> getRestaurantMap() { return restaurantMap; }
     public ConcurrentHashMap<Integer, Restaurant> getRestaurantList()
     {
         return restaurantList;

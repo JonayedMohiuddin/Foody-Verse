@@ -1,5 +1,6 @@
 package client;
 
+import dto.ClientToServerCartOrderDTO;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,13 +22,12 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-
 public class ClientCartController
 {
     public Label usernameLabel;
     public ListView<HBox> cartItemListView;
 
-    ConcurrentHashMap<Integer, HashMap<Food, Integer>> cartFoodList; // Map<Restaurant ID, Map<Food, Count>>
+    //    ConcurrentHashMap<Integer, HashMap<Food, Integer>> cartFoodList; // Map<Restaurant ID, Map<Food, Count>>
     double cartTotalPrice = 0;
     int cartTotalItems = 0;
 
@@ -41,15 +41,12 @@ public class ClientCartController
     Font robotoRegularFont12;
     Font robotoLightFont20;
     Font robotoLightFont15;
-    private ClientApplication application;
-
     DecimalFormat decimalFormat;
+    private ClientApplication application;
 
     public void init()
     {
         decimalFormat = new DecimalFormat("#.##");
-
-        cartFoodList = application.getCartFoodList();
 
         foodImageMedium = new Image("file:src/main/resources/assets/Burger.jpg", 175, 125, false, false);
         restaurantImageMedium = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 175, 125, false, false);
@@ -66,16 +63,14 @@ public class ClientCartController
 
         cartItemListView.setStyle("-fx-selection-bar : false;");
 
-        for (Integer restaurantID : cartFoodList.keySet())
+        for (Integer restaurantID : application.cartFoodList.keySet())
         {
-            for (Food food : cartFoodList.get(restaurantID).keySet())
+            for (Food food : application.cartFoodList.get(restaurantID).keySet())
             {
-                cartTotalPrice += food.getPrice() * cartFoodList.get(restaurantID).get(food);
-                cartTotalItems += cartFoodList.get(restaurantID).get(food);
+                cartTotalPrice += food.getPrice() * application.cartFoodList.get(restaurantID).get(food);
+                cartTotalItems += application.cartFoodList.get(restaurantID).get(food);
             }
         }
-
-        this.cartFoodList = cartFoodList;
         fillListView();
     }
 
@@ -85,7 +80,8 @@ public class ClientCartController
         try
         {
             application.showHomePage(false);
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             System.err.println("Class : ClientCartController| Method : backButtonClicked | Couldn't show home page");
             System.err.println(e.getMessage());
@@ -94,12 +90,12 @@ public class ClientCartController
 
     public void fillListView()
     {
-        for (Integer restaurantID : cartFoodList.keySet())
+        for (Integer restaurantID : application.cartFoodList.keySet())
         {
             addRestaurantNameHeader(application.getRestaurantList().get(restaurantID).getName());
-            for (Food food : cartFoodList.get(restaurantID).keySet())
+            for (Food food : application.cartFoodList.get(restaurantID).keySet())
             {
-                addFoodToListView(food, cartFoodList.get(restaurantID).get(food));
+                addFoodToListView(food, application.cartFoodList.get(restaurantID).get(food));
             }
 //            addRestaurantFooter();
         }
@@ -130,15 +126,15 @@ public class ClientCartController
         System.out.println("Add button clicked");
         cartTotalItems++;
         cartTotalPrice += food.getPrice();
-        for(HashMap<Food, Integer> foodCount : cartFoodList.values())
+        for (HashMap<Food, Integer> foodCount : application.cartFoodList.values())
         {
-            if(foodCount.containsKey(food))
+            if (foodCount.containsKey(food))
             {
                 foodCount.put(food, foodCount.get(food) + 1);
             }
         }
-        foodCountLabel.setText("X " + String.valueOf(cartFoodList.get(food.getRestaurantId()).get(food)));
-        String formattedFoodPrice = decimalFormat.format(food.getPrice() * cartFoodList.get(food.getRestaurantId()).get(food));
+        foodCountLabel.setText("X " + String.valueOf(application.cartFoodList.get(food.getRestaurantId()).get(food)));
+        String formattedFoodPrice = decimalFormat.format(food.getPrice() * application.cartFoodList.get(food.getRestaurantId()).get(food));
         foodPriceLabel.setText(String.valueOf(formattedFoodPrice) + " $");
     }
 
@@ -148,17 +144,17 @@ public class ClientCartController
         cartTotalItems--;
         cartTotalPrice -= food.getPrice();
 
-        for(HashMap<Food, Integer> foodCount : cartFoodList.values())
+        for (HashMap<Food, Integer> foodCount : application.cartFoodList.values())
         {
-            if(foodCount.containsKey(food))
+            if (foodCount.containsKey(food))
             {
-                if(foodCount.get(food) == 1)
+                if (foodCount.get(food) == 1)
                 {
-                    cartFoodList.get(food.getRestaurantId()).remove(food);
+                    application.cartFoodList.get(food.getRestaurantId()).remove(food);
                     cartItemListView.getItems().clear();
-                    if(cartFoodList.get(food.getRestaurantId()).isEmpty())
+                    if (application.cartFoodList.get(food.getRestaurantId()).isEmpty())
                     {
-                        cartFoodList.remove(food.getRestaurantId());
+                        application.cartFoodList.remove(food.getRestaurantId());
                     }
                     fillListView();
                     return;
@@ -170,8 +166,8 @@ public class ClientCartController
             }
         }
 
-        foodCountLabel.setText("X " + String.valueOf(cartFoodList.get(food.getRestaurantId()).get(food)));
-        String formattedFoodPrice = decimalFormat.format(food.getPrice() * cartFoodList.get(food.getRestaurantId()).get(food));
+        foodCountLabel.setText("X " + String.valueOf(application.cartFoodList.get(food.getRestaurantId()).get(food)));
+        String formattedFoodPrice = decimalFormat.format(food.getPrice() * application.cartFoodList.get(food.getRestaurantId()).get(food));
         foodPriceLabel.setText(String.valueOf(formattedFoodPrice) + " $");
     }
 
@@ -323,5 +319,27 @@ public class ClientCartController
 
     public void orderAllButtonClicked(ActionEvent event)
     {
+        System.out.println("Order all button clicked");
+
+        try
+        {
+            ClientToServerCartOrderDTO clientToServerCartOrderDTO = new ClientToServerCartOrderDTO(application.cartFoodList, cartTotalItems, cartTotalPrice);
+            application.getSocketWrapper().write(clientToServerCartOrderDTO);
+
+            application.cartFoodList = new ConcurrentHashMap<>();
+
+            cartItemListView.getItems().clear();
+            fillListView();
+            cartTotalItems = 0;
+            cartTotalPrice = 0;
+
+            System.out.println("Order sent to server");
+        }
+        catch (IOException e)
+        {
+            System.err.println("Class : ClientCartController | Method : orderAllButtonClicked | While ordering all items");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
