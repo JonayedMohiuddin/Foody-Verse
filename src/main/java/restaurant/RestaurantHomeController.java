@@ -2,6 +2,7 @@ package restaurant;
 
 import dto.DatabaseDTO;
 import dto.DatabaseRequestDTO;
+import dto.FoodAddDTO;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -252,6 +253,16 @@ public class RestaurantHomeController
 
         System.out.println("Food added to restaurant");
         food.print(restaurantName);
+
+        try
+        {
+            application.getSocketWrapper().write(new FoodAddDTO(restaurant, food));
+        }
+        catch (IOException e)
+        {
+            System.out.println("Class : RestaurantHomeController | Method : addMenuAddFoodButtonPressed | While writing new food to server");
+            System.out.println("Error : " + e.getMessage());
+        }
     }
 
     public void updatePendingOrdersList(String username, HashMap<Food, Integer> foodCountMap)

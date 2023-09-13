@@ -34,7 +34,7 @@
                      <stops>
                         <Stop>
                            <color>
-                              <Color red="0.6925926208496094" green="0.8514197468757629" blue="1.0" />
+                              <Color red="0.6941176652908325" green="0.8509804010391235" blue="1.0" />
                            </color>
                         </Stop>
                         <Stop offset="0.4707317073170731">
@@ -110,23 +110,23 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="pendingOrdersButton" layoutY="59.0" mnemonicParsing="false" onAction="#pendingOrdersButtonClicked" prefHeight="47.0" prefWidth="260.0" text="Pending Orders" textAlignment="CENTER">
+            <Button fx:id="pendingOrdersButton" layoutY="57.0" mnemonicParsing="false" onAction="#pendingOrdersButtonClicked" prefHeight="47.0" prefWidth="260.0" style=": #b1dff;" text="Pending Orders" textAlignment="CENTER">
                <font>
                   <Font name="Corbel" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="historyButton" layoutX="260.0" layoutY="59.0" mnemonicParsing="false" onAction="#historyButtonClicked" prefHeight="47.0" prefWidth="180.0" text="Delivered">
+            <Button fx:id="historyButton" layoutX="260.0" layoutY="57.0" mnemonicParsing="false" onAction="#historyButtonClicked" prefHeight="47.0" prefWidth="180.0" text="Delivered">
                <font>
                   <Font name="Corbel" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="addFoodButton" layoutX="620.0" layoutY="59.0" mnemonicParsing="false" onAction="#addFoodButtonClicked" prefHeight="47.0" prefWidth="180.0" text="Add Food">
+            <Button fx:id="addFoodButton" layoutX="620.0" layoutY="57.0" mnemonicParsing="false" onAction="#addFoodButtonClicked" prefHeight="47.0" prefWidth="180.0" text="Add Food">
                <font>
                   <Font name="Corbel" size="18.0" />
                </font>
             </Button>
-            <Rectangle fx:id="pendingOrderCountBg" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="206.0" layoutY="73.0" mouseTransparent="true" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-            <Label fx:id="pendingOrderCountLabel" alignment="CENTER" layoutX="206.0" layoutY="73.0" mouseTransparent="true" prefHeight="20.0" prefWidth="30.0" text="999" />
+            <Rectangle fx:id="pendingOrderCountBg" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="207.0" layoutY="71.0" mouseTransparent="true" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+            <Label fx:id="pendingOrderCountLabel" alignment="CENTER" layoutX="207.0" layoutY="71.0" mouseTransparent="true" prefHeight="20.0" prefWidth="30.0" text="999" />
             <StackPane layoutY="105.19999694824219">
                <children>
                   <AnchorPane prefHeight="530.0" prefWidth="800.0">
@@ -142,7 +142,7 @@
                         </ScrollPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="addNewFoodMenu" prefHeight="530.0" prefWidth="800.0">
+                  <AnchorPane fx:id="addNewFoodMenu" prefHeight="525.0" prefWidth="800.0">
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" height="47.0" layoutX="124.0" layoutY="43.0" stroke="BLACK" strokeType="INSIDE" width="553.0">
                            <fill>
@@ -234,7 +234,7 @@
                   </AnchorPane>
                </children>
             </StackPane>
-            <Button fx:id="foodListButton" layoutX="440.0" layoutY="59.0" mnemonicParsing="false" onAction="#foodListButtonClicked" prefHeight="47.0" prefWidth="180.0" text="Food List">
+            <Button fx:id="foodListButton" layoutX="440.0" layoutY="57.0" mnemonicParsing="false" onAction="#foodListButtonClicked" prefHeight="47.0" prefWidth="180.0" text="Food List">
                <font>
                   <Font name="Corbel" size="18.0" />
                </font>
