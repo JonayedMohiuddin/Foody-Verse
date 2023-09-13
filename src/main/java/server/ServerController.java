@@ -92,6 +92,34 @@ public class ServerController implements Runnable
     // Observable Lists for GUI
     ObservableList<String> clients, restaurants, serverLog, restaurantCategories;
 
+    public void addClientToListView(String client)
+    {
+        Platform.runLater(() -> {
+            clients.add(client);
+        });
+    }
+
+    public void removeClientFromListView(String client)
+    {
+        Platform.runLater(() -> {
+            clients.remove(client);
+        });
+    }
+
+    public void addRestaurantToListView(String restaurant)
+    {
+        Platform.runLater(() -> {
+            restaurants.add(restaurant);
+        });
+    }
+
+    public void removeRestaurantFromListView(String restaurant)
+    {
+        Platform.runLater(() -> {
+            restaurants.remove(restaurant);
+        });
+    }
+
     // Initialization
     public void init()
     {

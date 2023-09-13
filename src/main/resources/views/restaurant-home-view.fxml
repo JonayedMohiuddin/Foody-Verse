@@ -5,10 +5,12 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
@@ -49,12 +51,12 @@
                   </LinearGradient>
                </fill>
             </Rectangle>
-            <Label layoutX="14.0" layoutY="16.0" text="Foody-Verse" textFill="#ff2525">
+            <Label layoutX="14.0" layoutY="11.0" text="Foody-Verse" textFill="#ff2525">
                <font>
                   <Font name="Corbel Bold" size="30.0" />
                </font>
             </Label>
-            <GridPane layoutX="278.0" layoutY="16.0" prefHeight="36.0" prefWidth="242.0">
+            <GridPane layoutX="279.0" layoutY="11.0" prefHeight="36.0" prefWidth="242.0">
                <columnConstraints>
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
                </columnConstraints>
@@ -100,49 +102,143 @@
                   </Label>
                </children>
             </GridPane>
-            <Button layoutX="707.0" layoutY="19.0" mnemonicParsing="false" onAction="#logoutButtonClicked" prefHeight="30.0" prefWidth="66.0" text="Logout">
+            <Button layoutX="713.0" layoutY="14.0" mnemonicParsing="false" onAction="#logoutButtonClicked" prefHeight="30.0" prefWidth="66.0" text="Logout">
                <font>
-                  <Font name="Verdana" size="12.0" />
+                  <Font name="Corbel Bold" size="12.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="pendingOrdersButton" layoutY="71.0" mnemonicParsing="false" onAction="#pendingOrdersButtonClicked" prefHeight="35.0" prefWidth="260.0" text="Pending Orders" textAlignment="CENTER">
+            <Button fx:id="pendingOrdersButton" layoutY="59.0" mnemonicParsing="false" onAction="#pendingOrdersButtonClicked" prefHeight="47.0" prefWidth="260.0" text="Pending Orders" textAlignment="CENTER">
                <font>
                   <Font name="Corbel" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="foodListButton" layoutX="260.0" layoutY="71.0" mnemonicParsing="false" onAction="#foodListButtonClicked" prefHeight="35.0" prefWidth="180.0" text="Food List">
+            <Button fx:id="historyButton" layoutX="260.0" layoutY="59.0" mnemonicParsing="false" onAction="#historyButtonClicked" prefHeight="47.0" prefWidth="180.0" text="Delivered">
                <font>
                   <Font name="Corbel" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="historyButton" layoutX="440.0" layoutY="71.0" mnemonicParsing="false" onAction="#historyButtonClicked" prefHeight="35.0" prefWidth="180.0" text="History">
+            <Button fx:id="addFoodButton" layoutX="620.0" layoutY="59.0" mnemonicParsing="false" onAction="#addFoodButtonClicked" prefHeight="47.0" prefWidth="180.0" text="Add Food">
                <font>
                   <Font name="Corbel" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="addFoodButton" layoutX="620.0" layoutY="71.0" mnemonicParsing="false" onAction="#addFoodButtonClicked" prefHeight="35.0" prefWidth="180.0" text="Add Food">
-               <font>
-                  <Font name="Corbel" size="18.0" />
-               </font>
-            </Button>
-            <Rectangle fx:id="pendingOrderCountBg" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="200.0" layoutY="79.0" mouseTransparent="true" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-            <Label fx:id="pendingOrderCountLabel" alignment="CENTER" layoutX="200.0" layoutY="79.0" mouseTransparent="true" prefHeight="20.0" prefWidth="30.0" text="999" />
-            <AnchorPane layoutY="106.0" prefHeight="530.0" prefWidth="800.0">
+            <Rectangle fx:id="pendingOrderCountBg" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="206.0" layoutY="73.0" mouseTransparent="true" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+            <Label fx:id="pendingOrderCountLabel" alignment="CENTER" layoutX="206.0" layoutY="73.0" mouseTransparent="true" prefHeight="20.0" prefWidth="30.0" text="999" />
+            <StackPane layoutY="105.19999694824219">
                <children>
-                  <ScrollPane hbarPolicy="NEVER" prefHeight="530.0" prefWidth="800.0">
-                     <content>
-                        <VBox fx:id="displayVBox" prefHeight="530.0" prefWidth="800.0">
-                           <padding>
-                              <Insets left="15.0" right="15.0" top="20.0" />
-                           </padding>
-                        </VBox>
-                     </content>
-                  </ScrollPane>
+                  <AnchorPane prefHeight="530.0" prefWidth="800.0">
+                     <children>
+                        <ScrollPane hbarPolicy="NEVER" prefHeight="530.0" prefWidth="800.0">
+                           <content>
+                              <VBox fx:id="displayVBox" prefHeight="530.0" prefWidth="800.0">
+                                 <padding>
+                                    <Insets left="15.0" right="15.0" top="20.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="addNewFoodMenu" prefHeight="530.0" prefWidth="800.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="47.0" layoutX="124.0" layoutY="43.0" stroke="BLACK" strokeType="INSIDE" width="553.0">
+                           <fill>
+                              <LinearGradient endX="1.0" endY="1.0">
+                                 <stops>
+                                    <Stop>
+                                       <color>
+                                          <Color red="0.25999999046325684" green="0.5683333277702332" blue="1.0" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="1.0">
+                                       <color>
+                                          <Color green="0.4166666567325592" blue="1.0" />
+                                       </color>
+                                    </Stop>
+                                 </stops>
+                              </LinearGradient>
+                           </fill>
+                        </Rectangle>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="379.0" layoutX="124.0" layoutY="43.0" stroke="BLACK" strokeType="INSIDE" width="553.0">
+                           <fill>
+                              <LinearGradient endX="1.0" endY="1.0">
+                                 <stops>
+                                    <Stop>
+                                       <color>
+                                          <Color red="0.6800000071525574" green="0.8506666421890259" blue="1.0" opacity="0.5" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="0.006729475100942127">
+                                       <color>
+                                          <Color red="0.6800000071525574" green="0.8506666421890259" blue="1.0" opacity="0.5" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="1.0">
+                                       <color>
+                                          <Color red="0.25999999046325684" green="0.5683333277702332" blue="1.0" opacity="0.699999988079071" />
+                                       </color>
+                                    </Stop>
+                                 </stops>
+                              </LinearGradient>
+                           </fill>
+                        </Rectangle>
+                        <Button layoutX="350.0" layoutY="366.0" mnemonicParsing="false" onAction="#addMenuAddFoodButtonPressed" text="Add Food">
+                           <font>
+                              <Font name="Corbel Bold" size="18.0" />
+                           </font>
+                        </Button>
+                        <Label layoutX="331.0" layoutY="53.0" text="Add New Food">
+                           <font>
+                              <Font name="Calibri" size="23.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="188.0" layoutY="129.0" text="Name">
+                           <font>
+                              <Font name="Artifakt Element Bold" size="25.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="188.0" layoutY="197.0" text="Price">
+                           <font>
+                              <Font name="Artifakt Element Bold" size="25.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="188.0" layoutY="265.0" text="Category">
+                           <font>
+                              <Font name="Artifakt Element Bold" size="25.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="foodNameTextField" layoutX="322.0" layoutY="129.0" prefHeight="36.0" prefWidth="286.0" promptText="Food Name">
+                           <font>
+                              <Font name="Monospace 821 Bold BT" size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="foodPriceTextField" layoutX="322.0" layoutY="197.0" prefHeight="36.0" prefWidth="286.0" promptText="Food Price">
+                           <font>
+                              <Font name="Monospace 821 Bold BT" size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="foodCategoryField" layoutX="322.0" layoutY="265.0" prefHeight="36.0" prefWidth="286.0" promptText="Food Category">
+                           <font>
+                              <Font name="Monospace 821 Bold BT" size="14.0" />
+                           </font>
+                        </TextField>
+                        <Label layoutX="619.0" layoutY="197.0" text="\$">
+                           <font>
+                              <Font name="Artifakt Element Bold" size="25.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
                </children>
-            </AnchorPane>
+            </StackPane>
+            <Button fx:id="foodListButton" layoutX="440.0" layoutY="59.0" mnemonicParsing="false" onAction="#foodListButtonClicked" prefHeight="47.0" prefWidth="180.0" text="Food List">
+               <font>
+                  <Font name="Corbel" size="18.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </children>

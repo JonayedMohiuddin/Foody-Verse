@@ -21,6 +21,8 @@ public class RestaurantLoginController
     public Label loginMessageText;
     @FXML
     public ImageView loginBGImage;
+    public Button restaurantLoginResetButton;
+    public Button restaurantLoginLoginButton;
     private RestaurantApplication application;
 
     public void setApplication(RestaurantApplication application)

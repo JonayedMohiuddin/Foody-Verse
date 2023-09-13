@@ -1,6 +1,7 @@
 package server;
 
 import dto.*;
+import javafx.application.Platform;
 import models.Food;
 import models.Restaurant;
 
@@ -65,7 +66,7 @@ public class ServerReadThread implements Runnable
                             serverController.getClientMap().put(loginRequest.getUsername(), socketWrapper);
 
                             serverController.updateClientCountDetails();
-                            serverController.clients.add(clientName);
+                            serverController.addClientToListView(clientName);
                             serverController.log(clientName + " logged in.");
                         }
                     }
@@ -121,7 +122,7 @@ public class ServerReadThread implements Runnable
                             serverController.getRestaurantMap().put(loginRequest.getUsername(), socketWrapper);
 
                             serverController.updateClientCountDetails();
-                            serverController.restaurants.add(clientName);
+                            serverController.addRestaurantToListView(clientName);
                             serverController.log(clientName + " logged in.");
                         }
                     }
@@ -189,11 +190,11 @@ public class ServerReadThread implements Runnable
         }
         catch (ClassNotFoundException | IOException e)
         {
+            serverController.log(clientName + " logged out.");
+
             System.out.println(thread.getName() + " : Class : ServerReadThread | Method : run | Error in " + thread.getName() + " while reading/writing from socket");
             System.out.println(thread.getName() + " : Error : " + e.getMessage());
             System.out.println(thread.getName() + " : Closing connection with client");
-
-            serverController.log(clientName + " logged out.");
 
             try
             {
@@ -201,13 +202,13 @@ public class ServerReadThread implements Runnable
                 {
                     serverController.getClientMap().remove(clientName);
                     serverController.updateClientCountDetails();
-                    serverController.clients.remove(clientName);
+                    serverController.removeClientFromListView(clientName);
                 }
                 else if (clientType == ClientType.RESTAURANT)
                 {
                     serverController.getRestaurantMap().remove(clientName);
                     serverController.updateClientCountDetails();
-                    serverController.restaurants.remove(clientName);
+                    serverController.removeRestaurantFromListView(clientName);
                 }
                 socketWrapper.closeConnection();
             }

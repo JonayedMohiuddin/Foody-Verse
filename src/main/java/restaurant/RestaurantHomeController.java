@@ -7,8 +7,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -39,26 +41,17 @@ public class RestaurantHomeController
     public Rectangle pendingOrderCountBg;
 
     public VBox displayVBox;
-
-    // WINDOW
-    public class WindowType
-    {
-        public static final int UNDEFINED = -1;
-        public static final int ORDERS = 0;
-        public static final int FOOD_LIST = 1;
-        public static final int HISTORY = 2;
-        public static final int ADD_FOODS = 3;
-    }
-
+    public TextField foodNameTextField;
+    public TextField foodPriceTextField;
+    public TextField foodCategoryField;
+    public AnchorPane addNewFoodMenu;
     int currentWindow = WindowType.UNDEFINED;
-
-    // ASSETS //
-
     // IMAGES
     Image restaurantImageMedium;
+
+    // ASSETS //
     Image restaurantImageLarge;
     Image foodImage;
-
     // FONTS
     Font robotoBoldFont20;
     Font robotoBoldFont15;
@@ -67,12 +60,12 @@ public class RestaurantHomeController
     Font robotoRegularFont12;
     Font robotoLightFont20;
     Font robotoLightFont15;
-
+    ConcurrentHashMap<String, HashMap<Food, Integer>> pendingOrdersList;
+    int pendingOrderCount = 0;
     // DATABASE
     private Restaurant restaurant;
     private String restaurantName;
-    ConcurrentHashMap<String, HashMap<Food, Integer>> pendingOrdersList;
-    int pendingOrderCount = 0;
+    private RestaurantApplication application;
 
     public void init()
     {
@@ -127,6 +120,8 @@ public class RestaurantHomeController
 
         updatePendingOrderNotification();
 
+        addNewFoodMenu.setVisible(false);
+
         new RestaurantReadThread(application, this);
     }
 
@@ -135,6 +130,7 @@ public class RestaurantHomeController
         System.out.println("Switching to window " + window);
         if (currentWindow == window) return;
 
+        // Unselect previous window button -> UNCLICK IT
         if (currentWindow != WindowType.UNDEFINED)
         {
             if (currentWindow == WindowType.ORDERS)
@@ -152,9 +148,13 @@ public class RestaurantHomeController
             else if (currentWindow == WindowType.ADD_FOODS)
             {
                 addFoodButton.setStyle("");
+                // Clear add food menu
+                addNewFoodMenu.setVisible(false);
             }
         }
 
+        // Select new window button -> CLICK IT
+        // And change window
         if (window == WindowType.ORDERS)
         {
             pendingOrdersButton.setStyle("-fx-background-color: #c7a84a; -fx-text-fill: #000000;");
@@ -178,7 +178,9 @@ public class RestaurantHomeController
         else if (window == WindowType.ADD_FOODS)
         {
             addFoodButton.setStyle("-fx-background-color: #c7a84a; -fx-text-fill: #000000;");
-            displayVBox.setSpacing(10);
+            displayVBox.getChildren().clear();
+            addNewFoodMenu.setVisible(true);
+            resetAddMenuFieldsStyle();
         }
 
         currentWindow = window;
@@ -202,6 +204,54 @@ public class RestaurantHomeController
     public void pendingOrdersButtonClicked(ActionEvent event)
     {
         switchInternalWindow(WindowType.ORDERS);
+    }
+
+    public void resetAddMenuFieldsStyle()
+    {
+        foodNameTextField.setStyle("");
+        foodCategoryField.setStyle("");
+        foodPriceTextField.setStyle("");
+    }
+
+    public void addMenuAddFoodButtonPressed(ActionEvent event)
+    {
+        resetAddMenuFieldsStyle();
+
+        String foodName = foodNameTextField.getText();
+        String foodCategory = foodCategoryField.getText();
+        String foodPrice = foodPriceTextField.getText();
+
+        if (foodName.isEmpty() || foodCategory.isEmpty() || foodPrice.isEmpty())
+        {
+            if (foodName.isEmpty())
+            {
+                foodNameTextField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
+            }
+            if (foodCategory.isEmpty())
+            {
+                foodCategoryField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
+            }
+            if (foodPrice.isEmpty())
+            {
+                foodPriceTextField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
+            }
+            return;
+        }
+        try
+        {
+            double price = Double.parseDouble(foodPrice);
+        }
+        catch (Exception e)
+        {
+            foodPriceTextField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
+            return;
+        }
+
+        Food food = new Food(restaurant.getId(), foodName, foodCategory, Double.parseDouble(foodPrice));
+        application.getRestaurant().addFood(food);
+
+        System.out.println("Food added to restaurant");
+        food.print(restaurantName);
     }
 
     public void updatePendingOrdersList(String username, HashMap<Food, Integer> foodCountMap)
@@ -498,10 +548,18 @@ public class RestaurantHomeController
 //        rowBackgroundRect.setFill(javafx.scene.paint.Color.valueOf(new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE, new Stop(0, Color.RED), new Stop(1, Color.BLUE))
     }
 
-    private RestaurantApplication application;
-
     public void setApplication(RestaurantApplication application)
     {
         this.application = application;
+    }
+
+    // WINDOW
+    public static class WindowType
+    {
+        public static final int UNDEFINED = -1;
+        public static final int ORDERS = 0;
+        public static final int FOOD_LIST = 1;
+        public static final int HISTORY = 2;
+        public static final int ADD_FOODS = 3;
     }
 }
