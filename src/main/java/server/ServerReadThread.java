@@ -1,7 +1,6 @@
 package server;
 
 import dto.*;
-import javafx.application.Platform;
 import models.Food;
 import models.Restaurant;
 
@@ -17,6 +16,13 @@ public class ServerReadThread implements Runnable
     String clientName;
     int restaurantId; // if client is a restaurant
     int clientType;
+
+    static class ClientType
+    {
+        public static final int UNDEFINED = -1;
+        public static final int CLIENT = 0;
+        public static final int RESTAURANT = 1;
+    }
 
     ServerReadThread(ServerController serverController, SocketWrapper socketWrapper)
     {
@@ -186,6 +192,14 @@ public class ServerReadThread implements Runnable
                         }
                     }
                 }
+                // FOOD ADD REQUEST RECEIVED -> ADD THE FOOD TO THE RESTAURANT
+                else if(obj instanceof FoodAddRequestDTO foodAddRequestDTO)
+                {
+                    serverController.log("Food " + foodAddRequestDTO.getFood().getName() + " added to restaurant " + clientName);
+                    System.out.println(thread.getName() + " : " + foodAddRequestDTO);
+
+                    serverController.getRestaurantList().get(restaurantId).getFoodList().add(foodAddRequestDTO.getFood());
+                }
             }
         }
         catch (ClassNotFoundException | IOException e)
@@ -218,12 +232,5 @@ public class ServerReadThread implements Runnable
                 System.err.println("Error : " + ex.getMessage());
             }
         }
-    }
-
-    class ClientType
-    {
-        public static final int UNDEFINED = -1;
-        public static final int CLIENT = 0;
-        public static final int RESTAURANT = 1;
     }
 }

@@ -9,8 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class FileOperations
 {
-    private static final String RESTAURANTS_FILE_NAME = "src/main/resources/database/restaurants.txt";
-    private static final String FOODS_FILE_NAME = "src/main/resources/database/foods.txt";
+    private static final String RESTAURANTS_FILE_NAME = "src/main/resources/database/restaurants-info.txt";
+    private static final String FOODS_FILE_NAME = "src/main/resources/database/foods-info.txt";
     private static final String USERS_INFO_FILE_NAME = "src/main/resources/database/users-info.txt";
     private static final String RESTAURANTS_INFO_FILE_NAME = "src/main/resources/database/restaurants-info.txt";
 

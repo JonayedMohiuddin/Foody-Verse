@@ -2,7 +2,7 @@ package restaurant;
 
 import dto.DatabaseDTO;
 import dto.DatabaseRequestDTO;
-import dto.FoodAddDTO;
+import dto.FoodAddRequestDTO;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -256,7 +256,7 @@ public class RestaurantHomeController
 
         try
         {
-            application.getSocketWrapper().write(new FoodAddDTO(restaurant, food));
+            application.getSocketWrapper().write(new FoodAddRequestDTO(food));
         }
         catch (IOException e)
         {

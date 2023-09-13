@@ -66,6 +66,7 @@
             <Font name="Corbel Bold" size="16.0" />
          </font>
       </Button>
+      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#b2c9ff5b" height="60.0" layoutX="50.0" layoutY="65.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="253.0" />
       <Label layoutX="86.0" layoutY="101.0" text="Registered Restaurants">
          <font>
             <Font name="Calibri" size="16.0" />
@@ -92,7 +93,7 @@
                         <Font name="Calibri" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="60.0" layoutY="270.0" text="Server Log (Latest on top)">
+                  <Label layoutX="60.0" layoutY="270.0" text="Server Log ">
                      <font>
                         <Font name="Calibri" size="15.0" />
                      </font>
@@ -143,6 +144,9 @@
                      </image>
                   </ImageView>
                   <ListView fx:id="restaurantListView" layoutX="266.0" layoutY="45.0" prefHeight="214.0" prefWidth="210.0" />
+                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#8efa7040" height="32.0" layoutX="15.0" layoutY="7.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="222.0" />
+                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#8efa7040" height="32.0" layoutX="260.0" layoutY="7.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="222.0" />
+                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#8efa7040" height="32.0" layoutX="15.0" layoutY="263.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="117.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="addRestaurantMenu" prefHeight="200.0" prefWidth="200.0" visible="false">

@@ -153,12 +153,35 @@ public class ServerController implements Runnable
 
         addRestaurantMenu.setVisible(false);
 
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            shutDownServerCleanup();
+        }));
+
         thread = new Thread(this, "Server Thread");
         thread.start();
     }
 
-    public void shutdownServer(ActionEvent actionEvent)
+    public void shutDownServerCleanup()
     {
+        try
+        {
+            FileOperations.writeRestaurants(restaurantList);
+        }
+        catch (IOException e)
+        {
+            System.out.println("Class : ServerController | Method : shutDownServer | While writing restaurants to file");
+            System.out.println("Error : " + e.getMessage());
+        }
+        try
+        {
+            FileOperations.writeUserinfo(userInfos);
+        }
+        catch (IOException e)
+        {
+            System.out.println("Class : ServerController | Method : shutDownServer | While writing userinfo to file");
+            System.out.println("Error : " + e.getMessage());
+        }
+
         try
         {
             serverSocket.close();
@@ -171,6 +194,11 @@ public class ServerController implements Runnable
             System.err.println("Class : ServerController | Method : shutdownServerButtonClicked");
             System.err.println("Error : " + e.getMessage());
         }
+    }
+
+    public void shutdownServer(ActionEvent actionEvent)
+    {
+        shutDownServerCleanup();
     }
 
     public void addRestaurantButtonClicked(ActionEvent actionEvent)
