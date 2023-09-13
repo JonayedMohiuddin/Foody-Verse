@@ -1,6 +1,5 @@
 package restaurant;
 
-import dto.ClientToServerCartOrderDTO;
 import dto.ServerToRestaurantCartOrderDTO;
 import javafx.application.Platform;
 import models.Food;
@@ -40,9 +39,8 @@ public class RestaurantReadThread implements Runnable
                 System.out.println(threadName + " : Reading from socket");
                 object = socketWrapper.read();
 
-                if(object instanceof ServerToRestaurantCartOrderDTO)
+                if (object instanceof ServerToRestaurantCartOrderDTO serverToRestaurantCartOrderDTO)
                 {
-                    ServerToRestaurantCartOrderDTO serverToRestaurantCartOrderDTO = (ServerToRestaurantCartOrderDTO) object;
                     String username = serverToRestaurantCartOrderDTO.getUsername();
                     HashMap<Food, Integer> foodCountMap = serverToRestaurantCartOrderDTO.getCartFoodList();
 
@@ -64,8 +62,7 @@ public class RestaurantReadThread implements Runnable
         {
             System.out.println("Class : RestaurantReadThread | Method : run | While reading from socket");
             System.out.println(e.getMessage());
-        }
-        finally
+        } finally
         {
             try
             {

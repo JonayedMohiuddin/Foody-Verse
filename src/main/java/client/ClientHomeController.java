@@ -1,7 +1,7 @@
 package client;
 
-import dto.DatabaseRequestDTO;
 import dto.DatabaseDTO;
+import dto.DatabaseRequestDTO;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -114,13 +114,14 @@ public class ClientHomeController
         robotoRegularFont20 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Regular.ttf"), 20);
 
         // REQUEST FOR DATABASE
-        if(isDatabaseLoaded)
+        if (isDatabaseLoaded)
         {
             DatabaseRequestDTO databaseRequestDTO = new DatabaseRequestDTO(DatabaseRequestDTO.RequestType.RESTAURANT_LIST);
             try
             {
                 application.getSocketWrapper().write(databaseRequestDTO);
-            } catch (IOException e)
+            }
+            catch (IOException e)
             {
                 System.err.println("Class : HomePageController | Method : init | While sending restaurant list request to server");
                 System.err.println("Error : " + e.getMessage());
@@ -130,9 +131,8 @@ public class ClientHomeController
             try
             {
                 Object obj = application.getSocketWrapper().read();
-                if (obj instanceof DatabaseDTO)
+                if (obj instanceof DatabaseDTO databaseDTO)
                 {
-                    DatabaseDTO databaseDTO = (DatabaseDTO) obj;
                     restaurantList = databaseDTO.getRestaurantList();
                     foodList = generateFoodList();
                     application.setRestaurantList(restaurantList);
@@ -144,7 +144,8 @@ public class ClientHomeController
                     System.err.println("Class : HomePageController | Method : init | While reading restaurant list from server");
                     System.err.println("Expected Restaurant List DTO but got something else");
                 }
-            } catch (IOException | ClassNotFoundException e)
+            }
+            catch (IOException | ClassNotFoundException e)
             {
                 System.err.println("Class : HomePageController | Method : init | While reading restaurant list from server");
                 System.err.println("Error : " + e.getMessage());
@@ -276,11 +277,10 @@ public class ClientHomeController
 
     public void updateCartNotification()
     {
-        if(cartTotalItems == 0)
+        if (cartTotalItems == 0)
         {
             cartItemCountBg.setVisible(false);
             cartItemCountLabel.setVisible(false);
-            return;
         }
         else
         {
@@ -697,7 +697,8 @@ public class ClientHomeController
             rangeSearchMinField.setStyle("");
             min = Double.parseDouble(rangeSearchMinField.getText());
             range.add(min);
-        } catch (NumberFormatException e)
+        }
+        catch (NumberFormatException e)
         {
             System.out.println("Class : HomePageController | Method : search | While parsing rating range, min is not a number");
             rangeSearchMinField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
@@ -708,7 +709,8 @@ public class ClientHomeController
             rangeSearchMaxField.setStyle("");
             max = Double.parseDouble(rangeSearchMaxField.getText());
             range.add(max);
-        } catch (NumberFormatException e)
+        }
+        catch (NumberFormatException e)
         {
             System.out.println("Class : HomePageController | Method : search | While parsing rating range, max is not a number");
             rangeSearchMaxField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");

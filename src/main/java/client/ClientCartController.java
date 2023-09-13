@@ -133,9 +133,9 @@ public class ClientCartController
                 foodCount.put(food, foodCount.get(food) + 1);
             }
         }
-        foodCountLabel.setText("X " + String.valueOf(application.cartFoodList.get(food.getRestaurantId()).get(food)));
+        foodCountLabel.setText("X " + application.cartFoodList.get(food.getRestaurantId()).get(food));
         String formattedFoodPrice = decimalFormat.format(food.getPrice() * application.cartFoodList.get(food.getRestaurantId()).get(food));
-        foodPriceLabel.setText(String.valueOf(formattedFoodPrice) + " $");
+        foodPriceLabel.setText(formattedFoodPrice + " $");
     }
 
     private void cartItemRemoveButtonClicked(Food food, Label foodCountLabel, Label foodPriceLabel)
@@ -166,9 +166,9 @@ public class ClientCartController
             }
         }
 
-        foodCountLabel.setText("X " + String.valueOf(application.cartFoodList.get(food.getRestaurantId()).get(food)));
+        foodCountLabel.setText("X " + application.cartFoodList.get(food.getRestaurantId()).get(food));
         String formattedFoodPrice = decimalFormat.format(food.getPrice() * application.cartFoodList.get(food.getRestaurantId()).get(food));
-        foodPriceLabel.setText(String.valueOf(formattedFoodPrice) + " $");
+        foodPriceLabel.setText(formattedFoodPrice + " $");
     }
 
     public void addFoodToListView(Food food, int foodCount)
@@ -227,13 +227,13 @@ public class ClientCartController
 
         foodCountAndPriceContainer.setPadding(new Insets(0, 0, 0, 0)); // top right bottom left
 
-        Label foodCountLabel = new Label("X " + String.valueOf(foodCount));
+        Label foodCountLabel = new Label("X " + foodCount);
         foodCountLabel.setFont(robotoBoldFont15);
         foodCountLabel.setPadding(new Insets(0, 0, 0, 0)); // top right bottom left
         foodCountLabel.setAlignment(Pos.CENTER);
         foodCountLabel.setMinWidth(70);
 
-        Label foodPriceLabel = new Label(String.valueOf(food.getPrice() * foodCount) + " $");
+        Label foodPriceLabel = new Label(food.getPrice() * foodCount + " $");
         foodPriceLabel.setFont(robotoBoldFont15);
         foodPriceLabel.setPadding(new Insets(0, 0, 0, 0)); // top right bottom left
         foodPriceLabel.setAlignment(Pos.CENTER);
@@ -286,7 +286,7 @@ public class ClientCartController
         VBox totalItemsAndPriceContainer = new VBox();
 
         HBox totalItemsContainer = new HBox();
-        Label totalItemsLabel = new Label("Total items : " + String.valueOf(cartTotalItems));
+        Label totalItemsLabel = new Label("Total items : " + cartTotalItems);
         totalItemsLabel.setFont(robotoBoldFont15);
         totalItemsLabel.setMinWidth(100);
         totalItemsLabel.setPadding(new Insets(0, 0, 0, 0)); // top right bottom left

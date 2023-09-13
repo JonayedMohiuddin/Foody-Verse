@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class RestaurantLoginRequestDTO implements Serializable
 {
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 
     public RestaurantLoginRequestDTO(String username, String password)
     {

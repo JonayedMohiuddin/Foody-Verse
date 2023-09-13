@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class LoginResponseDTO implements Serializable
 {
-    private boolean status;
-    private String message;
+    private final boolean status;
+    private final String message;
 //    private UserProfileDTO userProfileDTO; // Optional : Might add later.
 
     public LoginResponseDTO(boolean status, String message)

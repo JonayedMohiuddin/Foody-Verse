@@ -25,7 +25,8 @@ public class FileOperations
             {
                 restaurant.print();
             }
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
@@ -114,7 +115,7 @@ public class FileOperations
             String line = reader.readLine();
             if (line == null) break;
             String[] tokens = line.split(",");
-            if(tokens.length != 4)
+            if (tokens.length != 4)
             {
                 System.err.println("Error in reading foods. Line : " + line);
                 continue;

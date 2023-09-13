@@ -43,8 +43,9 @@ public class DatabaseDTO implements Serializable
     @Override
     public String toString()
     {
-        if(singleRestaurant == null) return "RestaurantListDTO{" + "restaurantList=[Items=" + restaurantList.size() + "]}";
-        if(restaurantList == null) return "RestaurantListDTO{" + "singleRestaurant=" + singleRestaurant + '}';
+        if (singleRestaurant == null)
+            return "RestaurantListDTO{" + "restaurantList=[Items=" + restaurantList.size() + "]}";
+        if (restaurantList == null) return "RestaurantListDTO{" + "singleRestaurant=" + singleRestaurant + '}';
         return null;
     }
 }

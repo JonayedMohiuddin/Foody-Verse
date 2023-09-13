@@ -1,16 +1,17 @@
 package restaurant;
 
-import dto.DatabaseRequestDTO;
 import dto.DatabaseDTO;
+import dto.DatabaseRequestDTO;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -48,6 +49,7 @@ public class RestaurantHomeController
         public static final int HISTORY = 2;
         public static final int ADD_FOODS = 3;
     }
+
     int currentWindow = WindowType.UNDEFINED;
 
     // ASSETS //
@@ -204,12 +206,12 @@ public class RestaurantHomeController
 
     public void updatePendingOrdersList(String username, HashMap<Food, Integer> foodCountMap)
     {
-        if(pendingOrdersList.containsKey(username))
+        if (pendingOrdersList.containsKey(username))
         {
             HashMap<Food, Integer> existingFoodCountMap = pendingOrdersList.get(username);
             for (Food food : foodCountMap.keySet())
             {
-                if(existingFoodCountMap.containsKey(food))
+                if (existingFoodCountMap.containsKey(food))
                 {
                     existingFoodCountMap.put(food, existingFoodCountMap.get(food) + foodCountMap.get(food));
                 }
@@ -235,7 +237,7 @@ public class RestaurantHomeController
         }
         updatePendingOrderNotification();
 
-        if(currentWindow == WindowType.ORDERS)
+        if (currentWindow == WindowType.ORDERS)
         {
             displayVBox.getChildren().clear();
             fillPendingRequest();
@@ -244,7 +246,7 @@ public class RestaurantHomeController
 
     public void updatePendingOrderNotification()
     {
-        if(pendingOrderCount == 0)
+        if (pendingOrderCount == 0)
         {
             pendingOrderCountLabel.setVisible(false);
             pendingOrderCountBg.setVisible(false);
@@ -372,7 +374,6 @@ public class RestaurantHomeController
         rowStackPane.getChildren().addAll(rowBackgroundRect, rowHBoxContent);
 
 
-
         row.getChildren().add(rowStackPane);
         displayVBox.getChildren().add(row);
 
@@ -498,6 +499,7 @@ public class RestaurantHomeController
     }
 
     private RestaurantApplication application;
+
     public void setApplication(RestaurantApplication application)
     {
         this.application = application;

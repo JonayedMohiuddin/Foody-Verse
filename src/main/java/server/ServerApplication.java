@@ -12,11 +12,6 @@ public class ServerApplication extends Application
 {
     private Stage stage;
 
-    public Stage getStage()
-    {
-        return stage;
-    }
-
     @Override
     public void start(Stage primaryStage) throws IOException
     {

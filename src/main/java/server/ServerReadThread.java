@@ -105,7 +105,7 @@ public class ServerReadThread implements Runnable
                             }
 
                             // CHECK IF RESTAURANT ID FOUND
-                            if(restaurantId == -1)
+                            if (restaurantId == -1)
                             {
                                 System.out.println(thread.getName() + " : Restaurant ID not found");
                                 socketWrapper.write(new LoginResponseDTO(false, "Authentication failed. Restaurant ID not found."));
@@ -126,9 +126,8 @@ public class ServerReadThread implements Runnable
                     }
                 }
                 // CLIENT DATABASE REQUEST RECEIVED
-                else if (obj instanceof DatabaseRequestDTO)
+                else if (obj instanceof DatabaseRequestDTO databaseRequestDTO)
                 {
-                    DatabaseRequestDTO databaseRequestDTO = (DatabaseRequestDTO) obj;
                     System.out.println(thread.getName() + " : " + databaseRequestDTO);
 
                     if (databaseRequestDTO.getRequestType() == DatabaseRequestDTO.RequestType.RESTAURANT_LIST)
@@ -151,9 +150,8 @@ public class ServerReadThread implements Runnable
                     }
                 }
                 // CLIENT TO SERVER CART ORDER RECEIVED -> SEND THE ORDER TO THE RESTAURANT
-                else if(obj instanceof ClientToServerCartOrderDTO)
+                else if (obj instanceof ClientToServerCartOrderDTO cartOrderDTO)
                 {
-                    ClientToServerCartOrderDTO cartOrderDTO = (ClientToServerCartOrderDTO) obj;
 
                     System.out.println(thread.getName() + " : " + cartOrderDTO);
                     ConcurrentHashMap<Integer, HashMap<Food, Integer>> cartFoodList = cartOrderDTO.getCartFoodList();
@@ -176,7 +174,7 @@ public class ServerReadThread implements Runnable
                         String restaurantName = serverController.getRestaurantList().get(restaurantId).getName();
                         ServerToRestaurantCartOrderDTO serverToRestaurantCartOrderDTO = new ServerToRestaurantCartOrderDTO(clientName, cartFoodList.get(restaurantId));
 
-                        if(serverController.getRestaurantMap().containsKey(restaurantName))
+                        if (serverController.getRestaurantMap().containsKey(restaurantName))
                         {
                             serverController.getRestaurantMap().get(restaurantName).write(serverToRestaurantCartOrderDTO);
                             System.out.println(thread.getName() + " : Order sent to restaurant " + restaurantName);

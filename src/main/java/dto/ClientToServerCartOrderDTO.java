@@ -59,6 +59,6 @@ public class ClientToServerCartOrderDTO implements Serializable
     @Override
     public String toString()
     {
-        return "ClientCartOrderDTO{" + "totalItems=" + totalItems + ", totalPrice=" + totalPrice +  ", cartFoodList=" + cartFoodList.size() +'}';
+        return "ClientCartOrderDTO{" + "totalItems=" + totalItems + ", totalPrice=" + totalPrice + ", cartFoodList=" + cartFoodList.size() + '}';
     }
 }

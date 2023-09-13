@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class StopDTO implements Serializable
 {
-    private boolean status;
+    private final boolean status;
 
     public StopDTO(boolean status)
     {

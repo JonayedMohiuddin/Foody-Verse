@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import models.Restaurant;
 import util.FileOperations;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -38,24 +39,33 @@ public class ServerController implements Runnable
     // User and Restaurant Infos
     private ConcurrentHashMap<String, String> userInfos;
     private ConcurrentHashMap<String, String> restaurantInfos;
+
     // Getters and Setters
     public ServerSocket getServerSocket()
     {
         return serverSocket;
     }
+
     public ConcurrentHashMap<String, SocketWrapper> getClientMap()
     {
         return clientMap;
     }
-    public ConcurrentHashMap<String, SocketWrapper> getRestaurantMap() { return restaurantMap; }
+
+    public ConcurrentHashMap<String, SocketWrapper> getRestaurantMap()
+    {
+        return restaurantMap;
+    }
+
     public ConcurrentHashMap<Integer, Restaurant> getRestaurantList()
     {
         return restaurantList;
     }
+
     public ConcurrentHashMap<String, String> getUserInfos()
     {
         return userInfos;
     }
+
     public ConcurrentHashMap<String, String> getRestaurantInfos()
     {
         return restaurantInfos;
@@ -98,19 +108,23 @@ public class ServerController implements Runnable
             serverStatusText.setStyle("-fx-text-fill: red");
             updateLastOperationText("Server closed successfully.");
             System.out.println("Server closed successfully.");
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             System.err.println("Class : ServerController | Method : shutdownServerButtonClicked");
             System.err.println("Error : " + e.getMessage());
         }
     }
+
     public void addRestaurantButtonClicked(ActionEvent actionEvent)
     {
     }
+
     public void updateLastOperationText(String lastOperation)
     {
         lastOperationText.setText("Last successful operation : " + lastOperation);
     }
+
     public void updateIPAdrressText()
     {
         try
@@ -118,12 +132,14 @@ public class ServerController implements Runnable
             InetAddress localAddress = InetAddress.getLocalHost();
             int serverPort = serverSocket.getLocalPort();
             ipAddressText.setText("IP Address : " + localAddress.getHostAddress());
-        } catch (UnknownHostException e)
+        }
+        catch (UnknownHostException e)
         {
             System.err.println("Class : ServerController | Method : getIPAddressAndPort");
             ipAddressText.setText("IP Address : ERROR");
         }
     }
+
     public void updatePortText()
     {
         portText.setText("Port : " + serverPort);

@@ -10,7 +10,7 @@ public class DatabaseRequestDTO implements Serializable
         SINGLE_RESTAURANT,
     }
 
-    private RequestType requestType;
+    private final RequestType requestType;
 
     public DatabaseRequestDTO(RequestType requestType)
     {

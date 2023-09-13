@@ -55,9 +55,8 @@ public class RestaurantLoginController
         try
         {
             Object obj = application.getSocketWrapper().read();
-            if (obj instanceof LoginResponseDTO)
+            if (obj instanceof LoginResponseDTO loginResponseDTO)
             {
-                LoginResponseDTO loginResponseDTO = (LoginResponseDTO) obj;
                 if (loginResponseDTO.getStatus())
                 {
                     System.out.println("Login Successful.");

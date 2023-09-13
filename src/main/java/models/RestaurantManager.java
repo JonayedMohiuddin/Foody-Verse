@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class RestaurantManager
 {
-    private ArrayList<Restaurant> restaurantList;
+    private final ArrayList<Restaurant> restaurantList;
     private int uniqueId;
 
     public RestaurantManager()
