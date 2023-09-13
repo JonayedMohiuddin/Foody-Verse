@@ -63,7 +63,10 @@ public class ServerReadThread implements Runnable
                             thread.setName("SRT C " + clientName);
 
                             serverController.getClientMap().put(loginRequest.getUsername(), socketWrapper);
-                            serverController.updateLastOperationTextThreadSafe("Client " + loginRequest.getUsername() + " logged in.");
+
+                            serverController.updateClientCountDetails();
+                            serverController.clients.add(clientName);
+                            serverController.log(clientName + " logged in.");
                         }
                     }
                     else
@@ -116,7 +119,10 @@ public class ServerReadThread implements Runnable
                             socketWrapper.write(new LoginResponseDTO(true, "Authentication Successful"));
 
                             serverController.getRestaurantMap().put(loginRequest.getUsername(), socketWrapper);
-                            serverController.updateLastOperationTextThreadSafe("Restaurant " + loginRequest.getUsername() + " logged in.");
+
+                            serverController.updateClientCountDetails();
+                            serverController.restaurants.add(clientName);
+                            serverController.log(clientName + " logged in.");
                         }
                     }
                     else
@@ -129,6 +135,7 @@ public class ServerReadThread implements Runnable
                 else if (obj instanceof DatabaseRequestDTO databaseRequestDTO)
                 {
                     System.out.println(thread.getName() + " : " + databaseRequestDTO);
+                    serverController.log(clientName + " requested database");
 
                     if (databaseRequestDTO.getRequestType() == DatabaseRequestDTO.RequestType.RESTAURANT_LIST)
                     {
@@ -136,6 +143,7 @@ public class ServerReadThread implements Runnable
                         DatabaseDTO databaseDTO = new DatabaseDTO(serverController.getRestaurantList());
                         socketWrapper.write(databaseDTO);
                         System.out.println(thread.getName() + " : Database response sent. " + databaseDTO);
+                        serverController.log(clientName + " received database");
                     }
                     else if (databaseRequestDTO.getRequestType() == DatabaseRequestDTO.RequestType.SINGLE_RESTAURANT)
                     {
@@ -143,6 +151,7 @@ public class ServerReadThread implements Runnable
                         DatabaseDTO databaseDTO = new DatabaseDTO(serverController.getRestaurantList().get(restaurantId));
                         socketWrapper.write(databaseDTO);
                         System.out.println(thread.getName() + " : Database response sent. " + databaseDTO);
+                        serverController.log(clientName + " received database");
                     }
                     else
                     {
@@ -152,22 +161,9 @@ public class ServerReadThread implements Runnable
                 // CLIENT TO SERVER CART ORDER RECEIVED -> SEND THE ORDER TO THE RESTAURANT
                 else if (obj instanceof ClientToServerCartOrderDTO cartOrderDTO)
                 {
-
+                    serverController.log(clientName + " sent order");
                     System.out.println(thread.getName() + " : " + cartOrderDTO);
                     ConcurrentHashMap<Integer, HashMap<Food, Integer>> cartFoodList = cartOrderDTO.getCartFoodList();
-
-                    System.out.println();
-                    System.out.println(thread.getName() + " : Cart Food List");
-                    for (Integer restaurantId : cartFoodList.keySet())
-                    {
-                        String restaurantName = serverController.getRestaurantList().get(restaurantId).getName();
-                        System.out.println(thread.getName() + " : Restaurant : " + restaurantName);
-                        for (Food food : cartFoodList.get(restaurantId).keySet())
-                        {
-                            System.out.println(thread.getName() + " : " + food.getName() + " : " + cartFoodList.get(restaurantId).get(food));
-                        }
-                    }
-                    System.out.println();
 
                     for (Integer restaurantId : cartFoodList.keySet())
                     {
@@ -176,6 +172,7 @@ public class ServerReadThread implements Runnable
 
                         if (serverController.getRestaurantMap().containsKey(restaurantName))
                         {
+                            serverController.log("Sending order to restaurant " + restaurantName);
                             serverController.getRestaurantMap().get(restaurantName).write(serverToRestaurantCartOrderDTO);
                             System.out.println(thread.getName() + " : Order sent to restaurant " + restaurantName);
                             System.out.println(thread.getName() + " : " + serverToRestaurantCartOrderDTO);
@@ -183,6 +180,7 @@ public class ServerReadThread implements Runnable
                         }
                         else
                         {
+                            serverController.log("Restaurant " + restaurantName + " is offline. Could not send order.");
                             System.out.println(thread.getName() + " : Restaurant " + restaurantName + " is offline");
                         }
                     }
@@ -195,15 +193,21 @@ public class ServerReadThread implements Runnable
             System.out.println(thread.getName() + " : Error : " + e.getMessage());
             System.out.println(thread.getName() + " : Closing connection with client");
 
+            serverController.log(clientName + " logged out.");
+
             try
             {
                 if (clientType == ClientType.CLIENT)
                 {
                     serverController.getClientMap().remove(clientName);
+                    serverController.updateClientCountDetails();
+                    serverController.clients.remove(clientName);
                 }
                 else if (clientType == ClientType.RESTAURANT)
                 {
                     serverController.getRestaurantMap().remove(clientName);
+                    serverController.updateClientCountDetails();
+                    serverController.restaurants.remove(clientName);
                 }
                 socketWrapper.closeConnection();
             }

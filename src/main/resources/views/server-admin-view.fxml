@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -49,18 +50,18 @@
             </LinearGradient>
          </fill>
       </Rectangle>
-      <Label layoutX="16.0" layoutY="10.0" text="Foody-Verse" textFill="#ff2525" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="10.0">
+      <Label layoutX="18.0" layoutY="7.0" text="Foody-Verse" textFill="#ff2525" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="7.0">
          <font>
-            <Font name="Corbel Bold" size="25.0" />
+            <Font name="Corbel Bold" size="16.0" />
          </font>
       </Label>
-      <Button layoutX="367.0" layoutY="12.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="118.0" text="Shutdown Server" textFill="#f70000">
+      <Button layoutX="16.0" layoutY="28.0" mnemonicParsing="false" onAction="#shutdownServer" prefHeight="26.0" prefWidth="118.0" text="Shutdown Server" textFill="#b12802">
          <font>
             <Font name="Corbel Bold" size="13.0" />
          </font>
       </Button>
-      <Circle fill="#0cef41" layoutX="210.0" layoutY="30.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
-      <Button layoutX="343.0" layoutY="72.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="141.0" text="Add Restaurant" textFill="#2200ff">
+      <Circle fx:id="serverStatusCircle" fill="#0cef41" layoutX="127.0" layoutY="17.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+      <Button layoutX="343.0" layoutY="72.0" mnemonicParsing="false" onAction="#addRestaurantButtonClicked" prefHeight="42.0" prefWidth="141.0" text="Add Restaurant" textFill="#2200ff">
          <font>
             <Font name="Corbel Bold" size="16.0" />
          </font>
@@ -70,7 +71,7 @@
             <Font name="Calibri" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="259.0" layoutY="96.0" text="999">
+      <Label fx:id="registeredRestaurantLabel" layoutX="259.0" layoutY="96.0" text="999">
          <font>
             <Font name="Monospaced Regular" size="20.0" />
          </font>
@@ -79,10 +80,9 @@
          <children>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <ListView layoutX="30.0" layoutY="45.0" prefHeight="214.0" prefWidth="200.0" />
-                  <ListView layoutX="30.0" layoutY="298.0" prefHeight="150.0" prefWidth="436.0" />
-                  <ListView layoutX="266.0" layoutY="45.0" prefHeight="214.0" prefWidth="200.0" />
-                  <Label layoutX="59.0" layoutY="14.0" text="Clients Online">
+                  <ListView fx:id="clientListView" layoutX="20.0" layoutY="45.0" prefHeight="214.0" prefWidth="210.0" />
+                  <ListView fx:id="serverLogListView" layoutX="20.0" layoutY="298.0" prefHeight="150.0" prefWidth="458.0" />
+                  <Label layoutX="55.0" layoutY="14.0" text="Clients Online">
                      <font>
                         <Font name="Calibri" size="15.0" />
                      </font>
@@ -92,7 +92,7 @@
                         <Font name="Calibri" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="69.0" layoutY="270.0" text="Server Log">
+                  <Label layoutX="60.0" layoutY="270.0" text="Server Log (Latest on top)">
                      <font>
                         <Font name="Calibri" size="15.0" />
                      </font>
@@ -112,7 +112,7 @@
                         </Label>
                      </children>
                   </GridPane>
-                  <GridPane layoutX="419.0" layoutY="8.0" prefHeight="30.0" prefWidth="46.0">
+                  <GridPane layoutX="429.0" layoutY="8.0" prefHeight="30.0" prefWidth="46.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                      </columnConstraints>
@@ -127,7 +127,7 @@
                         </Label>
                      </children>
                   </GridPane>
-                  <ImageView fitHeight="23.0" fitWidth="30.0" layoutX="30.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="23.0" fitWidth="30.0" layoutX="22.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/user-icon.png" />
                      </image>
@@ -137,11 +137,12 @@
                         <Image url="@../assets/restaurant-icon.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="23.0" fitWidth="30.0" layoutX="33.0" layoutY="268.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="23.0" fitWidth="30.0" layoutX="22.0" layoutY="268.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/log-icon.png" />
                      </image>
                   </ImageView>
+                  <ListView fx:id="restaurantListView" layoutX="266.0" layoutY="45.0" prefHeight="214.0" prefWidth="210.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="addRestaurantMenu" prefHeight="200.0" prefWidth="200.0" visible="false">
@@ -208,43 +209,43 @@
                         <Font name="Monospace 821 Bold BT" size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="60.0" layoutY="61.0" text="Name">
-                     <font>
-                        <Font name="Calibri Bold" size="22.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="addRestaurantNameTextField" layoutX="169.0" layoutY="56.0" prefHeight="36.0" prefWidth="273.0" promptText="Restaurant name" />
-                  <Label layoutX="60.0" layoutY="133.0" text="Price Category">
+                  <Label layoutX="60.0" layoutY="60.0" text="Name">
                      <font>
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ChoiceBox fx:id="priceCategoryChoiceBox" layoutX="180.0" layoutY="126.0" prefHeight="36.0" prefWidth="64.0" />
-                  <Label layoutX="268.0" layoutY="133.0" text="Zipcode">
+                  <TextField fx:id="addRestaurantNameTextField" layoutX="169.0" layoutY="53.0" prefHeight="36.0" prefWidth="273.0" promptText="Restaurant name" />
+                  <Label layoutX="60.0" layoutY="155.0" text="Price Category">
                      <font>
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="addRestaurantZipcodeTextField" layoutX="343.0" layoutY="126.0" prefHeight="36.0" prefWidth="100.0" promptText="Zipcode" />
-                  <Label layoutX="60.0" layoutY="203.0" text="Rating">
+                  <ChoiceBox fx:id="priceCategoryChoiceBox" layoutX="179.0" layoutY="148.0" prefHeight="36.0" prefWidth="64.0" />
+                  <Label layoutX="268.0" layoutY="155.0" text="Zipcode">
                      <font>
-                        <Font name="Calibri Bold" size="20.0" />
+                        <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="addRestaurantZipcodeTextField" layoutX="169.0" layoutY="197.0" prefHeight="36.0" prefWidth="273.0" promptText="Restaurant Rating (0 - 5)" />
-                  <Label layoutX="60.0" layoutY="275.0" text="Category">
+                  <TextField fx:id="addRestaurantZipcodeTextField" layoutX="343.0" layoutY="148.0" prefHeight="36.0" prefWidth="100.0" promptText="Zipcode" />
+                  <Label layoutX="60.0" layoutY="205.0" text="Rating">
                      <font>
-                        <Font name="Calibri Bold" size="20.0" />
+                        <Font name="Calibri Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="addRestaurantCategoryTextField" layoutX="169.0" layoutY="269.0" prefHeight="36.0" prefWidth="238.0" promptText="Category Name" />
-                  <Button fx:id="addRestaurantAddCategory" layoutX="407.0" layoutY="268.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" text="+">
+                  <TextField fx:id="addRestaurantRatingTextField" layoutX="169.0" layoutY="198.0" prefHeight="36.0" prefWidth="273.0" promptText="Restaurant Rating (0 - 5)" />
+                  <Label layoutX="60.0" layoutY="253.0" text="Category">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="addRestaurantCategoryTextField" layoutX="168.0" layoutY="246.0" prefHeight="36.0" prefWidth="238.0" promptText="Category Name" />
+                  <Button fx:id="addRestaurantAddCategory" layoutX="407.0" layoutY="245.0" mnemonicParsing="false" onAction="#addRestaurantAddCategoryButtonPressed" prefHeight="36.0" prefWidth="36.0" text="+">
                      <font>
                         <Font name="Arial Black" size="17.0" />
                      </font>
                   </Button>
-                  <ListView fx:id="addRestaurantCategoryListView" layoutX="168.0" layoutY="317.0" prefHeight="122.0" prefWidth="238.0" />
-                  <Button fx:id="addRestaurantRemoveCategory" layoutX="407.0" layoutY="317.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="36.0" text="-" textFill="RED">
+                  <ListView fx:id="addRestaurantCategoryListView" layoutX="168.0" layoutY="287.0" prefHeight="116.0" prefWidth="238.0" />
+                  <Button layoutX="407.0" layoutY="287.0" mnemonicParsing="false" onAction="#addRestaurantRemoveCategoryButtonPressed" prefHeight="38.0" prefWidth="36.0" text="-" textFill="RED">
                      <font>
                         <Font name="Arial Black" size="17.0" />
                      </font>
@@ -254,21 +255,27 @@
                         <Image url="@../assets/restaurant-icon.png" />
                      </image>
                   </ImageView>
+                  <Button layoutX="209.0" layoutY="414.0" mnemonicParsing="false" onAction="#addRestaurantMenuAddButtonPressed" prefHeight="30.0" prefWidth="118.0" text="Add Restaurant">
+                     <font>
+                        <Font name="Corbel Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="60.0" layoutY="107.0" text="Password">
+                     <font>
+                        <Font name="Calibri Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <PasswordField fx:id="addRestaurantPasswordField" layoutX="169.0" layoutY="100.0" prefHeight="36.0" prefWidth="273.0" promptText="Enter password" />
                </children>
             </AnchorPane>
          </children>
       </StackPane>
-      <Label layoutX="228.0" layoutY="19.0" prefHeight="22.0" prefWidth="91.0" text="Server Online" textFill="#0e8c38">
-         <font>
-            <Font name="Calibri Bold" size="15.0" />
-         </font>
-      </Label>
       <Label layoutX="86.0" layoutY="72.0" text="Registered Clients ">
          <font>
             <Font name="Calibri" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="259.0" layoutY="67.0" text="999">
+      <Label fx:id="registeredClientLabel" layoutX="259.0" layoutY="67.0" text="999">
          <font>
             <Font name="Monospaced Regular" size="20.0" />
          </font>
@@ -283,5 +290,55 @@
             <Image url="@../assets/restaurant-icon.png" />
          </image>
       </ImageView>
+      <Label layoutX="312.0" layoutY="7.0" text="IP Address">
+         <font>
+            <Font name="Corbel Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="312.0" layoutY="30.0" text="Port">
+         <font>
+            <Font name="Corbel Bold" size="16.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="23.0" fitWidth="30.0" layoutX="284.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/ip-icon.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="23.0" fitWidth="30.0" layoutX="284.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/port-icon.png" />
+         </image>
+      </ImageView>
+      <GridPane layoutX="397.0" layoutY="1.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label fx:id="ipAddressLabel" text="127.0.0.1">
+               <font>
+                  <Font name="Corbel Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+      <GridPane layoutX="397.0" layoutY="26.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label fx:id="portAddressLabel" text="44444">
+               <font>
+                  <Font name="Corbel Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
    </children>
 </AnchorPane>

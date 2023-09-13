@@ -25,13 +25,12 @@ public class ServerApplication extends Application
         Parent root = fxmlLoader.load();
 
         ServerController controller = fxmlLoader.getController();
-        controller.setApplication(this);
         controller.init();
 
         stage.setTitle("Admin Page");
-        stage.setScene(new Scene(root, 900, 650));
-        stage.setMinWidth(900);
-        stage.setMinHeight(650);
+        stage.setScene(new Scene(root, 500, 600));
+        stage.setMinWidth(500);
+        stage.setMinHeight(600);
         stage.show();
     }
 
