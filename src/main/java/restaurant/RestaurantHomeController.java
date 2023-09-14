@@ -410,7 +410,7 @@ public class RestaurantHomeController
         rowHBoxContent.setPrefHeight(100);
 
         VBox foodImageContainer = new VBox();
-        ImageView rowImageView = new ImageView(new Image("file:src/main/resources/assets/Burger.jpg", 175, 125, false, false));
+        ImageView rowImageView = new ImageView(new Image("file:src/main/resources/food-images/" + food.getName() + ".jpg", 175, 125, false, false));
         rowImageView.setFitWidth(80);
         rowImageView.setFitHeight(60);
         rowImageView.minWidth(80);
@@ -564,7 +564,7 @@ public class RestaurantHomeController
         rowHBoxContent.setPrefHeight(100);
 
         VBox foodImageContainer = new VBox();
-        ImageView rowImageView = new ImageView(new Image("file:src/main/resources/assets/Burger.jpg", 175, 125, false, false));
+        ImageView rowImageView = new ImageView(new Image("file:src/main/resources/food-images/" + food.getName() + ".jpg", 175, 125, false, false));
         rowImageView.setFitWidth(80);
         rowImageView.setFitHeight(60);
         rowImageView.minWidth(80);
@@ -761,7 +761,7 @@ public class RestaurantHomeController
         rowHBoxContent.setPrefHeight(200);
 
         VBox foodImageContainer = new VBox();
-        ImageView rowImageView = new ImageView(new Image("file:src/main/resources/assets/Burger.jpg", 175, 125, false, false));
+        ImageView rowImageView = new ImageView(new Image("file:src/main/resources/food-images/" + food.getName() + ".jpg", 175, 125, false, false));
         rowImageView.setFitWidth(250);
         rowImageView.setFitHeight(180);
         rowImageView.minWidth(250);

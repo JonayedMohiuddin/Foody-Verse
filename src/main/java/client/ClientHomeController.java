@@ -50,29 +50,8 @@ public class ClientHomeController
     public Button restaurantViewBackButton;
     // CLIENT APPLICATION REFERENCE
     ClientApplication application;
-
-    // SEARCH OPTIONS
-    private static final class Options
-    {
-        public static String RESTAURANT_NAME = "Name";
-        public static String RESTAURANT_RATING = "Rating Range";
-        public static String RESTAURANT_PRICE = "Price Category";
-        public static String RESTAURANT_CATEGORY = "Category";
-        public static String RESTAURANT_ZIPCODE = "Zipcode";
-
-        // SPACE AFTER FOOD TO DIFFERENTIATE THESE OPTIONS FROM RESTAURANT OPTIONS IN CHOICE BOX
-        // THERE MIGHT BE A BETTER WAY TO DO THIS, BUT FEELLING LAZY :P
-        // TODO : FIND A BETTER WAY TO DO THIS
-        public static String FOOD_NAME = "Name ";
-        public static String FOOD_CATEGORY = "Category ";
-        public static String FOOD_PRICE = "Price Range ";
-
-        public static String VIEW_RESTAURANT = "Restaurant";
-        public static String VIEW_FOOD = "Food";
-    }
     ArrayList<String> restaurantSearchOptions;
     ArrayList<String> foodSearchOptions;
-
     // MY CART //
     String currentViewType;
     String currentSearchFilterType;
@@ -83,17 +62,15 @@ public class ClientHomeController
     // DATABASE
     ConcurrentHashMap<Integer, Restaurant> restaurantList;
     ArrayList<Food> foodList;
-
-    // ASSETS //
-
     // IMAGES
     Image restaurantImageMedium;
+
+    // ASSETS //
     Image restaurantImageLarge;
     Image foodImage;
-//    HashMap<String, Image> restaurantImage;
-
     // FONTS
     Font robotoBoldFont20;
+    //    HashMap<String, Image> restaurantImage;
     Font robotoBoldFont15;
     Font robotoRegularFont20;
     Font robotoRegularFont15;
@@ -398,14 +375,6 @@ public class ClientHomeController
         }
     }
 
-//    public void backButtonClickedOnRestaurantMenu()
-//    {
-//        resetFlowPane();
-//        addRestaurantListToFlowPane();
-//        viewChoiceBox.setValue(Options.VIEW_RESTAURANT);
-//        searchFilterChoiceBox.setValue(Options.RESTAURANT_NAME);
-//    }
-
     // FlowPane
     //     |---+ VBox
     //            |---+ HBox
@@ -418,7 +387,10 @@ public class ClientHomeController
         int descriptorWidth = 150;
 
         GridPane imageContainer = new GridPane();
-        ImageView restaurantImageView = new ImageView(restaurantImageLarge);
+//        ImageView restaurantImageView = new ImageView(restaurantImageLarge);
+        ImageView restaurantImageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg");
+        restaurantImageView.setFitHeight(188);
+        restaurantImageView.setFitWidth(263);
         imageContainer.getChildren().add(restaurantImageView);
 
         VBox restaurantInfoBox = new VBox();
@@ -516,6 +488,14 @@ public class ClientHomeController
         flowpane.getChildren().addAll(imageContainer, restaurantInfoBox); // ), backButtonContainer);
     }
 
+//    public void backButtonClickedOnRestaurantMenu()
+//    {
+//        resetFlowPane();
+//        addRestaurantListToFlowPane();
+//        viewChoiceBox.setValue(Options.VIEW_RESTAURANT);
+//        searchFilterChoiceBox.setValue(Options.RESTAURANT_NAME);
+//    }
+
     public void addRestaurantToFlowPane(Restaurant restaurant)
     {
         VBox restaurantBox = new VBox();
@@ -571,17 +551,15 @@ public class ClientHomeController
     {
         VBox foodBox = new VBox();
 
-        ImageView imageView = new ImageView(foodImage);
+        ImageView imageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
+        imageView.setFitWidth(175);
+        imageView.setFitHeight(125);
         imageView.setOnMouseClicked(event -> {
             foodClicked(food);
         });
 
-//        ImageView imageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
-//        imageView.setFitWidth(175);
-//        imageView.setFitHeight(125);
-
         Label foodNameLabel = new Label(food.getName());
-//        restaurantNameLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; - fx-font-family: Calibri Light;");
+//      restaurantNameLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; - fx-font-family: Calibri Light;");
         foodNameLabel.setFont(robotoBoldFont15);
         foodNameLabel.setAlignment(Pos.CENTER_LEFT);
         foodNameLabel.setMaxWidth(175);
@@ -626,10 +604,6 @@ public class ClientHomeController
     {
         System.out.println("Logout button clicked");
     }
-
-    // ======================================================================================================
-    // SEARCH RELATED METHODS
-    // ======================================================================================================
 
     public void search()
     {
@@ -720,6 +694,10 @@ public class ClientHomeController
             System.err.println("Class : HomePageController | Method : search | Invalid search filter type, How?? IMPOSSIBLE! CDI");
         }
     }
+
+    // ======================================================================================================
+    // SEARCH RELATED METHODS
+    // ======================================================================================================
 
     public ArrayList<Double> readRangeFromSearchBoxes()
     {
@@ -813,10 +791,6 @@ public class ClientHomeController
         rangeSearchMaxField.setStyle("");
     }
 
-    // ======================================================================================================
-    // UTIL METHODS AND CLASSES
-    // ======================================================================================================
-
     ArrayList<Food> generateFoodList()
     {
         ArrayList<Food> foodList = new ArrayList<>();
@@ -829,6 +803,10 @@ public class ClientHomeController
         return foodList;
     }
 
+    // ======================================================================================================
+    // UTIL METHODS AND CLASSES
+    // ======================================================================================================
+
     public void restaurantViewBackButtonClicked(ActionEvent event)
     {
         flowpaneTitleLabel.setText("All Restaurants");
@@ -840,6 +818,26 @@ public class ClientHomeController
         rangeSearchMinField.setText("");
         rangeSearchMaxField.setText("");
         restaurantViewBackButton.setVisible(false);
+    }
+
+    // SEARCH OPTIONS
+    private static final class Options
+    {
+        public static String RESTAURANT_NAME = "Name";
+        public static String RESTAURANT_RATING = "Rating Range";
+        public static String RESTAURANT_PRICE = "Price Category";
+        public static String RESTAURANT_CATEGORY = "Category";
+        public static String RESTAURANT_ZIPCODE = "Zipcode";
+
+        // SPACE AFTER FOOD TO DIFFERENTIATE THESE OPTIONS FROM RESTAURANT OPTIONS IN CHOICE BOX
+        // THERE MIGHT BE A BETTER WAY TO DO THIS, BUT FEELLING LAZY :P
+        // TODO : FIND A BETTER WAY TO DO THIS
+        public static String FOOD_NAME = "Name ";
+        public static String FOOD_CATEGORY = "Category ";
+        public static String FOOD_PRICE = "Price Range ";
+
+        public static String VIEW_RESTAURANT = "Restaurant";
+        public static String VIEW_FOOD = "Food";
     }
 }
 

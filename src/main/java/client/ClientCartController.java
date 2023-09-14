@@ -106,7 +106,7 @@ public class ClientCartController
         HBox row = new HBox();
 
         StackPane restaurantImageContainer = new StackPane();
-        ImageView foodSmallImageView = new ImageView(restaurantImageMedium);
+        ImageView foodSmallImageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurantName + ".jpg");
         foodSmallImageView.setFitWidth(60);
         foodSmallImageView.setFitHeight(40);
         restaurantImageContainer.setPadding(new Insets(5, 20, 5, 5)); // top right bottom left
@@ -179,7 +179,7 @@ public class ClientCartController
 
         // <StackPane>
         StackPane foodImageContainer = new StackPane();
-        ImageView foodSmallImageView = new ImageView(foodImageMedium);
+        ImageView foodSmallImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
         foodSmallImageView.setFitWidth(84);
         foodSmallImageView.setFitHeight(60);
         foodImageContainer.setPadding(new Insets(10, 20, 10, 10)); // top right bottom left
