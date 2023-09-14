@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jonayed</groupId>
-    <artifactId>RestaurantDatabaseSystem</artifactId>
+    <artifactId>FoodyVerse</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>RestaurantDatabaseSystem</name>
 

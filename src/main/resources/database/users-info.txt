@@ -1,12 +1,10 @@
 a,a
-test,1
-Adbullah,333
-One Punch Man,111
-as,12
 Jonayed,123
-t,1
-testy,123
-A P J,111
-Mohiuddin,123
-Pranto,222
-Mishal,111
+test,1
+admin,admin
+Faisal,123
+Pranto,123
+mohiuddin,1
+Mishal,123
+Abdullah,123
+Mehedi,123
