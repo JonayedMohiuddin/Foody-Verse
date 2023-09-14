@@ -2,7 +2,7 @@ package dto;
 
 import models.Food;
 
-public class FoodAddRequestDTO
+public class FoodAddRequestDTO implements java.io.Serializable
 {
     Food food;
 

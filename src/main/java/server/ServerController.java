@@ -47,19 +47,26 @@ public class ServerController implements Runnable
 
     // Server Thread
     Thread thread;
+
     // Observable Lists for GUI
     ObservableList<String> clients, restaurants, serverLog, restaurantCategories;
+
     // Servers variables
     private int serverPort;
     private ServerSocket serverSocket;
+
     // Client Maps
     private ConcurrentHashMap<String, SocketWrapper> clientMap;
     private ConcurrentHashMap<String, SocketWrapper> restaurantMap;
+
     // Modules
     private ConcurrentHashMap<Integer, Restaurant> restaurantList;
+
     // User and Restaurant Infos
     private ConcurrentHashMap<String, String> userInfos;
     private ConcurrentHashMap<String, String> restaurantInfos;
+
+    // Server Application Reference
     private ServerApplication serverApplication;
 
     // Getters and Setters
@@ -67,37 +74,30 @@ public class ServerController implements Runnable
     {
         return serverSocket;
     }
-
     public ConcurrentHashMap<String, SocketWrapper> getClientMap()
     {
         return clientMap;
     }
-
     public ConcurrentHashMap<String, SocketWrapper> getRestaurantMap()
     {
         return restaurantMap;
     }
-
     public ConcurrentHashMap<Integer, Restaurant> getRestaurantList()
     {
         return restaurantList;
     }
-
     public ConcurrentHashMap<String, String> getUserInfos()
     {
         return userInfos;
     }
-
     public ConcurrentHashMap<String, String> getRestaurantInfos()
     {
         return restaurantInfos;
     }
-
     public ServerApplication getServerApplication()
     {
         return serverApplication;
     }
-
     public void setServerApplication(ServerApplication serverApplication)
     {
         this.serverApplication = serverApplication;

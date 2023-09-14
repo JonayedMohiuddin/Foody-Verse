@@ -1,500 +1,504 @@
-1,Chicken,2 pc. Breast and Wing Combo,11.99
-1,Chicken,3 pc. Chicken Combo,13.19
-1,Chicken,4 pc. Chicken Combo,14.39
-1,Spicy,Spicy Tikka,300.0
-1,Spicy,Tasty Chicken Tikka Extra Large,1200.0
-1,Spicy,Tasty Chicken Tikka Large,800.0
-2,Appetizer,Appetizer Sampler,11.99
-2,Appetizer,Mozza Sticks,10.79
-2,Beverage,Coffee and Hot Chocolate,3.47
-2,Beverage,New! Wildberry Lemonade Splasher,3.95
-3,Chinese,Chopstick Combo A,8.49
-3,Chinese,Chopstick Combo B,9.49
-3,Chinese,Chopstick Combo C,10.49
-3,Asian,Asian Fusion Delight,7.99
-3,Asian,Asian Delight Special,8.99
-4,Cafe,Classic Coffee,6.99
-4,Cafe,Espresso Delight,7.99
-4,Cafe,Cappuccino Bliss,8.99
-4,Healthy Food,Healthy Fusion Bowl,5.99
-4,Healthy Food,Fresh Salad Delight,6.99
-5,Indian,Chicken Biryani,9.49
-5,Indian,Vegetable Biryani,10.49
-5,Indian,Spicy Biryani,11.49
-5,Indian,Paneer Biryani,12.49
-5,Indian,Hyderabadi Biryani,13.49
-6,Japanese,Sushi Platter for Two,16.99
-6,Japanese,Sashimi Deluxe,17.99
-6,Japanese,Dragon Roll,15.49
-6,Japanese,Sushi Boat Extravaganza,16.49
-6,Asian,Tempura Udon,18.49
-7,Barbecue,BBQ Combo Platter,17.99
-7,Barbecue,Smoked Ribs,18.99
-7,Barbecue,Pulled Pork Sandwich,19.99
-7,Barbecue,Texas Brisket,20.99
-7,Barbecue,Grilled Chicken,21.99
-8,Italian,Spaghetti Carbonara,12.99
-8,Italian,Fettuccine Alfredo,13.99
-8,Italian,Lasagna Supreme,14.99
-8,Italian,Seafood Linguine,15.99
-8,Italian,Penne alla Vodka,16.99
-9,Thai,Pad Thai,11.49
-9,Thai,Green Curry,12.49
-9,Thai,Pineapple Fried Rice,13.49
-9,Thai,Mango Sticky Rice,10.99
-9,Beverage,Thai Iced Tea,11.99
-10,Burgers,Cheeseburger,6.49
-10,Burgers,Bacon Burger,7.49
-10,Burgers,Veggie Burger,8.49
-10,Fast Food,Chicken Tenders,5.99
-10,Fast Food,Onion Rings,6.99
-11,Indian,Tandoori Chicken,10.99
-11,Indian,Butter Chicken,11.99
-11,Indian,Chicken Korma,12.99
-11,Indian,Lamb Biryani,13.99
-11,Indian,Garlic Naan,3.99
-12,Mexican,Taco Platter,9.99
-12,Mexican,Enchiladas Supreme,10.99
-12,Mexican,Quesadilla Delight,11.99
-12,Mexican,Churros,4.99
-12,Mexican,Sopapillas,4.99
-13,Chinese,Kung Pao Chicken,9.99
-13,Chinese,Mongolian Beef,10.99
-13,Chinese,Szechuan Shrimp,11.99
-13,Chinese,Vegetable Spring Rolls,4.99
-13,Chinese,Peking Duck,14.99
-14,Coffee,Espresso Shot,2.99
-14,Coffee,Cappuccino,3.49
-14,Coffee,Iced Coffee,3.99
-14,Bakery,Chocolate Croissant,2.99
-14,Bakery,Cheesecake,4.99
-15,Desserts,Chocolate Sundae,5.99
-15,Desserts,Strawberry Cheesecake,4.99
-15,Desserts,Apple Pie a la Mode,4.99
-15,Desserts,Fruit Parfait,3.99
-15,Desserts,Banana Split,6.99
-15,Desserts,Chocolate Sundae,5.99
-15,Desserts,Strawberry Cheesecake,4.99
-16,Seafood,Seafood Platter,22.99
-16,Seafood,Grilled Salmon,19.99
-16,Seafood,Shrimp Scampi,20.99
-16,Seafood,Lobster Tail,29.99
-16,Seafood,Clam Chowder,8.99
-17,Vegetarian,Vegetarian Sampler,12.99
-17,Vegetarian,Spinach Quiche,9.99
-17,Vegetarian,Eggplant Parmesan,11.99
-17,Vegetarian,Stuffed Bell Peppers,10.99
-17,Vegetarian,Greek Salad,8.99
-18,Steak,Filet Mignon,29.99
-18,Steak,Ribeye Steak,28.99
-18,Steak,Porterhouse Steak,32.99
-18,Steak,T-Bone Steak,30.99
-18,Steak,New York Strip Steak,27.99
-19,Mediterranean,Falafel Pita,8.99
-19,Mediterranean,Chicken Shawarma Pita,9.99
-19,Mediterranean,Beef Gyro Pita,10.99
-19,Mediterranean,Hummus and Pita,6.99
-19,Mediterranean,Baklava Dessert,4.99
-20,Desserts,Chocolate Sundae,5.99
-20,Desserts,Strawberry Ice Cream,4.99
-20,Desserts,Mint Chocolate Chip Ice Cream,4.99
-20,Desserts,Root Beer Float,3.99
-20,Desserts,Banana Split,6.99
-21,Indian,Tandoori Chicken,10.99
-21,Indian,Butter Chicken,11.99
-21,Indian,Chicken Korma,12.99
-21,Indian,Lamb Biryani,13.99
-21,Indian,Garlic Naan,3.99
-22,Mexican,Taco Platter,9.99
-22,Mexican,Enchiladas Supreme,10.99
-22,Mexican,Quesadilla Delight,11.99
-22,Mexican,Churros,4.99
-22,Mexican,Sopapillas,4.99
-23,Chinese,Kung Pao Chicken,9.99
-23,Chinese,Mongolian Beef,10.99
-23,Chinese,Szechuan Shrimp,11.99
-23,Chinese,Vegetable Spring Rolls,4.99
-23,Chinese,Peking Duck,14.99
-24,Coffee,Espresso Shot,2.99
-24,Coffee,Cappuccino,3.49
-24,Coffee,Iced Coffee,3.99
-24,Bakery,Chocolate Croissant,2.99
-24,Bakery,Cheesecake,4.99
-25,Desserts,Chocolate Sundae,5.99
-25,Desserts,Strawberry Cheesecake,4.99
-25,Desserts,Apple Pie a la Mode,4.99
-25,Desserts,Fruit Parfait,3.99
-25,Desserts,Banana Split,6.99
-26,Seafood,Seafood Platter,22.99
-26,Seafood,Grilled Salmon,19.99
-26,Seafood,Shrimp Scampi,20.99
-26,Seafood,Lobster Tail,29.99
-26,Seafood,Clam Chowder,8.99
-27,Vegetarian,Vegetarian Sampler,12.99
-27,Vegetarian,Spinach Quiche,9.99
-27,Vegetarian,Eggplant Parmesan,11.99
-27,Vegetarian,Stuffed Bell Peppers,10.99
-27,Vegetarian,Greek Salad,8.99
-28,Steak,Filet Mignon,29.99
-28,Steak,Ribeye Steak,28.99
-28,Steak,Porterhouse Steak,32.99
-28,Steak,T-Bone Steak,30.99
-28,Steak,New York Strip Steak,27.99
-29,Mediterranean,Falafel Pita,8.99
-29,Mediterranean,Chicken Shawarma Pita,9.99
-29,Mediterranean,Beef Gyro Pita,10.99
-29,Mediterranean,Hummus and Pita,6.99
-29,Mediterranean,Baklava Dessert,4.99
-30,Desserts,Chocolate Sundae,5.99
-30,Desserts,Strawberry Ice Cream,4.99
-30,Desserts,Mint Chocolate Chip Ice Cream,4.99
-30,Desserts,Root Beer Float,3.99
-30,Desserts,Banana Split,6.99
-31,Indian,Tandoori Chicken,10.99
-31,Indian,Butter Chicken,11.99
-31,Indian,Chicken Korma,12.99
-31,Indian,Lamb Biryani,13.99
-31,Indian,Garlic Naan,3.99
-32,Mexican,Taco Platter,9.99
-32,Mexican,Enchiladas Supreme,10.99
-32,Mexican,Quesadilla Delight,11.99
-32,Mexican,Churros,4.99
-32,Mexican,Sopapillas,4.99
-33,Chinese,Kung Pao Chicken,9.99
-33,Chinese,Mongolian Beef,10.99
-33,Chinese,Szechuan Shrimp,11.99
-33,Chinese,Vegetable Spring Rolls,4.99
-33,Chinese,Peking Duck,14.99
-34,Coffee,Espresso Shot,2.99
-34,Coffee,Cappuccino,3.49
-34,Coffee,Iced Coffee,3.99
-34,Bakery,Chocolate Croissant,2.99
-34,Bakery,Cheesecake,4.99
-35,Desserts,Chocolate Sundae,5.99
-35,Desserts,Strawberry Cheesecake,4.99
-35,Desserts,Apple Pie a la Mode,4.99
-35,Desserts,Fruit Parfait,3.99
-35,Desserts,Banana Split,6.99
-36,Seafood,Seafood Platter,22.99
-36,Seafood,Grilled Salmon,19.99
-36,Seafood,Shrimp Scampi,20.99
-36,Seafood,Lobster Tail,29.99
-36,Seafood,Clam Chowder,8.99
-37,Vegetarian,Vegetarian Sampler,12.99
-37,Vegetarian,Spinach Quiche,9.99
-37,Vegetarian,Eggplant Parmesan,11.99
-37,Vegetarian,Stuffed Bell Peppers,10.99
-37,Vegetarian,Greek Salad,8.99
-38,Steak,Filet Mignon,29.99
-38,Steak,Ribeye Steak,28.99
-38,Steak,Porterhouse Steak,32.99
-38,Steak,T-Bone Steak,30.99
-38,Steak,New York Strip Steak,27.99
-39,Mediterranean,Falafel Pita,8.99
-39,Mediterranean,Chicken Shawarma Pita,9.99
-39,Mediterranean,Beef Gyro Pita,10.99
-39,Mediterranean,Hummus and Pita,6.99
-39,Mediterranean,Baklava Dessert,4.99
-40,Desserts,Chocolate Sundae,5.99
-40,Desserts,Strawberry Ice Cream,4.99
-40,Desserts,Mint Chocolate Chip Ice Cream,4.99
-40,Desserts,Root Beer Float,3.99
-40,Desserts,Banana Split,6.99
-41,Indian,Tandoori Chicken,10.99
-41,Indian,Butter Chicken,11.99
-41,Indian,Chicken Korma,12.99
-41,Indian,Lamb Biryani,13.99
-41,Indian,Garlic Naan,3.99
-42,Mexican,Taco Platter,9.99
-42,Mexican,Enchiladas Supreme,10.99
-42,Mexican,Quesadilla Delight,11.99
-42,Mexican,Churros,4.99
-42,Mexican,Sopapillas,4.99
-43,Chinese,Kung Pao Chicken,9.99
-43,Chinese,Mongolian Beef,10.99
-43,Chinese,Szechuan Shrimp,11.99
-43,Chinese,Vegetable Spring Rolls,4.99
-43,Chinese,Peking Duck,14.99
-44,Coffee,Espresso Shot,2.99
-44,Coffee,Cappuccino,3.49
-44,Coffee,Iced Coffee,3.99
-44,Bakery,Chocolate Croissant,2.99
-44,Bakery,Cheesecake,4.99
-45,Desserts,Strawberry Cheesecake,4.99
-45,Desserts,Apple Pie a la Mode,4.99
-45,Desserts,Fruit Parfait,3.99
-45,Desserts,Banana Split,6.99
-46,Seafood,Seafood Platter,22.99
-46,Seafood,Grilled Salmon,19.99
-46,Seafood,Shrimp Scampi,20.99
-46,Seafood,Lobster Tail,29.99
-46,Seafood,Clam Chowder,8.99
-47,Vegetarian,Vegetarian Sampler,12.99
-47,Vegetarian,Spinach Quiche,9.99
-47,Vegetarian,Eggplant Parmesan,11.99
-47,Vegetarian,Stuffed Bell Peppers,10.99
-47,Vegetarian,Greek Salad,8.99
-48,Steak,Filet Mignon,29.99
-48,Steak,Ribeye Steak,28.99
-48,Steak,Porterhouse Steak,32.99
-48,Steak,T-Bone Steak,30.99
-48,Steak,New York Strip Steak,27.99
-49,Mediterranean,Falafel Pita,8.99
-49,Mediterranean,Chicken Shawarma Pita,9.99
-49,Mediterranean,Beef Gyro Pita,10.99
-49,Mediterranean,Hummus and Pita,6.99
-49,Mediterranean,Baklava Dessert,4.99
-50,Desserts,Chocolate Sundae,5.99
-50,Desserts,Strawberry Ice Cream,4.99
-50,Desserts,Mint Chocolate Chip Ice Cream,4.99
-50,Desserts,Root Beer Float,3.99
-50,Desserts,Banana Split,6.99
-51,Indian,Tandoori Chicken,10.99
-51,Indian,Butter Chicken,11.99
-51,Indian,Chicken Korma,12.99
-51,Indian,Lamb Biryani,13.99
-51,Indian,Garlic Naan,3.99
-52,Mexican,Taco Platter,9.99
-52,Mexican,Enchiladas Supreme,10.99
-52,Mexican,Quesadilla Delight,11.99
-52,Mexican,Churros,4.99
-52,Mexican,Sopapillas,4.99
-53,Chinese,Kung Pao Chicken,9.99
-53,Chinese,Mongolian Beef,10.99
-53,Chinese,Szechuan Shrimp,11.99
-53,Chinese,Vegetable Spring Rolls,4.99
-53,Chinese,Peking Duck,14.99
-54,Coffee,Espresso Shot,2.99
-54,Coffee,Cappuccino,3.49
-54,Coffee,Iced Coffee,3.99
-54,Bakery,Chocolate Croissant,2.99
-54,Bakery,Cheesecake,4.99
-55,Desserts,Chocolate Sundae,5.99
-55,Desserts,Strawberry Cheesecake,4.99
-55,Desserts,Apple Pie a la Mode,4.99
-55,Desserts,Fruit Parfait,3.99
-55,Desserts,Banana Split,6.99
-56,Seafood,Seafood Platter,22.99
-56,Seafood,Grilled Salmon,19.99
-56,Seafood,Shrimp Scampi,20.99
-56,Seafood,Lobster Tail,29.99
-56,Seafood,Clam Chowder,8.99
-57,Vegetarian,Vegetarian Sampler,12.99
-57,Vegetarian,Spinach Quiche,9.99
-57,Vegetarian,Eggplant Parmesan,11.99
-57,Vegetarian,Stuffed Bell Peppers,10.99
-57,Vegetarian,Greek Salad,8.99
-58,Steak,Filet Mignon,29.99
-58,Steak,Ribeye Steak,28.99
-58,Steak,Porterhouse Steak,32.99
-58,Steak,T-Bone Steak,30.99
-58,Steak,New York Strip Steak,27.99
-59,Mediterranean,Falafel Pita,8.99
-59,Mediterranean,Chicken Shawarma Pita,9.99
-59,Mediterranean,Beef Gyro Pita,10.99
-59,Mediterranean,Hummus and Pita,6.99
-59,Mediterranean,Baklava Dessert,4.99
-60,Desserts,Chocolate Sundae,5.99
-60,Desserts,Strawberry Ice Cream,4.99
-60,Desserts,Mint Chocolate Chip Ice Cream,4.99
-60,Desserts,Root Beer Float,3.99
-60,Desserts,Banana Split,6.99
-61,Indian,Tandoori Chicken,10.99
-61,Indian,Butter Chicken,11.99
-61,Indian,Chicken Korma,12.99
-61,Indian,Lamb Biryani,13.99
-61,Indian,Garlic Naan,3.99
-62,Mexican,Taco Platter,9.99
-62,Mexican,Enchiladas Supreme,10.99
-62,Mexican,Quesadilla Delight,11.99
-62,Mexican,Churros,4.99
-62,Mexican,Sopapillas,4.99
-63,Chinese,Kung Pao Chicken,9.99
-63,Chinese,Mongolian Beef,10.99
-63,Chinese,Szechuan Shrimp,11.99
-63,Chinese,Vegetable Spring Rolls,4.99
-63,Chinese,Peking Duck,14.99
-64,Coffee,Espresso Shot,2.99
-64,Coffee,Cappuccino,3.49
-64,Coffee,Iced Coffee,3.99
-64,Bakery,Chocolate Croissant,2.99
-65,Desserts,Chocolate Sundae,5.99
-65,Desserts,Strawberry Cheesecake,4.99
-65,Desserts,Apple Pie a la Mode,4.99
-65,Desserts,Fruit Parfait,3.99
-65,Desserts,Banana Split,6.99
-66,Seafood,Seafood Platter,22.99
-66,Seafood,Grilled Salmon,19.99
-66,Seafood,Shrimp Scampi,20.99
-66,Seafood,Lobster Tail,29.99
-66,Seafood,Clam Chowder,8.99
-67,Vegetarian,Vegetarian Sampler,12.99
-67,Vegetarian,Spinach Quiche,9.99
-67,Vegetarian,Eggplant Parmesan,11.99
-67,Vegetarian,Stuffed Bell Peppers,10.99
-67,Vegetarian,Greek Salad,8.99
-68,Steak,Filet Mignon,29.99
-68,Steak,Ribeye Steak,28.99
-68,Steak,Porterhouse Steak,32.99
-68,Steak,T-Bone Steak,30.99
-68,Steak,New York Strip Steak,27.99
-69,Mediterranean,Falafel Pita,8.99
-69,Mediterranean,Chicken Shawarma Pita,9.99
-69,Mediterranean,Beef Gyro Pita,10.99
-69,Mediterranean,Hummus and Pita,6.99
-69,Mediterranean,Baklava Dessert,4.99
-70,Desserts,Chocolate Sundae,5.99
-70,Desserts,Strawberry Ice Cream,4.99
-70,Desserts,Mint Chocolate Chip Ice Cream,4.99
-70,Desserts,Root Beer Float,3.99
-70,Desserts,Banana Split,6.99
-71,Indian,Tandoori Chicken,10.99
-71,Indian,Butter Chicken,11.99
-71,Indian,Chicken Korma,12.99
-71,Indian,Lamb Biryani,13.99
-71,Indian,Garlic Naan,3.99
-72,Mexican,Taco Platter,9.99
-72,Mexican,Enchiladas Supreme,10.99
-72,Mexican,Quesadilla Delight,11.99
-72,Mexican,Churros,4.99
-72,Mexican,Sopapillas,4.99
-73,Chinese,Kung Pao Chicken,9.99
-73,Chinese,Mongolian Beef,10.99
-73,Chinese,Szechuan Shrimp,11.99
-73,Chinese,Vegetable Spring Rolls,4.99
-73,Chinese,Peking Duck,14.99
-74,Coffee,Espresso Shot,2.99
-74,Coffee,Cappuccino,3.49
-74,Coffee,Iced Coffee,3.99
-74,Bakery,Chocolate Croissant,2.99
-74,Bakery,Cheesecake,4.99
-75,Desserts,Chocolate Sundae,5.99
-75,Desserts,Strawberry Cheesecake,4.99
-75,Desserts,Apple Pie a la Mode,4.99
-75,Desserts,Fruit Parfait,3.99
-75,Desserts,Banana Split,6.99
-76,Seafood,Seafood Platter,22.99
-76,Seafood,Grilled Salmon,19.99
-76,Seafood,Shrimp Scampi,20.99
-76,Seafood,Lobster Tail,29.99
-76,Seafood,Clam Chowder,8.99
-77,Vegetarian,Vegetarian Sampler,12.99
-77,Vegetarian,Spinach Quiche,9.99
-77,Vegetarian,Eggplant Parmesan,11.99
-77,Vegetarian,Stuffed Bell Peppers,10.99
-77,Vegetarian,Greek Salad,8.99
-78,Steak,Filet Mignon,29.99
-78,Steak,Ribeye Steak,28.99
-78,Steak,Porterhouse Steak,32.99
-78,Steak,T-Bone Steak,30.99
-78,Steak,New York Strip Steak,27.99
-79,Mediterranean,Falafel Pita,8.99
-79,Mediterranean,Chicken Shawarma Pita,9.99
-79,Mediterranean,Beef Gyro Pita,10.99
-79,Mediterranean,Hummus and Pita,6.99
-79,Mediterranean,Baklava Dessert,4.99
-80,Desserts,Chocolate Sundae,5.99
-80,Desserts,Strawberry Ice Cream,4.99
-80,Desserts,Mint Chocolate Chip Ice Cream,4.99
-80,Desserts,Root Beer Float,3.99
-80,Desserts,Banana Split,6.99
-81,Indian,Tandoori Chicken,10.99
-81,Indian,Butter Chicken,11.99
-81,Indian,Chicken Korma,12.99
-81,Indian,Lamb Biryani,13.99
-81,Indian,Garlic Naan,3.99
-82,Mexican,Taco Platter,9.99
-82,Mexican,Enchiladas Supreme,10.99
-82,Mexican,Quesadilla Delight,11.99
-82,Mexican,Churros,4.99
-82,Mexican,Sopapillas,4.99
-83,Chinese,Kung Pao Chicken,9.99
-83,Chinese,Mongolian Beef,10.99
-83,Chinese,Szechuan Shrimp,11.99
-83,Chinese,Vegetable Spring Rolls,4.99
-83,Chinese,Peking Duck,14.99
-84,Coffee,Espresso Shot,2.99
-84,Coffee,Cappuccino,3.49
-84,Coffee,Iced Coffee,3.99
-84,Bakery,Chocolate Croissant,2.99
-84,Bakery,Cheesecake,4.99
-85,Desserts,Chocolate Sundae,5.99
-85,Desserts,Strawberry Cheesecake,4.99
-85,Desserts,Apple Pie a la Mode,4.99
-85,Desserts,Fruit Parfait,3.99
-85,Desserts,Banana Split,6.99
-86,Seafood,Seafood Platter,22.99
-86,Seafood,Grilled Salmon,19.99
-86,Seafood,Shrimp Scampi,20.99
-86,Seafood,Lobster Tail,29.99
-86,Seafood,Clam Chowder,8.99
-87,Vegetarian,Vegetarian Sampler,12.99
-87,Vegetarian,Spinach Quiche,9.99
-87,Vegetarian,Eggplant Parmesan,11.99
-87,Vegetarian,Stuffed Bell Peppers,10.99
-87,Vegetarian,Greek Salad,8.99
-88,Steak,Filet Mignon,29.99
-88,Steak,Ribeye Steak,28.99
-88,Steak,Porterhouse Steak,32.99
-88,Steak,T-Bone Steak,30.99
-88,Steak,New York Strip Steak,27.99
-89,Mediterranean,Falafel Pita,8.99
-89,Mediterranean,Chicken Shawarma Pita,9.99
-89,Mediterranean,Beef Gyro Pita,10.99
-89,Mediterranean,Hummus and Pita,6.99
-89,Mediterranean,Baklava Dessert,4.99
-90,Desserts,Chocolate Sundae,5.99
-90,Desserts,Strawberry Ice Cream,4.99
-90,Desserts,Mint Chocolate Chip Ice Cream,4.99
-90,Desserts,Root Beer Float,3.99
-90,Desserts,Banana Split,6.99
-91,Indian,Tandoori Chicken,10.99
-91,Indian,Butter Chicken,11.99
-91,Indian,Chicken Korma,12.99
-91,Indian,Lamb Biryani,13.99
-91,Indian,Garlic Naan,3.99
-92,Mexican,Taco Platter,9.99
-92,Mexican,Enchiladas Supreme,10.99
-92,Mexican,Quesadilla Delight,11.99
-92,Mexican,Churros,4.99
-92,Mexican,Sopapillas,4.99
-93,Chinese,Kung Pao Chicken,9.99
-93,Chinese,Mongolian Beef,10.99
-93,Chinese,Szechuan Shrimp,11.99
-93,Chinese,Vegetable Spring Rolls,4.99
-93,Chinese,Peking Duck,14.99
-94,Coffee,Espresso Shot,2.99
-94,Coffee,Cappuccino,3.49
-94,Coffee,Iced Coffee,3.99
-94,Bakery,Chocolate Croissant,2.99
-94,Bakery,Cheesecake,4.99
-95,Desserts,Chocolate Sundae,5.99
-95,Desserts,Strawberry Cheesecake,4.99
-95,Desserts,Apple Pie a la Mode,4.99
-95,Desserts,Fruit Parfait,3.99
-95,Desserts,Banana Split,6.99
-96,Seafood,Seafood Platter,22.99
-96,Seafood,Grilled Salmon,19.99
-96,Seafood,Shrimp Scampi,20.99
-96,Seafood,Lobster Tail,29.99
-96,Seafood,Clam Chowder,8.99
-97,Vegetarian,Vegetarian Sampler,12.99
-97,Vegetarian,Spinach Quiche,9.99
-97,Vegetarian,Eggplant Parmesan,11.99
-97,Vegetarian,Stuffed Bell Peppers,10.99
-97,Vegetarian,Greek Salad,8.99
-98,Steak,Filet Mignon,29.99
-98,Steak,Ribeye Steak,28.99
-98,Steak,Porterhouse Steak,32.99
-98,Steak,T-Bone Steak,30.99
-98,Steak,New York Strip Steak,27.99
-99,Mediterranean,Falafel Pita,8.99
-99,Mediterranean,Chicken Shawarma Pita,9.99
-99,Mediterranean,Beef Gyro Pita,10.99
-99,Mediterranean,Hummus and Pita,6.99
-99,Mediterranean,Baklava Dessert,4.99
-100,Desserts,Chocolate Sundae,5.99
-100,Desserts,Strawberry Ice Cream,4.99
-100,Desserts,Mint Chocolate Chip Ice Cream,4.99
-100,Desserts,Root Beer Float,3.99
-100,Desserts,Banana Split,6.99
+1,2 pc. Breast and Wing Combo,Chicken,11.99
+1,3 pc. Chicken Combo,Chicken,13.19
+1,4 pc. Chicken Combo,Chicken,14.39
+1,Spicy Tikka,Spicy,300.0
+1,Tasty Chicken Tikka Extra Large,Spicy,1200.0
+1,Tasty Chicken Tikka Large,Spicy,800.0
+1,a,b,1.0
+1,d d d e e e,c c c  g g g,4.0
+1,d d d e e e,c c c  g g g,4.0
+1,a a a d,ad adf,12.0
+2,Appetizer Sampler,Appetizer,11.99
+2,Mozza Sticks,Appetizer,10.79
+2,Coffee and Hot Chocolate,Beverage,3.47
+2,New! Wildberry Lemonade Splasher,Beverage,3.95
+3,Chopstick Combo A,Chinese,8.49
+3,Chopstick Combo B,Chinese,9.49
+3,Chopstick Combo C,Chinese,10.49
+3,Asian Fusion Delight,Asian,7.99
+3,Asian Delight Special,Asian,8.99
+4,Classic Coffee,Cafe,6.99
+4,Espresso Delight,Cafe,7.99
+4,Cappuccino Bliss,Cafe,8.99
+4,Healthy Fusion Bowl,Healthy Food,5.99
+4,Fresh Salad Delight,Healthy Food,6.99
+5,Chicken Biryani,Indian,9.49
+5,Vegetable Biryani,Indian,10.49
+5,Spicy Biryani,Indian,11.49
+5,Paneer Biryani,Indian,12.49
+5,Hyderabadi Biryani,Indian,13.49
+6,Sushi Platter for Two,Japanese,16.99
+6,Sashimi Deluxe,Japanese,17.99
+6,Dragon Roll,Japanese,15.49
+6,Sushi Boat Extravaganza,Japanese,16.49
+6,Tempura Udon,Asian,18.49
+7,BBQ Combo Platter,Barbecue,17.99
+7,Smoked Ribs,Barbecue,18.99
+7,Pulled Pork Sandwich,Barbecue,19.99
+7,Texas Brisket,Barbecue,20.99
+7,Grilled Chicken,Barbecue,21.99
+8,Spaghetti Carbonara,Italian,12.99
+8,Fettuccine Alfredo,Italian,13.99
+8,Lasagna Supreme,Italian,14.99
+8,Seafood Linguine,Italian,15.99
+8,Penne alla Vodka,Italian,16.99
+9,Pad Thai,Thai,11.49
+9,Green Curry,Thai,12.49
+9,Pineapple Fried Rice,Thai,13.49
+9,Mango Sticky Rice,Thai,10.99
+9,Thai Iced Tea,Beverage,11.99
+10,Cheeseburger,Burgers,6.49
+10,Bacon Burger,Burgers,7.49
+10,Veggie Burger,Burgers,8.49
+10,Chicken Tenders,Fast Food,5.99
+10,Onion Rings,Fast Food,6.99
+11,Tandoori Chicken,Indian,10.99
+11,Butter Chicken,Indian,11.99
+11,Chicken Korma,Indian,12.99
+11,Lamb Biryani,Indian,13.99
+11,Garlic Naan,Indian,3.99
+12,Taco Platter,Mexican,9.99
+12,Enchiladas Supreme,Mexican,10.99
+12,Quesadilla Delight,Mexican,11.99
+12,Churros,Mexican,4.99
+12,Sopapillas,Mexican,4.99
+13,Kung Pao Chicken,Chinese,9.99
+13,Mongolian Beef,Chinese,10.99
+13,Szechuan Shrimp,Chinese,11.99
+13,Vegetable Spring Rolls,Chinese,4.99
+13,Peking Duck,Chinese,14.99
+14,Espresso Shot,Coffee,2.99
+14,Cappuccino,Coffee,3.49
+14,Iced Coffee,Coffee,3.99
+14,Chocolate Croissant,Bakery,2.99
+14,Cheesecake,Bakery,4.99
+15,Chocolate Sundae,Desserts,5.99
+15,Strawberry Cheesecake,Desserts,4.99
+15,Apple Pie a la Mode,Desserts,4.99
+15,Fruit Parfait,Desserts,3.99
+15,Banana Split,Desserts,6.99
+15,Chocolate Sundae,Desserts,5.99
+15,Strawberry Cheesecake,Desserts,4.99
+16,Seafood Platter,Seafood,22.99
+16,Grilled Salmon,Seafood,19.99
+16,Shrimp Scampi,Seafood,20.99
+16,Lobster Tail,Seafood,29.99
+16,Clam Chowder,Seafood,8.99
+17,Vegetarian Sampler,Vegetarian,12.99
+17,Spinach Quiche,Vegetarian,9.99
+17,Eggplant Parmesan,Vegetarian,11.99
+17,Stuffed Bell Peppers,Vegetarian,10.99
+17,Greek Salad,Vegetarian,8.99
+18,Filet Mignon,Steak,29.99
+18,Ribeye Steak,Steak,28.99
+18,Porterhouse Steak,Steak,32.99
+18,T-Bone Steak,Steak,30.99
+18,New York Strip Steak,Steak,27.99
+19,Falafel Pita,Mediterranean,8.99
+19,Chicken Shawarma Pita,Mediterranean,9.99
+19,Beef Gyro Pita,Mediterranean,10.99
+19,Hummus and Pita,Mediterranean,6.99
+19,Baklava Dessert,Mediterranean,4.99
+20,Chocolate Sundae,Desserts,5.99
+20,Strawberry Ice Cream,Desserts,4.99
+20,Mint Chocolate Chip Ice Cream,Desserts,4.99
+20,Root Beer Float,Desserts,3.99
+20,Banana Split,Desserts,6.99
+21,Tandoori Chicken,Indian,10.99
+21,Butter Chicken,Indian,11.99
+21,Chicken Korma,Indian,12.99
+21,Lamb Biryani,Indian,13.99
+21,Garlic Naan,Indian,3.99
+22,Taco Platter,Mexican,9.99
+22,Enchiladas Supreme,Mexican,10.99
+22,Quesadilla Delight,Mexican,11.99
+22,Churros,Mexican,4.99
+22,Sopapillas,Mexican,4.99
+23,Kung Pao Chicken,Chinese,9.99
+23,Mongolian Beef,Chinese,10.99
+23,Szechuan Shrimp,Chinese,11.99
+23,Vegetable Spring Rolls,Chinese,4.99
+23,Peking Duck,Chinese,14.99
+24,Espresso Shot,Coffee,2.99
+24,Cappuccino,Coffee,3.49
+24,Iced Coffee,Coffee,3.99
+24,Chocolate Croissant,Bakery,2.99
+24,Cheesecake,Bakery,4.99
+25,Chocolate Sundae,Desserts,5.99
+25,Strawberry Cheesecake,Desserts,4.99
+25,Apple Pie a la Mode,Desserts,4.99
+25,Fruit Parfait,Desserts,3.99
+25,Banana Split,Desserts,6.99
+26,Seafood Platter,Seafood,22.99
+26,Grilled Salmon,Seafood,19.99
+26,Shrimp Scampi,Seafood,20.99
+26,Lobster Tail,Seafood,29.99
+26,Clam Chowder,Seafood,8.99
+27,Vegetarian Sampler,Vegetarian,12.99
+27,Spinach Quiche,Vegetarian,9.99
+27,Eggplant Parmesan,Vegetarian,11.99
+27,Stuffed Bell Peppers,Vegetarian,10.99
+27,Greek Salad,Vegetarian,8.99
+28,Filet Mignon,Steak,29.99
+28,Ribeye Steak,Steak,28.99
+28,Porterhouse Steak,Steak,32.99
+28,T-Bone Steak,Steak,30.99
+28,New York Strip Steak,Steak,27.99
+29,Falafel Pita,Mediterranean,8.99
+29,Chicken Shawarma Pita,Mediterranean,9.99
+29,Beef Gyro Pita,Mediterranean,10.99
+29,Hummus and Pita,Mediterranean,6.99
+29,Baklava Dessert,Mediterranean,4.99
+30,Chocolate Sundae,Desserts,5.99
+30,Strawberry Ice Cream,Desserts,4.99
+30,Mint Chocolate Chip Ice Cream,Desserts,4.99
+30,Root Beer Float,Desserts,3.99
+30,Banana Split,Desserts,6.99
+31,Tandoori Chicken,Indian,10.99
+31,Butter Chicken,Indian,11.99
+31,Chicken Korma,Indian,12.99
+31,Lamb Biryani,Indian,13.99
+31,Garlic Naan,Indian,3.99
+32,Taco Platter,Mexican,9.99
+32,Enchiladas Supreme,Mexican,10.99
+32,Quesadilla Delight,Mexican,11.99
+32,Churros,Mexican,4.99
+32,Sopapillas,Mexican,4.99
+33,Kung Pao Chicken,Chinese,9.99
+33,Mongolian Beef,Chinese,10.99
+33,Szechuan Shrimp,Chinese,11.99
+33,Vegetable Spring Rolls,Chinese,4.99
+33,Peking Duck,Chinese,14.99
+34,Espresso Shot,Coffee,2.99
+34,Cappuccino,Coffee,3.49
+34,Iced Coffee,Coffee,3.99
+34,Chocolate Croissant,Bakery,2.99
+34,Cheesecake,Bakery,4.99
+35,Chocolate Sundae,Desserts,5.99
+35,Strawberry Cheesecake,Desserts,4.99
+35,Apple Pie a la Mode,Desserts,4.99
+35,Fruit Parfait,Desserts,3.99
+35,Banana Split,Desserts,6.99
+36,Seafood Platter,Seafood,22.99
+36,Grilled Salmon,Seafood,19.99
+36,Shrimp Scampi,Seafood,20.99
+36,Lobster Tail,Seafood,29.99
+36,Clam Chowder,Seafood,8.99
+37,Vegetarian Sampler,Vegetarian,12.99
+37,Spinach Quiche,Vegetarian,9.99
+37,Eggplant Parmesan,Vegetarian,11.99
+37,Stuffed Bell Peppers,Vegetarian,10.99
+37,Greek Salad,Vegetarian,8.99
+38,Filet Mignon,Steak,29.99
+38,Ribeye Steak,Steak,28.99
+38,Porterhouse Steak,Steak,32.99
+38,T-Bone Steak,Steak,30.99
+38,New York Strip Steak,Steak,27.99
+39,Falafel Pita,Mediterranean,8.99
+39,Chicken Shawarma Pita,Mediterranean,9.99
+39,Beef Gyro Pita,Mediterranean,10.99
+39,Hummus and Pita,Mediterranean,6.99
+39,Baklava Dessert,Mediterranean,4.99
+40,Chocolate Sundae,Desserts,5.99
+40,Strawberry Ice Cream,Desserts,4.99
+40,Mint Chocolate Chip Ice Cream,Desserts,4.99
+40,Root Beer Float,Desserts,3.99
+40,Banana Split,Desserts,6.99
+41,Tandoori Chicken,Indian,10.99
+41,Butter Chicken,Indian,11.99
+41,Chicken Korma,Indian,12.99
+41,Lamb Biryani,Indian,13.99
+41,Garlic Naan,Indian,3.99
+42,Taco Platter,Mexican,9.99
+42,Enchiladas Supreme,Mexican,10.99
+42,Quesadilla Delight,Mexican,11.99
+42,Churros,Mexican,4.99
+42,Sopapillas,Mexican,4.99
+43,Kung Pao Chicken,Chinese,9.99
+43,Mongolian Beef,Chinese,10.99
+43,Szechuan Shrimp,Chinese,11.99
+43,Vegetable Spring Rolls,Chinese,4.99
+43,Peking Duck,Chinese,14.99
+44,Espresso Shot,Coffee,2.99
+44,Cappuccino,Coffee,3.49
+44,Iced Coffee,Coffee,3.99
+44,Chocolate Croissant,Bakery,2.99
+44,Cheesecake,Bakery,4.99
+45,Strawberry Cheesecake,Desserts,4.99
+45,Apple Pie a la Mode,Desserts,4.99
+45,Fruit Parfait,Desserts,3.99
+45,Banana Split,Desserts,6.99
+46,Seafood Platter,Seafood,22.99
+46,Grilled Salmon,Seafood,19.99
+46,Shrimp Scampi,Seafood,20.99
+46,Lobster Tail,Seafood,29.99
+46,Clam Chowder,Seafood,8.99
+47,Vegetarian Sampler,Vegetarian,12.99
+47,Spinach Quiche,Vegetarian,9.99
+47,Eggplant Parmesan,Vegetarian,11.99
+47,Stuffed Bell Peppers,Vegetarian,10.99
+47,Greek Salad,Vegetarian,8.99
+48,Filet Mignon,Steak,29.99
+48,Ribeye Steak,Steak,28.99
+48,Porterhouse Steak,Steak,32.99
+48,T-Bone Steak,Steak,30.99
+48,New York Strip Steak,Steak,27.99
+49,Falafel Pita,Mediterranean,8.99
+49,Chicken Shawarma Pita,Mediterranean,9.99
+49,Beef Gyro Pita,Mediterranean,10.99
+49,Hummus and Pita,Mediterranean,6.99
+49,Baklava Dessert,Mediterranean,4.99
+50,Chocolate Sundae,Desserts,5.99
+50,Strawberry Ice Cream,Desserts,4.99
+50,Mint Chocolate Chip Ice Cream,Desserts,4.99
+50,Root Beer Float,Desserts,3.99
+50,Banana Split,Desserts,6.99
+51,Tandoori Chicken,Indian,10.99
+51,Butter Chicken,Indian,11.99
+51,Chicken Korma,Indian,12.99
+51,Lamb Biryani,Indian,13.99
+51,Garlic Naan,Indian,3.99
+52,Taco Platter,Mexican,9.99
+52,Enchiladas Supreme,Mexican,10.99
+52,Quesadilla Delight,Mexican,11.99
+52,Churros,Mexican,4.99
+52,Sopapillas,Mexican,4.99
+53,Kung Pao Chicken,Chinese,9.99
+53,Mongolian Beef,Chinese,10.99
+53,Szechuan Shrimp,Chinese,11.99
+53,Vegetable Spring Rolls,Chinese,4.99
+53,Peking Duck,Chinese,14.99
+54,Espresso Shot,Coffee,2.99
+54,Cappuccino,Coffee,3.49
+54,Iced Coffee,Coffee,3.99
+54,Chocolate Croissant,Bakery,2.99
+54,Cheesecake,Bakery,4.99
+55,Chocolate Sundae,Desserts,5.99
+55,Strawberry Cheesecake,Desserts,4.99
+55,Apple Pie a la Mode,Desserts,4.99
+55,Fruit Parfait,Desserts,3.99
+55,Banana Split,Desserts,6.99
+56,Seafood Platter,Seafood,22.99
+56,Grilled Salmon,Seafood,19.99
+56,Shrimp Scampi,Seafood,20.99
+56,Lobster Tail,Seafood,29.99
+56,Clam Chowder,Seafood,8.99
+57,Vegetarian Sampler,Vegetarian,12.99
+57,Spinach Quiche,Vegetarian,9.99
+57,Eggplant Parmesan,Vegetarian,11.99
+57,Stuffed Bell Peppers,Vegetarian,10.99
+57,Greek Salad,Vegetarian,8.99
+58,Filet Mignon,Steak,29.99
+58,Ribeye Steak,Steak,28.99
+58,Porterhouse Steak,Steak,32.99
+58,T-Bone Steak,Steak,30.99
+58,New York Strip Steak,Steak,27.99
+59,Falafel Pita,Mediterranean,8.99
+59,Chicken Shawarma Pita,Mediterranean,9.99
+59,Beef Gyro Pita,Mediterranean,10.99
+59,Hummus and Pita,Mediterranean,6.99
+59,Baklava Dessert,Mediterranean,4.99
+60,Chocolate Sundae,Desserts,5.99
+60,Strawberry Ice Cream,Desserts,4.99
+60,Mint Chocolate Chip Ice Cream,Desserts,4.99
+60,Root Beer Float,Desserts,3.99
+60,Banana Split,Desserts,6.99
+61,Tandoori Chicken,Indian,10.99
+61,Butter Chicken,Indian,11.99
+61,Chicken Korma,Indian,12.99
+61,Lamb Biryani,Indian,13.99
+61,Garlic Naan,Indian,3.99
+62,Taco Platter,Mexican,9.99
+62,Enchiladas Supreme,Mexican,10.99
+62,Quesadilla Delight,Mexican,11.99
+62,Churros,Mexican,4.99
+62,Sopapillas,Mexican,4.99
+63,Kung Pao Chicken,Chinese,9.99
+63,Mongolian Beef,Chinese,10.99
+63,Szechuan Shrimp,Chinese,11.99
+63,Vegetable Spring Rolls,Chinese,4.99
+63,Peking Duck,Chinese,14.99
+64,Espresso Shot,Coffee,2.99
+64,Cappuccino,Coffee,3.49
+64,Iced Coffee,Coffee,3.99
+64,Chocolate Croissant,Bakery,2.99
+65,Chocolate Sundae,Desserts,5.99
+65,Strawberry Cheesecake,Desserts,4.99
+65,Apple Pie a la Mode,Desserts,4.99
+65,Fruit Parfait,Desserts,3.99
+65,Banana Split,Desserts,6.99
+66,Seafood Platter,Seafood,22.99
+66,Grilled Salmon,Seafood,19.99
+66,Shrimp Scampi,Seafood,20.99
+66,Lobster Tail,Seafood,29.99
+66,Clam Chowder,Seafood,8.99
+67,Vegetarian Sampler,Vegetarian,12.99
+67,Spinach Quiche,Vegetarian,9.99
+67,Eggplant Parmesan,Vegetarian,11.99
+67,Stuffed Bell Peppers,Vegetarian,10.99
+67,Greek Salad,Vegetarian,8.99
+68,Filet Mignon,Steak,29.99
+68,Ribeye Steak,Steak,28.99
+68,Porterhouse Steak,Steak,32.99
+68,T-Bone Steak,Steak,30.99
+68,New York Strip Steak,Steak,27.99
+69,Falafel Pita,Mediterranean,8.99
+69,Chicken Shawarma Pita,Mediterranean,9.99
+69,Beef Gyro Pita,Mediterranean,10.99
+69,Hummus and Pita,Mediterranean,6.99
+69,Baklava Dessert,Mediterranean,4.99
+70,Chocolate Sundae,Desserts,5.99
+70,Strawberry Ice Cream,Desserts,4.99
+70,Mint Chocolate Chip Ice Cream,Desserts,4.99
+70,Root Beer Float,Desserts,3.99
+70,Banana Split,Desserts,6.99
+71,Tandoori Chicken,Indian,10.99
+71,Butter Chicken,Indian,11.99
+71,Chicken Korma,Indian,12.99
+71,Lamb Biryani,Indian,13.99
+71,Garlic Naan,Indian,3.99
+72,Taco Platter,Mexican,9.99
+72,Enchiladas Supreme,Mexican,10.99
+72,Quesadilla Delight,Mexican,11.99
+72,Churros,Mexican,4.99
+72,Sopapillas,Mexican,4.99
+73,Kung Pao Chicken,Chinese,9.99
+73,Mongolian Beef,Chinese,10.99
+73,Szechuan Shrimp,Chinese,11.99
+73,Vegetable Spring Rolls,Chinese,4.99
+73,Peking Duck,Chinese,14.99
+74,Espresso Shot,Coffee,2.99
+74,Cappuccino,Coffee,3.49
+74,Iced Coffee,Coffee,3.99
+74,Chocolate Croissant,Bakery,2.99
+74,Cheesecake,Bakery,4.99
+75,Chocolate Sundae,Desserts,5.99
+75,Strawberry Cheesecake,Desserts,4.99
+75,Apple Pie a la Mode,Desserts,4.99
+75,Fruit Parfait,Desserts,3.99
+75,Banana Split,Desserts,6.99
+76,Seafood Platter,Seafood,22.99
+76,Grilled Salmon,Seafood,19.99
+76,Shrimp Scampi,Seafood,20.99
+76,Lobster Tail,Seafood,29.99
+76,Clam Chowder,Seafood,8.99
+77,Vegetarian Sampler,Vegetarian,12.99
+77,Spinach Quiche,Vegetarian,9.99
+77,Eggplant Parmesan,Vegetarian,11.99
+77,Stuffed Bell Peppers,Vegetarian,10.99
+77,Greek Salad,Vegetarian,8.99
+78,Filet Mignon,Steak,29.99
+78,Ribeye Steak,Steak,28.99
+78,Porterhouse Steak,Steak,32.99
+78,T-Bone Steak,Steak,30.99
+78,New York Strip Steak,Steak,27.99
+79,Falafel Pita,Mediterranean,8.99
+79,Chicken Shawarma Pita,Mediterranean,9.99
+79,Beef Gyro Pita,Mediterranean,10.99
+79,Hummus and Pita,Mediterranean,6.99
+79,Baklava Dessert,Mediterranean,4.99
+80,Chocolate Sundae,Desserts,5.99
+80,Strawberry Ice Cream,Desserts,4.99
+80,Mint Chocolate Chip Ice Cream,Desserts,4.99
+80,Root Beer Float,Desserts,3.99
+80,Banana Split,Desserts,6.99
+81,Tandoori Chicken,Indian,10.99
+81,Butter Chicken,Indian,11.99
+81,Chicken Korma,Indian,12.99
+81,Lamb Biryani,Indian,13.99
+81,Garlic Naan,Indian,3.99
+82,Taco Platter,Mexican,9.99
+82,Enchiladas Supreme,Mexican,10.99
+82,Quesadilla Delight,Mexican,11.99
+82,Churros,Mexican,4.99
+82,Sopapillas,Mexican,4.99
+83,Kung Pao Chicken,Chinese,9.99
+83,Mongolian Beef,Chinese,10.99
+83,Szechuan Shrimp,Chinese,11.99
+83,Vegetable Spring Rolls,Chinese,4.99
+83,Peking Duck,Chinese,14.99
+84,Espresso Shot,Coffee,2.99
+84,Cappuccino,Coffee,3.49
+84,Iced Coffee,Coffee,3.99
+84,Chocolate Croissant,Bakery,2.99
+84,Cheesecake,Bakery,4.99
+85,Chocolate Sundae,Desserts,5.99
+85,Strawberry Cheesecake,Desserts,4.99
+85,Apple Pie a la Mode,Desserts,4.99
+85,Fruit Parfait,Desserts,3.99
+85,Banana Split,Desserts,6.99
+86,Seafood Platter,Seafood,22.99
+86,Grilled Salmon,Seafood,19.99
+86,Shrimp Scampi,Seafood,20.99
+86,Lobster Tail,Seafood,29.99
+86,Clam Chowder,Seafood,8.99
+87,Vegetarian Sampler,Vegetarian,12.99
+87,Spinach Quiche,Vegetarian,9.99
+87,Eggplant Parmesan,Vegetarian,11.99
+87,Stuffed Bell Peppers,Vegetarian,10.99
+87,Greek Salad,Vegetarian,8.99
+88,Filet Mignon,Steak,29.99
+88,Ribeye Steak,Steak,28.99
+88,Porterhouse Steak,Steak,32.99
+88,T-Bone Steak,Steak,30.99
+88,New York Strip Steak,Steak,27.99
+89,Falafel Pita,Mediterranean,8.99
+89,Chicken Shawarma Pita,Mediterranean,9.99
+89,Beef Gyro Pita,Mediterranean,10.99
+89,Hummus and Pita,Mediterranean,6.99
+89,Baklava Dessert,Mediterranean,4.99
+90,Chocolate Sundae,Desserts,5.99
+90,Strawberry Ice Cream,Desserts,4.99
+90,Mint Chocolate Chip Ice Cream,Desserts,4.99
+90,Root Beer Float,Desserts,3.99
+90,Banana Split,Desserts,6.99
+91,Tandoori Chicken,Indian,10.99
+91,Butter Chicken,Indian,11.99
+91,Chicken Korma,Indian,12.99
+91,Lamb Biryani,Indian,13.99
+91,Garlic Naan,Indian,3.99
+92,Taco Platter,Mexican,9.99
+92,Enchiladas Supreme,Mexican,10.99
+92,Quesadilla Delight,Mexican,11.99
+92,Churros,Mexican,4.99
+92,Sopapillas,Mexican,4.99
+93,Kung Pao Chicken,Chinese,9.99
+93,Mongolian Beef,Chinese,10.99
+93,Szechuan Shrimp,Chinese,11.99
+93,Vegetable Spring Rolls,Chinese,4.99
+93,Peking Duck,Chinese,14.99
+94,Espresso Shot,Coffee,2.99
+94,Cappuccino,Coffee,3.49
+94,Iced Coffee,Coffee,3.99
+94,Chocolate Croissant,Bakery,2.99
+94,Cheesecake,Bakery,4.99
+95,Chocolate Sundae,Desserts,5.99
+95,Strawberry Cheesecake,Desserts,4.99
+95,Apple Pie a la Mode,Desserts,4.99
+95,Fruit Parfait,Desserts,3.99
+95,Banana Split,Desserts,6.99
+96,Seafood Platter,Seafood,22.99
+96,Grilled Salmon,Seafood,19.99
+96,Shrimp Scampi,Seafood,20.99
+96,Lobster Tail,Seafood,29.99
+96,Clam Chowder,Seafood,8.99
+97,Vegetarian Sampler,Vegetarian,12.99
+97,Spinach Quiche,Vegetarian,9.99
+97,Eggplant Parmesan,Vegetarian,11.99
+97,Stuffed Bell Peppers,Vegetarian,10.99
+97,Greek Salad,Vegetarian,8.99
+98,Filet Mignon,Steak,29.99
+98,Ribeye Steak,Steak,28.99
+98,Porterhouse Steak,Steak,32.99
+98,T-Bone Steak,Steak,30.99
+98,New York Strip Steak,Steak,27.99
+99,Falafel Pita,Mediterranean,8.99
+99,Chicken Shawarma Pita,Mediterranean,9.99
+99,Beef Gyro Pita,Mediterranean,10.99
+99,Hummus and Pita,Mediterranean,6.99
+99,Baklava Dessert,Mediterranean,4.99
+100,Chocolate Sundae,Desserts,5.99
+100,Strawberry Ice Cream,Desserts,4.99
+100,Mint Chocolate Chip Ice Cream,Desserts,4.99
+100,Root Beer Float,Desserts,3.99
+100,Banana Split,Desserts,6.99

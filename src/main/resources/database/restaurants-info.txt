@@ -1,100 +1,100 @@
-1,Spice Palace,spice123,4.5,$$,1205,Indian
-2,Pizza Haven,pizza456,4.2,$$,1212,Pizza,Italian
-3,Chopsticks,chops789,4.8,$$,1208,Chinese,Asian
-4,Cafe Fusion,cafe101,4.6,$$,1216,Cafe
-5,Biryani House,biryani123,4.4,$$,1207,Indian
-6,Sushi Delight,sushi456,4.7,$$$,1215,Japanese,Asian
-7,BBQ Grill,bbq789,4.3,$$$,1210,Barbecue
-8,Pasta Paradise,pasta101,4.0,$$,1213,Italian
-9,Thai Spice,thai123,4.5,$$,1211,Thai,Asian
-10,Fast Burger,fast456,4.2,$,1209,Burgers,Fast Food
-11,Tandoori Flavors,tandoori789,4.9,$$,1206,Indian
-12,Mexican Fiesta,mexicanfiesta101,4.6,$$,1214,Mexican
-13,Szechuan Palace,szechuan123,4.7,$$,1204,Chinese,Asian
-14,Coffee Cove,coffee456,4.4,$,1218,Cafe
-15,Sweet Treats,sweets789,4.3,$,1203,Desserts
-16,Seafood Delight,seafood101,4.1,$$$,1202,Seafood
-17,Vegetarian Bliss,veg123,4.8,$$,1217,Vegetarian
-18,Steakhouse Grill,steakhousegrill456,4.5,$$$,1201,Steakhouse
-19,Pita Paradise,pita789,4.2,$,1207,Mediterranean
-20,Ice Cream Dreams,icecream101,4.6,$,1219,Desserts
-21,South Asian Spice,south123,4.7,$$,1215,Indian
-22,Burger Joint,burger456,4.0,$$,1213,Burgers,Fast Food
-23,Ramen Heaven,ramen101,4.5,$$,1206,Japanese,Asian
-24,Healthy Bites,healthybites101,4.3,$$,1210,Healthy Food
-25,Italiano Ristorante,italian456,4.2,$$$,1212,Italian
-26,Chaat Corner,chaat789,4.6,$,1209,Indian
-27,Hot Wok,hotwok101,4.4,$$,1205,Chinese,Asian
-28,Sushi Master,sushimaster123,4.8,$$$,1211,Japanese,Asian
-29,Pancake Palace,pancakes101,4.9,$,1214,Breakfast and Brunch
-30,Mom's Kitchen,momskitchen123,4.5,$$,1204,Home Cooking
-31,Pizza Elegance,pizzaelegance456,4.1,$$,1203,Pizza,Italian
-32,The Grill House,grillhouse789,4.7,$$,1216,Barbecue
-33,Cafe Central,cafecentral101,4.3,$$,1218,Cafe
-34,Asian Spice Box,asianspicebox123,4.5,$$,1217,Asian
-35,Bakery Bliss,bakerybliss123,4.2,$$,1202,Bakery
-36,Fast n' Tasty,fastntasty123,4.4,$$,1219,Fast Food
-37,Classic Diner,classicdiner456,4.6,$,1208,American
-38,Taco Time,tacotime456,4.0,$,1215,Mexican
-39,Waffle Wonder,wafflewonder123,4.9,$$,1201,Breakfast and Brunch
-40,Shawarma Express,shawarmaexpress456,4.8,$$,1210,Mediterranean
-41,Crepes Galore,crepesgalore101,4.7,$$,1207,Desserts
-42,Fried Chicken Hub,friedchickenhub123,4.5,$,1211,Fast Food
-43,Vietnamese Pho,vietnamesepho101,4.3,$$,1204,Vietnamese
-44,Sushi Sensation,sushisensation123,4.4,$$,1209,Japanese,Asian
-45,Healthy Harvest,healthyharvest456,4.1,$$,1212,Healthy Food
-46,Bagel Bonanza,bagelbonanza101,4.2,$$,1205,Bakery
-47,Pasta Perfect,pastaperfect123,4.6,$$,1206,Italian
-48,Steakhouse Supreme,steakhousesupreme123,4.7,$$$,1213,Steakhouse
-49,Mexican Grill,mexicangrill101,4.5,$$,1214,Mexican
-50,Smoothie Paradise,smoothieparadise123,4.8,$,1218,Smoothies
-51,Cafe Italia,cafeitalia456,4.4,$$,1201,Cafe
-52,Indian Delights,indiandelights101,4.2,$$,1217,Indian
-53,Burger Zone,burgerzone123,4.6,$$,1202,Burgers,Fast Food
-54,Sushi Supreme,sushisupreme456,4.7,$$$,1205,Japanese,Asian
-55,Mexican Cantina,mexicancantina101,4.5,$$,1219,Mexican
-56,Pizza Paradise,pizzaparadise123,4.1,$$,1210,Pizza,Italian
-57,Thai Eats,thaieats456,4.8,$,1207,Thai,Asian
-58,Healthy Bites,healthybites101,4.0,$,1203,Healthy Food
-59,Steakhouse Grill,steakhousegrill456,4.9,$$$,1215,Steakhouse
-60,Smoothie Sensation,smoothiesensation456,4.3,$$,1218,Smoothies
-61,Chinese Palace,chinesepalace101,4.4,$$,1206,Chinese,Asian
-62,Bakery Delight,bakerydelight123,4.7,$$,1214,Bakery
-63,Diner Classics,dinerclassics456,4.5,$$,1209,American
-64,Sushi Spot,sushispot101,4.2,$$,1216,Japanese,Asian
-65,Italian Bistro,italianbistro123,4.6,$$,1204,Italian
-66,Pancake House,pancakehouse456,4.3,$$,1212,Breakfast and Brunch
-67,Mexican Fiesta,mexicanfiesta101,4.1,$$,1208,Mexican
-68,Healthy Haven,healthyhaven123,4.8,$$,1202,Healthy Food
-69,Pizza Pleasure,pizzapleasure456,4.0,$$,1211,Pizza,Italian
-70,Cafe Connection,cafeconnection101,4.5,$,1213,Cafe
-71,Sizzling Grill,sizzlinggrill123,4.7,$$$,1207,Barbecue
-72,Sushi Fusion,sushifusion456,4.4,$$,1201,Japanese,Asian
-73,Thai Temptations,thaitemptations101,4.9,$$,1219,Thai,Asian
-74,Bakery Bliss,bakerybliss123,4.3,$,1205,Bakery
-75,Taco Time,tacotime456,4.2,$$,1210,Mexican
-76,Healthy Bites,healthybites101,4.6,$$,1215,Healthy Food
-77,Burger Haven,burgerhaven123,4.8,$$,1203,Burgers,Fast Food
-78,Indian Spice,indianspice101,4.5,$$,1206,Indian
-79,Pasta Perfection,pastaperfection456,4.7,$$,1218,Italian
-80,Steakhouse Supreme,steakhousesupreme123,4.4,$$,1209,Steakhouse
-81,French Bistro,frenchbistro101,4.2,$$,1212,French
-82,Sandwich Sensation,sandwichsensation456,4.1,$$,1214,Sandwiches
-83,Mediterranean Feast,mediterraneanfeast123,4.3,$$,1208,Mediterranean
-84,Sushi Savor,sushisavor101,4.9,$$,1204,Japanese,Asian
-85,Thai Delights,thaidelights456,4.0,$,1201,Thai,Asian
-86,Pizza Express,pizzaexpress123,4.6,$$,1207,Pizza,Italian
-87,Burger Bliss,burgerbliss101,4.5,$$,1215,Burgers,Fast Food
-88,Cafe Charm,cafecharm456,4.7,$$,1203,Cafe
-89,Sweet Sensations,sweetsensations123,4.4,$,1219,Desserts
-90,Mexican Spice,mexicanspice101,4.2,$$,1210,Mexican
-91,Healthy Choices,healthychoices456,4.8,$$,1205,Healthy Food
-92,Italian Delights,italiandelights123,4.3,$$,1211,Italian
-93,Sushi Heaven,sushiheaven101,4.5,$$,1216,Japanese,Asian
-94,Seafood Paradise,seafoodparadise456,4.1,$$$,1202,Seafood
-95,Chicken Corner,chickencorner123,4.6,$$,1204,Chicken
-96,Mediterranean Flavors,mediterraneanflavors101,4.4,$$,1208,Mediterranean
-97,Pizza Pleasures,pizzapleasures456,4.7,$$,1206,Pizza,Italian
-98,Asian Eats,asianeats123,4.2,$$,1217,Asian
-99,Cafe Culture,cafeculture101,4.9,$$,1209,Cafe
-100,Steakhouse Grill,steakhousegrill456,4.5,$$$,1213,Steakhouse
+1,Spice Palace,1,4.5,$$,1205,Indian
+2,Pizza Haven,1,4.2,$$,1212,Pizza,Italian
+3,Chopsticks,1,4.8,$$,1208,Chinese,Asian
+4,Cafe Fusion,1,4.6,$$,1216,Cafe
+5,Biryani House,1,4.4,$$,1207,Indian
+6,Sushi Delight,1,4.7,$$$,1215,Japanese,Asian
+7,BBQ Grill,1,4.3,$$$,1210,Barbecue
+8,Pasta Paradise,1,4.0,$$,1213,Italian
+9,Thai Spice,1,4.5,$$,1211,Thai,Asian
+10,Fast Burger,1,4.2,$,1209,Burgers,Fast Food
+11,Tandoori Flavors,1,4.9,$$,1206,Indian
+12,Mexican Fiesta,1,4.6,$$,1214,Mexican
+13,Szechuan Palace,1,4.7,$$,1204,Chinese,Asian
+14,Coffee Cove,1,4.4,$,1218,Cafe
+15,Sweet Treats,1,4.3,$,1203,Desserts
+16,Seafood Delight,1,4.1,$$$,1202,Seafood
+17,Vegetarian Bliss,1,4.8,$$,1217,Vegetarian
+18,Steakhouse Grill,1,4.5,$$$,1201,Steakhouse
+19,Pita Paradise,1,4.2,$,1207,Mediterranean
+20,Ice Cream Dreams,1,4.6,$,1219,Desserts
+21,South Asian Spice,1,4.7,$$,1215,Indian
+22,Burger Joint,1,4.0,$$,1213,Burgers,Fast Food
+23,Ramen Heaven,1,4.5,$$,1206,Japanese,Asian
+24,Healthy Bites,1,4.3,$$,1210,Healthy Food
+25,Italiano Ristorante,1,4.2,$$$,1212,Italian
+26,Chaat Corner,1,4.6,$,1209,Indian
+27,Hot Wok,1,4.4,$$,1205,Chinese,Asian
+28,Sushi Master,1,4.8,$$$,1211,Japanese,Asian
+29,Pancake Palace,1,4.9,$,1214,Breakfast and Brunch
+30,Mom's Kitchen,1,4.5,$$,1204,Home Cooking
+31,Pizza Elegance,1,4.1,$$,1203,Pizza,Italian
+32,The Grill House,1,4.7,$$,1216,Barbecue
+33,Cafe Central,1,4.3,$$,1218,Cafe
+34,Asian Spice Box,1,4.5,$$,1217,Asian
+35,Bakery Bliss,1,4.2,$$,1202,Bakery
+36,Fast n' Tasty,1,4.4,$$,1219,Fast Food
+37,Classic Diner,1,4.6,$,1208,American
+38,Taco Time,1,4.0,$,1215,Mexican
+39,Waffle Wonder,1,4.9,$$,1201,Breakfast and Brunch
+40,Shawarma Express,1,4.8,$$,1210,Mediterranean
+41,Crepes Galore,1,4.7,$$,1207,Desserts
+42,Fried Chicken Hub,1,4.5,$,1211,Fast Food
+43,Vietnamese Pho,1,4.3,$$,1204,Vietnamese
+44,Sushi Sensation,1,4.4,$$,1209,Japanese,Asian
+45,Healthy Harvest,1,4.1,$$,1212,Healthy Food
+46,Bagel Bonanza,1,4.2,$$,1205,Bakery
+47,Pasta Perfect,1,4.6,$$,1206,Italian
+48,Steakhouse Supreme,1,4.7,$$$,1213,Steakhouse
+49,Mexican Grill,1,4.5,$$,1214,Mexican
+50,Smoothie Paradise,1,4.8,$,1218,Smoothies
+51,Cafe Italia,1,4.4,$$,1201,Cafe
+52,Indian Delights,1,4.2,$$,1217,Indian
+53,Burger Zone,1,4.6,$$,1202,Burgers,Fast Food
+54,Sushi Supreme,1,4.7,$$$,1205,Japanese,Asian
+55,Mexican Cantina,1,4.5,$$,1219,Mexican
+56,Pizza Paradise,1,4.1,$$,1210,Pizza,Italian
+57,Thai Eats,1,4.8,$,1207,Thai,Asian
+58,Healthy Bites,1,4.0,$,1203,Healthy Food
+59,Steakhouse Grill,1,4.9,$$$,1215,Steakhouse
+60,Smoothie Sensation,1,4.3,$$,1218,Smoothies
+61,Chinese Palace,1,4.4,$$,1206,Chinese,Asian
+62,Bakery Delight,1,4.7,$$,1214,Bakery
+63,Diner Classics,1,4.5,$$,1209,American
+64,Sushi Spot,1,4.2,$$,1216,Japanese,Asian
+65,Italian Bistro,1,4.6,$$,1204,Italian
+66,Pancake House,1,4.3,$$,1212,Breakfast and Brunch
+67,Mexican Fiesta,1,4.1,$$,1208,Mexican
+68,Healthy Haven,1,4.8,$$,1202,Healthy Food
+69,Pizza Pleasure,1,4.0,$$,1211,Pizza,Italian
+70,Cafe Connection,1,4.5,$,1213,Cafe
+71,Sizzling Grill,1,4.7,$$$,1207,Barbecue
+72,Sushi Fusion,1,4.4,$$,1201,Japanese,Asian
+73,Thai Temptations,1,4.9,$$,1219,Thai,Asian
+74,Bakery Bliss,1,4.3,$,1205,Bakery
+75,Taco Time,1,4.2,$$,1210,Mexican
+76,Healthy Bites,1,4.6,$$,1215,Healthy Food
+77,Burger Haven,1,4.8,$$,1203,Burgers,Fast Food
+78,Indian Spice,1,4.5,$$,1206,Indian
+79,Pasta Perfection,1,4.7,$$,1218,Italian
+80,Steakhouse Supreme,1,4.4,$$,1209,Steakhouse
+81,French Bistro,1,4.2,$$,1212,French
+82,Sandwich Sensation,1,4.1,$$,1214,Sandwiches
+83,Mediterranean Feast,1,4.3,$$,1208,Mediterranean
+84,Sushi Savor,1,4.9,$$,1204,Japanese,Asian
+85,Thai Delights,1,4.0,$,1201,Thai,Asian
+86,Pizza Express,1,4.6,$$,1207,Pizza,Italian
+87,Burger Bliss,1,4.5,$$,1215,Burgers,Fast Food
+88,Cafe Charm,1,4.7,$$,1203,Cafe
+89,Sweet Sensations,1,4.4,$,1219,Desserts
+90,Mexican Spice,1,4.2,$$,1210,Mexican
+91,Healthy Choices,1,4.8,$$,1205,Healthy Food
+92,Italian Delights,1,4.3,$$,1211,Italian
+93,Sushi Heaven,1,4.5,$$,1216,Japanese,Asian
+94,Seafood Paradise,1,4.1,$$$,1202,Seafood
+95,Chicken Corner,1,4.6,$$,1204,Chicken
+96,Mediterranean Flavors,1,4.4,$$,1208,Mediterranean
+97,Pizza Pleasures,1,4.7,$$,1206,Pizza,Italian
+98,Asian Eats,1,4.2,$$,1217,Asian
+99,Cafe Culture,1,4.9,$$,1209,Cafe
+100,Steakhouse Grill,1,4.5,$$$,1213,Steakhouse

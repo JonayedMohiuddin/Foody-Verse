@@ -249,6 +249,15 @@ public class RestaurantHomeController
         }
 
         Food food = new Food(restaurant.getId(), foodName, foodCategory, Double.parseDouble(foodPrice));
+        for (Food existingFood : application.getRestaurant().getFoodList())
+        {
+            if (existingFood.getName().equals(food.getName()) && existingFood.getPrice() == food.getPrice())
+            {
+                System.out.println("Food already exists");
+                foodNameTextField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
+                return;
+            }
+        }
         application.getRestaurant().addFood(food);
 
         System.out.println("Food added to restaurant");
@@ -262,6 +271,7 @@ public class RestaurantHomeController
         {
             System.out.println("Class : RestaurantHomeController | Method : addMenuAddFoodButtonPressed | While writing new food to server");
             System.out.println("Error : " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
