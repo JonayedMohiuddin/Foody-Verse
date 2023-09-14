@@ -1,5 +1,7 @@
 package models;
 
+import javafx.scene.image.Image;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;

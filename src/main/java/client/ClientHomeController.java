@@ -90,6 +90,7 @@ public class ClientHomeController
     Image restaurantImageMedium;
     Image restaurantImageLarge;
     Image foodImage;
+//    HashMap<String, Image> restaurantImage;
 
     // FONTS
     Font robotoBoldFont20;
@@ -218,6 +219,17 @@ public class ClientHomeController
         // SET DEFAULT CHOICE BOX VALUES
         currentViewType = Options.VIEW_RESTAURANT;
         viewChoiceBox.setValue(Options.VIEW_RESTAURANT);
+
+//        restaurantImage = new HashMap<>();
+//        for (Restaurant restaurant : restaurantList.values())
+//        {
+//            Image image = new Image("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg", 175, 125, false, false);
+//            if(image == null)
+//            {
+//                new Image("file:src/main/resources/assets/RestaurantImage.jpg", 175, 125, false, false);
+//            }
+//            restaurantImage.put(restaurant.getName(), image);
+//        }
     }
 
     private void handleViewOptionChange(String newValue)
@@ -508,7 +520,10 @@ public class ClientHomeController
     {
         VBox restaurantBox = new VBox();
 
-        ImageView imageView = new ImageView(restaurantImageMedium);
+//        ImageView imageView = new ImageView(restaurantImage.get(restaurant.getName()));
+        ImageView imageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg");
+        imageView.setFitHeight(125);
+        imageView.setFitWidth(175);
         imageView.setOnMouseClicked(event -> {
             System.out.println("Restaurant clicked. Restaurant name : " + restaurant.getName());
             restaurantClicked(restaurant);
