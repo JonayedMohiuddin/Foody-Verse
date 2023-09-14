@@ -128,12 +128,12 @@ public class FileOperations
         return foods;
     }
 
-    public static void writeRestaurants(ConcurrentHashMap<Integer, Restaurant> restaurants) throws IOException
+    public static void writeRestaurants(ConcurrentHashMap<Integer, Restaurant> restaurants, ConcurrentHashMap<String, String> restaurantInfos) throws IOException
     {
         BufferedWriter writer = new BufferedWriter(new FileWriter(RESTAURANTS_FILE_NAME));
         for (Restaurant restaurant : restaurants.values())
         {
-            writer.write(restaurant.getId() + "," + restaurant.getName() + "," + restaurant.getScore() + "," + restaurant.getPrice() + "," + restaurant.getZipcode() + ",");
+            writer.write(restaurant.getId() + "," + restaurant.getName() + "," + restaurantInfos.get(restaurant.getName()) + "," + restaurant.getScore() + "," + restaurant.getPrice() + "," + restaurant.getZipcode() + ",");
             for (int i = 0; i < restaurant.getCategories().size(); i++)
             {
                 writer.write(restaurant.getCategories().get(i));

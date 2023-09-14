@@ -11,6 +11,10 @@ import java.io.IOException;
 public class ServerApplication extends Application
 {
     private Stage stage;
+    public Stage getStage()
+    {
+        return stage;
+    }
 
     @Override
     public void start(Stage primaryStage) throws IOException
@@ -25,8 +29,8 @@ public class ServerApplication extends Application
         Parent root = fxmlLoader.load();
 
         ServerController controller = fxmlLoader.getController();
+        controller.setServerApplication(this);
         controller.init();
-
         stage.setTitle("Admin Page");
         stage.setScene(new Scene(root, 500, 600));
         stage.setMinWidth(500);

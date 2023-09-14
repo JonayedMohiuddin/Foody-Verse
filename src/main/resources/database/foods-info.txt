@@ -268,6 +268,7 @@
 54,Coffee,Cappuccino,3.49
 54,Coffee,Iced Coffee,3.99
 54,Bakery,Chocolate Croissant,2.99
+54,Bakery,Cheesecake,4.99
 55,Desserts,Chocolate Sundae,5.99
 55,Desserts,Strawberry Cheesecake,4.99
 55,Desserts,Apple Pie a la Mode,4.99
@@ -317,7 +318,6 @@
 64,Coffee,Cappuccino,3.49
 64,Coffee,Iced Coffee,3.99
 64,Bakery,Chocolate Croissant,2.99
-64,Bakery,Cheesecake,2.0
 65,Desserts,Chocolate Sundae,5.99
 65,Desserts,Strawberry Cheesecake,4.99
 65,Desserts,Apple Pie a la Mode,4.99
@@ -498,33 +498,3 @@
 100,Desserts,Mint Chocolate Chip Ice Cream,4.99
 100,Desserts,Root Beer Float,3.99
 100,Desserts,Banana Split,6.99
-101,Indian,Tandoori Chicken,10.99
-101,Indian,Butter Chicken,11.99
-101,Indian,Chicken Korma,12.99
-101,Indian,Lamb Biryani,13.99
-101,Indian,Garlic Naan,3.99
-101,Mexican,Taco Platter,9.99
-101,Mexican,Enchiladas Supreme,10.99
-101,Mexican,Quesadilla Delight,11.99
-101,Mexican,Churros,4.99
-101,Mexican,Sopapillas,4.99
-101,Chinese,Kung Pao Chicken,9.99
-101,Chinese,Mongolian Beef,10.99
-101,Chinese,Szechuan Shrimp,11.99
-101,Chinese,Vegetable Spring Rolls,4.99
-101,Chinese,Peking Duck,14.99
-102,Indian,Tandoori Chicken,10.99
-102,Indian,Butter Chicken,11.99
-102,Indian,Chicken Korma,12.99
-102,Indian,Lamb Biryani,13.99
-102,Indian,Garlic Naan,3.99
-102,Mexican,Taco Platter,9.99
-102,Mexican,Enchiladas Supreme,10.99
-102,Mexican,Quesadilla Delight,11.99
-102,Mexican,Churros,4.99
-102,Mexican,Sopapillas,4.99
-102,Chinese,Kung Pao Chicken,9.99
-102,Chinese,Mongolian Beef,10.99
-102,Chinese,Szechuan Shrimp,11.99
-102,Chinese,Vegetable Spring Rolls,4.99
-102,Chinese,Peking Duck,14.99

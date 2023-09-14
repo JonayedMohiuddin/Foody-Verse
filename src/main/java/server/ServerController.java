@@ -4,10 +4,12 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
+import javafx.stage.WindowEvent;
 import models.Restaurant;
 import util.FileOperations;
 
@@ -16,7 +18,6 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerController implements Runnable
@@ -46,6 +47,8 @@ public class ServerController implements Runnable
 
     // Server Thread
     Thread thread;
+    // Observable Lists for GUI
+    ObservableList<String> clients, restaurants, serverLog, restaurantCategories;
     // Servers variables
     private int serverPort;
     private ServerSocket serverSocket;
@@ -57,6 +60,7 @@ public class ServerController implements Runnable
     // User and Restaurant Infos
     private ConcurrentHashMap<String, String> userInfos;
     private ConcurrentHashMap<String, String> restaurantInfos;
+    private ServerApplication serverApplication;
 
     // Getters and Setters
     public ServerSocket getServerSocket()
@@ -89,8 +93,15 @@ public class ServerController implements Runnable
         return restaurantInfos;
     }
 
-    // Observable Lists for GUI
-    ObservableList<String> clients, restaurants, serverLog, restaurantCategories;
+    public ServerApplication getServerApplication()
+    {
+        return serverApplication;
+    }
+
+    public void setServerApplication(ServerApplication serverApplication)
+    {
+        this.serverApplication = serverApplication;
+    }
 
     public void addClientToListView(String client)
     {
@@ -153,6 +164,15 @@ public class ServerController implements Runnable
 
         addRestaurantMenu.setVisible(false);
 
+        serverApplication.getStage().setOnCloseRequest(new EventHandler<WindowEvent>()
+        {
+            @Override
+            public void handle(WindowEvent event)
+            {
+                shutDownServerCleanup();
+            }
+        });
+
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             shutDownServerCleanup();
         }));
@@ -163,9 +183,15 @@ public class ServerController implements Runnable
 
     public void shutDownServerCleanup()
     {
+        System.out.println("Shutting down server...");
+        log("Shutting down server...");
+
+        System.out.println("Saving data to files...");
+        log("Saving data to files...");
+
         try
         {
-            FileOperations.writeRestaurants(restaurantList);
+            FileOperations.writeRestaurants(restaurantList, restaurantInfos);
         }
         catch (IOException e)
         {
@@ -182,6 +208,9 @@ public class ServerController implements Runnable
             System.out.println("Error : " + e.getMessage());
         }
 
+        System.out.println("Closing all client connections...");
+        log("Closing all client connections...");
+
         try
         {
             serverSocket.close();
@@ -194,6 +223,8 @@ public class ServerController implements Runnable
             System.err.println("Class : ServerController | Method : shutdownServerButtonClicked");
             System.err.println("Error : " + e.getMessage());
         }
+
+        serverStatusCircle.setStyle("-fx-fill: red;");
     }
 
     public void shutdownServer(ActionEvent actionEvent)
@@ -323,7 +354,7 @@ public class ServerController implements Runnable
             category[i] = restaurantCategories.get(i);
         }
 
-        if(name.isEmpty() || priceCategory.isEmpty() || zipcode.isEmpty() || rating.isEmpty() || category.length == 0 || password.isEmpty())
+        if (name.isEmpty() || priceCategory.isEmpty() || zipcode.isEmpty() || rating.isEmpty() || category.length == 0 || password.isEmpty())
         {
             if (name.isEmpty())
             {
@@ -424,3 +455,4 @@ public class ServerController implements Runnable
         }
     }
 }
+
