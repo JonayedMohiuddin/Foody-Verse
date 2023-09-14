@@ -388,7 +388,13 @@ public class ClientHomeController
 
         GridPane imageContainer = new GridPane();
 //        ImageView restaurantImageView = new ImageView(restaurantImageLarge);
+
         ImageView restaurantImageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg");
+        if(restaurantImageView.getImage().isError())
+        {
+            restaurantImageView = new ImageView("file:src/main/resources/assets/RestaurantImage.jpg");
+        }
+
         restaurantImageView.setFitHeight(188);
         restaurantImageView.setFitWidth(263);
         imageContainer.getChildren().add(restaurantImageView);
@@ -501,7 +507,13 @@ public class ClientHomeController
         VBox restaurantBox = new VBox();
 
 //        ImageView imageView = new ImageView(restaurantImage.get(restaurant.getName()));
+//        ImageView imageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg");
+
         ImageView imageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg");
+        if(imageView.getImage().isError())
+        {
+            imageView = new ImageView("file:src/main/resources/assets/RestaurantImage.jpg");
+        }
         imageView.setFitHeight(125);
         imageView.setFitWidth(175);
         imageView.setOnMouseClicked(event -> {
@@ -551,7 +563,12 @@ public class ClientHomeController
     {
         VBox foodBox = new VBox();
 
+//        ImageView imageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
         ImageView imageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
+        if(imageView.getImage().isError())
+        {
+            imageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
+        }
         imageView.setFitWidth(175);
         imageView.setFitHeight(125);
         imageView.setOnMouseClicked(event -> {

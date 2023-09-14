@@ -108,7 +108,7 @@ public class RestaurantApplication extends Application
         controller.init();
 
         stage.setTitle("Login or Signup");
-        stage.setScene(new Scene(root, 600, 400));
+        stage.setScene(new Scene(root, 500, 600));
         stage.setResizable(false);
         stage.show();
     }

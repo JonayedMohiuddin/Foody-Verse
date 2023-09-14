@@ -32,8 +32,6 @@ public class RestaurantLoginController
 
     public void init()
     {
-        loginBGImage.fitWidthProperty().bind(application.getStage().widthProperty());
-        loginBGImage.fitHeightProperty().bind(application.getStage().heightProperty());
         loginMessageText.setText("");
     }
 

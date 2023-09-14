@@ -410,7 +410,12 @@ public class RestaurantHomeController
         rowHBoxContent.setPrefHeight(100);
 
         VBox foodImageContainer = new VBox();
-        ImageView rowImageView = new ImageView(new Image("file:src/main/resources/food-images/" + food.getName() + ".jpg", 175, 125, false, false));
+//        ImageView rowImageView = new ImageView(new Image("file:src/main/resources/food-images/" + food.getName() + ".jpg", 175, 125, false, false));
+        ImageView rowImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
+        if(rowImageView.getImage().isError())
+        {
+            rowImageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
+        }
         rowImageView.setFitWidth(80);
         rowImageView.setFitHeight(60);
         rowImageView.minWidth(80);
@@ -531,9 +536,17 @@ public class RestaurantHomeController
 
     public void fillFoodList(ArrayList<Food> foodList)
     {
+        int itemOrderCount = 0;
+        for (var map : historyOrdersList.values())
+        {
+            for (Food food : map.keySet())
+            {
+                itemOrderCount += map.get(food);
+            }
+        }
         for (Food food : foodList)
         {
-            addFoodListRow(food, -1);
+            addFoodListRow(food, itemOrderCount);
         }
     }
 
@@ -564,7 +577,12 @@ public class RestaurantHomeController
         rowHBoxContent.setPrefHeight(100);
 
         VBox foodImageContainer = new VBox();
-        ImageView rowImageView = new ImageView(new Image("file:src/main/resources/food-images/" + food.getName() + ".jpg", 175, 125, false, false));
+        //ImageView rowImageView = new ImageView(new Image("file:src/main/resources/food-images/" + food.getName() + ".jpg", 175, 125, false, false));
+        ImageView rowImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
+        if(rowImageView.getImage().isError())
+        {
+            rowImageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
+        }
         rowImageView.setFitWidth(80);
         rowImageView.setFitHeight(60);
         rowImageView.minWidth(80);
@@ -761,7 +779,12 @@ public class RestaurantHomeController
         rowHBoxContent.setPrefHeight(200);
 
         VBox foodImageContainer = new VBox();
-        ImageView rowImageView = new ImageView(new Image("file:src/main/resources/food-images/" + food.getName() + ".jpg", 175, 125, false, false));
+        //ImageView rowImageView = new ImageView(new Image("file:src/main/resources/food-images/" + food.getName() + ".jpg", 175, 125, false, false));
+        ImageView rowImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
+        if(rowImageView.getImage().isError())
+        {
+            rowImageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
+        }
         rowImageView.setFitWidth(250);
         rowImageView.setFitHeight(180);
         rowImageView.minWidth(250);
