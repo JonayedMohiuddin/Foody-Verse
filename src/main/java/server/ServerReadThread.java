@@ -17,13 +17,6 @@ public class ServerReadThread implements Runnable
     int restaurantId; // if client is a restaurant
     int clientType;
 
-    static class ClientType
-    {
-        public static final int UNDEFINED = -1;
-        public static final int CLIENT = 0;
-        public static final int RESTAURANT = 1;
-    }
-
     ServerReadThread(ServerController serverController, SocketWrapper socketWrapper)
     {
         this.socketWrapper = socketWrapper;
@@ -193,12 +186,39 @@ public class ServerReadThread implements Runnable
                     }
                 }
                 // FOOD ADD REQUEST RECEIVED -> ADD THE FOOD TO THE RESTAURANT
-                else if(obj instanceof FoodAddRequestDTO foodAddRequestDTO)
+                else if (obj instanceof FoodAddRequestDTO foodAddRequestDTO)
                 {
                     serverController.log("Food " + foodAddRequestDTO.getFood().getName() + " added to restaurant " + clientName);
                     System.out.println(thread.getName() + " : " + foodAddRequestDTO);
 
                     serverController.getRestaurantList().get(restaurantId).getFoodList().add(foodAddRequestDTO.getFood());
+                }
+                // SIGN UP REQUEST RECEIVED -> ADD THE CLIENT TO THE DATABASE
+                else if (obj instanceof ClientSignUpDTO clientSignUpDTO)
+                {
+                    if (serverController.getUserInfos().containsKey(clientSignUpDTO.getName()))
+                    {
+                        clientSignUpDTO.setSuccess(false);
+                        clientSignUpDTO.setMessage("Username already exists");
+                    }
+                    else
+                    {
+                        serverController.getUserInfos().put(clientSignUpDTO.getName(), clientSignUpDTO.getPassword());
+                        serverController.updateClientCountDetails();
+
+                        System.out.println(thread.getName() + " : " + clientSignUpDTO);
+                        serverController.log("Client " + clientSignUpDTO.getName() + " signed up");
+
+                        clientSignUpDTO.setSuccess(true);
+                        clientSignUpDTO.setMessage("Sign up successful");
+                    }
+
+                    socketWrapper.write(clientSignUpDTO);
+                }
+                else
+                {
+                    System.out.println(thread.getName() + " : Unknown/unexpected object received");
+                    serverController.log(clientName + " sent unknown/unexpected object");
                 }
             }
         }
@@ -232,5 +252,12 @@ public class ServerReadThread implements Runnable
                 System.err.println("Error : " + ex.getMessage());
             }
         }
+    }
+
+    static class ClientType
+    {
+        public static final int UNDEFINED = -1;
+        public static final int CLIENT = 0;
+        public static final int RESTAURANT = 1;
     }
 }

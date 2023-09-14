@@ -144,7 +144,7 @@ public class ClientApplication extends Application
         controller.init();
 
         stage.setTitle("Login or Signup");
-        stage.setScene(new Scene(root, 600, 400));
+        stage.setScene(new Scene(root, 500, 600));
         stage.setResizable(false);
         stage.show();
     }
@@ -183,9 +183,19 @@ public class ClientApplication extends Application
         stage.show();
     }
 
-    public void showSignUpPage()
+    public void showSignUpPage() throws IOException
     {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/client-signup-view.fxml"));
+        Parent root = fxmlLoader.load();
 
+        ClientSignupController controller = fxmlLoader.getController();
+        controller.setApplication(this);
+        controller.init();
+
+        stage.setTitle("Sign Up");
+        stage.setScene(new Scene(root, 500, 600));
+        stage.setResizable(false);
+        stage.show();
     }
 
     public static void main(String[] args)

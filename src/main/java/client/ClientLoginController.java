@@ -8,14 +8,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 
 public class ClientLoginController
 {
-    public PasswordField userLoginPasswordField;
-    public TextField userLoginUsernameField;
-    public Label loginMessageText;
+    public TextField usernameTextField;
+    public PasswordField passwordTextField;
+    public Label signInMessageText;
+    public Label signUpLabel;
 
     private ClientApplication application;
 
@@ -29,21 +31,18 @@ public class ClientLoginController
 
     public void init()
     {
-        loginBGImage.fitWidthProperty().bind(application.getStage().widthProperty());
-        loginBGImage.fitHeightProperty().bind(application.getStage().heightProperty());
-        loginMessageText.setText("");
+        signInMessageText.setText("");
+
+        signUpLabel.setOnMouseClicked(event -> {
+            signUpButtonClicked();
+        });
     }
 
-    public void userLoginRegisterButtonPressed(ActionEvent actionEvent)
-    {
-
-    }
-
-    public void userLoginLoginButtonPressed(ActionEvent actionEvent)
+    public void signInButtonClicked(ActionEvent event)
     {
         System.out.println("Login Button Pressed");
-        String name = userLoginUsernameField.getText();
-        String password = userLoginPasswordField.getText();
+        String name = usernameTextField.getText();
+        String password = passwordTextField.getText();
         System.out.println("Name : " + name + " Password : " + password);
         ClientLoginRequestDTO loginRequestDTO = new ClientLoginRequestDTO(name, password);
         try
@@ -65,8 +64,8 @@ public class ClientLoginController
                 {
                     System.out.println("Login Successful");
                     System.out.println(loginResponseDTO.getMessage());
-                    loginMessageText.setText(loginResponseDTO.getMessage());
-                    loginMessageText.setStyle("-fx-text-fill: green");
+                    signInMessageText.setText(loginResponseDTO.getMessage());
+                    signInMessageText.setStyle("-fx-text-fill: green");
 
                     application.setUserName(name);
                     application.showHomePage(true);
@@ -75,8 +74,8 @@ public class ClientLoginController
                 {
                     System.out.println("Login Failed");
                     System.out.println(loginResponseDTO.getMessage());
-                    loginMessageText.setText(loginResponseDTO.getMessage());
-                    loginMessageText.setStyle("-fx-text-fill: red");
+                    signInMessageText.setText(loginResponseDTO.getMessage());
+                    signInMessageText.setStyle("-fx-text-fill: red");
                 }
             }
             else
@@ -91,9 +90,17 @@ public class ClientLoginController
         }
     }
 
-    public void userLoginResetButtonPressed(ActionEvent actionEvent)
+    public void signUpButtonClicked()
     {
-        userLoginUsernameField.setText("");
-        userLoginPasswordField.setText("");
+        System.out.println("Sign Up Button Pressed");
+        try
+        {
+            application.showSignUpPage();
+        }
+        catch (IOException e)
+        {
+            System.err.println("Class : LoginController | Method : userLoginSignupButtonPressed | While showing signup page");
+            System.err.println("Error : " + e.getMessage());
+        }
     }
 }

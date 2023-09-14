@@ -13,14 +13,14 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ClientLoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ClientSignupController">
    <children>
       <ImageView fitHeight="600.0" fitWidth="535.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../assets/login-bg.jpg" />
+            <Image url="@../assets/signup-bg.jpg" />
          </image>
       </ImageView>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" height="365.0" layoutX="37.0" layoutY="118.0" strokeType="INSIDE" width="375.0">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="334.0" layoutX="63.0" layoutY="114.0" strokeType="INSIDE" width="375.0">
          <fill>
             <LinearGradient endX="1.0" endY="1.0">
                <stops>
@@ -54,48 +54,48 @@
             </LinearGradient>
          </stroke>
       </Rectangle>
-      <TextField fx:id="usernameTextField" layoutX="97.0" layoutY="232.0" prefHeight="34.0" prefWidth="291.0" promptText="Username">
+      <TextField fx:id="usernameTextField" layoutX="126.0" layoutY="211.0" prefHeight="40.0" prefWidth="291.0" promptText="Username">
          <font>
             <Font name="Corbel" size="16.0" />
          </font>
       </TextField>
-      <PasswordField fx:id="passwordTextField" layoutX="97.0" layoutY="300.0" prefHeight="34.0" prefWidth="291.0" promptText="Password">
+      <PasswordField fx:id="passwordTextField" layoutX="126.0" layoutY="289.0" prefHeight="40.0" prefWidth="291.0" promptText="Password">
          <font>
             <Font name="Corbel" size="16.0" />
          </font>
       </PasswordField>
-      <Label layoutX="142.0" layoutY="153.0" text="Foody-Verse" textFill="RED">
+      <Label layoutX="71.0" layoutY="123.0" text="Foody-Verse" textFill="RED">
          <font>
-            <Font name="Corbel Bold" size="30.0" />
+            <Font name="Corbel Bold" size="20.0" />
          </font>
       </Label>
-      <ImageView fitHeight="34.0" fitWidth="34.0" layoutX="51.0" layoutY="232.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="34.0" fitWidth="34.0" layoutX="83.0" layoutY="214.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/username-icon.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="34.0" fitWidth="34.0" layoutX="51.0" layoutY="300.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="34.0" fitWidth="34.0" layoutX="83.0" layoutY="292.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/password-icon.png" />
          </image>
       </ImageView>
-      <Button layoutX="313.0" layoutY="366.0" mnemonicParsing="false" onAction="#signInButtonClicked" prefHeight="36.0" prefWidth="74.0" text="Sign in">
+      <Button layoutX="208.0" layoutY="389.0" mnemonicParsing="false" onAction="#signupButtonClicked" prefHeight="36.0" prefWidth="82.0" text="Sign up!">
          <font>
             <Font name="Corbel Bold" size="16.0" />
          </font>
       </Button>
-      <Label layoutX="120.0" layoutY="428.0" text="Don't have an account?">
+      <Label layoutX="376.0" layoutY="126.0" />
+      <Label layoutX="216.0" layoutY="154.0" text="Sign Up">
          <font>
-            <Font size="13.0" />
+            <Font name="Calibri Light" size="22.0" />
          </font>
       </Label>
-      <Label fx:id="signUpLabel" layoutX="264.0" layoutY="427.0" text="Sign Up" textFill="#0d00ff">
+      <Label layoutX="408.0" layoutY="119.0" prefHeight="14.0" prefWidth="23.0" text="User">
          <font>
-            <Font size="14.0" />
+            <Font name="Calibri Light" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="376.0" layoutY="126.0" text="User" />
-      <Label fx:id="signInMessageText" layoutX="53.0" layoutY="367.0" prefHeight="34.0" prefWidth="244.0" text="Label" wrapText="true">
+      <Label fx:id="signUpMessageText" alignment="CENTER" layoutX="128.0" layoutY="345.0" prefHeight="34.0" prefWidth="244.0" text="Username exists" wrapText="true">
          <font>
             <Font name="Calibri" size="15.0" />
          </font>

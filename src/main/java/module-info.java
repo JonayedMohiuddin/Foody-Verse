@@ -5,9 +5,6 @@ module com.jonayed.restaurantdatabasesystem {
     exports client;
     opens client to javafx.fxml;
 
-    exports controllers;
-    opens controllers to javafx.fxml;
-
     exports dto;
     opens dto to javafx.fxml;
 
