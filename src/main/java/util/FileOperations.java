@@ -159,7 +159,7 @@ public class FileOperations
         BufferedWriter writer = new BufferedWriter(new FileWriter(FOODS_FILE_NAME));
         for (Food food : foods)
         {
-            writer.write(food.getRestaurantId() + "," + food.getCategory() + "," + food.getName() + "," + food.getPrice());
+            writer.write(food.getRestaurantId() + "," + food.getName() + "," + food.getCategory() + "," + food.getPrice());
             writer.write("\n");
         }
         writer.close();

@@ -412,7 +412,7 @@ public class RestaurantHomeController
         VBox foodImageContainer = new VBox();
 //        ImageView rowImageView = new ImageView(new Image("file:src/main/resources/food-images/" + food.getName() + ".jpg", 175, 125, false, false));
         ImageView rowImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
-        if(rowImageView.getImage().isError())
+        if (rowImageView.getImage().isError())
         {
             rowImageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
         }
@@ -537,15 +537,23 @@ public class RestaurantHomeController
     public void fillFoodList(ArrayList<Food> foodList)
     {
         int itemOrderCount = 0;
-        for (var map : historyOrdersList.values())
-        {
-            for (Food food : map.keySet())
-            {
-                itemOrderCount += map.get(food);
-            }
-        }
+
+        System.out.println("Food list size : " + foodList.size());
+
         for (Food food : foodList)
         {
+            itemOrderCount = 0;
+            for (var map : historyOrdersList.entrySet())
+            {
+                if (map.getValue().containsKey(food))
+                {
+                    for (Food f : map.getValue().keySet())
+                    {
+                        System.out.println("Food : " + f.getName() + " x " + map.getValue().get(f));
+                        itemOrderCount += map.getValue().get(food);
+                    }
+                }
+            }
             addFoodListRow(food, itemOrderCount);
         }
     }
@@ -579,7 +587,7 @@ public class RestaurantHomeController
         VBox foodImageContainer = new VBox();
         //ImageView rowImageView = new ImageView(new Image("file:src/main/resources/food-images/" + food.getName() + ".jpg", 175, 125, false, false));
         ImageView rowImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
-        if(rowImageView.getImage().isError())
+        if (rowImageView.getImage().isError())
         {
             rowImageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
         }
@@ -781,7 +789,7 @@ public class RestaurantHomeController
         VBox foodImageContainer = new VBox();
         //ImageView rowImageView = new ImageView(new Image("file:src/main/resources/food-images/" + food.getName() + ".jpg", 175, 125, false, false));
         ImageView rowImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
-        if(rowImageView.getImage().isError())
+        if (rowImageView.getImage().isError())
         {
             rowImageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
         }
