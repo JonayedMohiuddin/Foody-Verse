@@ -53,6 +53,7 @@ public class RestaurantHomeController
     // ASSETS //
     Image restaurantImageLarge;
     Image foodImage;
+    Image userIconImage;
     // FONTS
     Font robotoBoldFont20;
     Font robotoBoldFont15;
@@ -62,6 +63,7 @@ public class RestaurantHomeController
     Font robotoLightFont20;
     Font robotoLightFont15;
     ConcurrentHashMap<String, HashMap<Food, Integer>> pendingOrdersList;
+    ConcurrentHashMap<String, HashMap<Food, Integer>> historyOrdersList;
     int pendingOrderCount = 0;
     // DATABASE
     private Restaurant restaurant;
@@ -71,6 +73,7 @@ public class RestaurantHomeController
     public void init()
     {
         pendingOrdersList = new ConcurrentHashMap<>();
+        historyOrdersList = new ConcurrentHashMap<>();
 
         try
         {
@@ -107,6 +110,7 @@ public class RestaurantHomeController
         restaurantImageMedium = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 175, 125, false, false);
         restaurantImageLarge = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 263, 188, false, false);
         foodImage = new Image("file:src/main/resources/assets/Burger.jpg", 175, 125, false, false);
+        userIconImage = new Image("file:src/main/resources/assets/user-icon.png", 50, 50, false, false);
 
         // LOAD FONTS
         robotoBoldFont15 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Bold.ttf"), 15);
@@ -175,6 +179,8 @@ public class RestaurantHomeController
         {
             historyButton.setStyle("-fx-background-color: #c7a84a; -fx-text-fill: #000000;");
             displayVBox.setSpacing(10);
+            displayVBox.getChildren().clear();
+            fillDeliveredRequest();
         }
         else if (window == WindowType.ADD_FOODS)
         {
@@ -334,16 +340,193 @@ public class RestaurantHomeController
     {
     }
 
+    public void fillDeliveredRequest()
+    {
+        for (String username : historyOrdersList.keySet())
+        {
+            addDeliveredOrderUsernameHeader(username);
+            HashMap<Food, Integer> foodCountMap = historyOrdersList.get(username);
+            for (Food food : foodCountMap.keySet())
+            {
+                addDeliveredOrderRow(food, foodCountMap.get(food), username);
+            }
+        }
+    }
+
+    public void addDeliveredOrderUsernameHeader(String username)
+    {
+        HBox headerRow = new HBox();
+
+        HBox userDetailContainer = new HBox();
+        userDetailContainer.setPrefWidth(550);
+        userDetailContainer.setPrefHeight(50);
+        userDetailContainer.setSpacing(10);
+        userDetailContainer.setAlignment(Pos.CENTER_LEFT);
+
+        ImageView imageView = new ImageView(userIconImage);
+        imageView.setFitWidth(35);
+        imageView.setFitHeight(35);
+
+        headerRow.setPrefWidth(700);
+        headerRow.setPrefHeight(50);
+        headerRow.setMinWidth(700);
+        headerRow.setMinHeight(50);
+        headerRow.setStyle("-fx-border-insets: 0px 0px 10px 20px;");
+
+        Label usernameLabel = new Label(username);
+        usernameLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: 'Roboto Medium';");
+        usernameLabel.setPadding(new Insets(0, 0, 0, 20));
+
+        userDetailContainer.getChildren().addAll(imageView, usernameLabel);
+
+        headerRow.getChildren().addAll(userDetailContainer);
+        displayVBox.getChildren().add(headerRow);
+    }
+
+    public void addDeliveredOrderRow(Food food, int orderCount, String username)
+    {
+        HBox row = new HBox();
+        row.setPrefWidth(750);
+        row.setPrefHeight(80);
+        row.setMinWidth(750);
+        row.setMinHeight(80);
+        row.setStyle("-fx-border-insets: 0 20px 20px 0px;");
+
+        StackPane rowStackPane = new StackPane();
+        rowStackPane.setPrefWidth(750);
+        rowStackPane.setPrefHeight(80);
+
+        Rectangle rowBackgroundRect = new Rectangle();
+        rowBackgroundRect.setWidth(750);
+        rowBackgroundRect.setHeight(80);
+        rowBackgroundRect.setArcWidth(10);
+        rowBackgroundRect.setArcHeight(10);
+        LinearGradient linearGradient = new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE, new Stop(0, Color.web("#4027ff", 0.4)), new Stop(1, Color.web("#ada3f7", 0.4)));
+        rowBackgroundRect.setFill(linearGradient);
+        rowBackgroundRect.setStroke(Color.web("#000000"));
+
+        HBox rowHBoxContent = new HBox();
+        rowHBoxContent.setPrefWidth(200);
+        rowHBoxContent.setPrefHeight(100);
+
+        VBox foodImageContainer = new VBox();
+        ImageView rowImageView = new ImageView(new Image("file:src/main/resources/assets/Burger.jpg", 175, 125, false, false));
+        rowImageView.setFitWidth(80);
+        rowImageView.setFitHeight(60);
+        rowImageView.minWidth(80);
+        rowImageView.minHeight(60);
+        rowImageView.maxWidth(80);
+        rowImageView.maxHeight(60);
+        rowImageView.setPreserveRatio(false);
+        foodImageContainer.setPadding(new Insets(10, 0, 0, 10));
+        foodImageContainer.getChildren().addAll(rowImageView);
+
+        VBox foodDetailsContainer = new VBox();
+        foodDetailsContainer.setPadding(new Insets(10, 0, 0, 20));
+        foodDetailsContainer.setPrefWidth(319);
+        foodDetailsContainer.setPrefHeight(80);
+        foodDetailsContainer.setSpacing(10);
+
+        Label foodNameLabel = new Label(food.getName());
+        foodNameLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-font-family: Calibri;");
+
+        Label foodCategory = new Label(food.getCategory());
+        foodCategory.setStyle("-fx-font-size: 15px; -fx-font-family: Roboto;");
+
+        foodDetailsContainer.getChildren().addAll(foodNameLabel, foodCategory);
+
+        VBox separatorContainer = new VBox();
+        Rectangle separator = new Rectangle();
+        separator.setWidth(2);
+        separator.setHeight(70);
+        separatorContainer.setPadding(new Insets(5, 0, 0, 0));
+        separatorContainer.getChildren().add(separator);
+
+        VBox orderDetailsContainer = new VBox();
+        orderDetailsContainer.setPadding(new Insets(0, 0, 0, 15));
+        orderDetailsContainer.setPrefWidth(160);
+        orderDetailsContainer.setPrefHeight(80);
+        orderDetailsContainer.setSpacing(10);
+        orderDetailsContainer.setAlignment(Pos.CENTER);
+
+        Label orderCountLabel = new Label("X " + orderCount);
+        orderCountLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-font-family: Calibri;");
+
+        Label orderPriceLabel = new Label(food.getPrice() * orderCount + "$");
+        orderPriceLabel.setStyle("-fx-font-size: 18px; -fx-font-family: 'Roboto Black';");
+
+        orderDetailsContainer.getChildren().addAll(orderCountLabel, orderPriceLabel);
+
+        VBox orderButtonContainer = new VBox();
+        orderButtonContainer.setPrefWidth(178);
+        orderButtonContainer.setPrefHeight(80);
+        orderButtonContainer.setAlignment(Pos.CENTER);
+
+        rowHBoxContent.getChildren().addAll(foodImageContainer, foodDetailsContainer, separatorContainer, orderDetailsContainer, orderButtonContainer);
+
+        rowStackPane.getChildren().addAll(rowBackgroundRect, rowHBoxContent);
+
+        row.getChildren().add(rowStackPane);
+        displayVBox.getChildren().add(row);
+    }
+
     public void fillPendingRequest()
     {
         for (String username : pendingOrdersList.keySet())
         {
+            addPendingOrderUsernameHeader(username);
             HashMap<Food, Integer> foodCountMap = pendingOrdersList.get(username);
             for (Food food : foodCountMap.keySet())
             {
-                addPendingOrderRow(food, foodCountMap.get(food));
+                addPendingOrderRow(food, foodCountMap.get(food), username);
             }
         }
+    }
+
+    public void addPendingOrderUsernameHeader(String username)
+    {
+        HBox headerRow = new HBox();
+
+        HBox userDetailContainer = new HBox();
+        userDetailContainer.setPrefWidth(550);
+        userDetailContainer.setPrefHeight(50);
+        userDetailContainer.setSpacing(10);
+        userDetailContainer.setAlignment(Pos.CENTER_LEFT);
+
+        ImageView imageView = new ImageView(userIconImage);
+        imageView.setFitWidth(35);
+        imageView.setFitHeight(35);
+
+        headerRow.setPrefWidth(700);
+        headerRow.setPrefHeight(50);
+        headerRow.setMinWidth(700);
+        headerRow.setMinHeight(50);
+        headerRow.setStyle("-fx-border-insets: 0px 0px 10px 20px;");
+
+        Label usernameLabel = new Label(username);
+        usernameLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: 'Roboto Medium';");
+        usernameLabel.setPadding(new Insets(0, 0, 0, 20));
+
+        userDetailContainer.getChildren().addAll(imageView, usernameLabel);
+
+        HBox acceptOrderButtonContainer = new HBox();
+        acceptOrderButtonContainer.setPrefWidth(200);
+        acceptOrderButtonContainer.setPrefHeight(50);
+        acceptOrderButtonContainer.setAlignment(Pos.CENTER_RIGHT);
+
+        Button acceptOrderButton = new Button("Deliver All Order");
+        acceptOrderButton.setPrefWidth(200);
+        acceptOrderButton.setPrefHeight(38);
+        acceptOrderButton.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-font-family: 'Corbel';");
+
+        acceptOrderButton.setOnAction((ActionEvent event) -> {
+            deliverUserAllFood(username);
+        });
+
+        acceptOrderButtonContainer.getChildren().add(acceptOrderButton);
+
+        headerRow.getChildren().addAll(userDetailContainer, acceptOrderButtonContainer);
+        displayVBox.getChildren().add(headerRow);
     }
 
     public void fillFoodList(ArrayList<Food> foodList)
@@ -354,7 +537,7 @@ public class RestaurantHomeController
         }
     }
 
-    public void addPendingOrderRow(Food food, int orderCount)
+    public void addPendingOrderRow(Food food, int orderCount, String username)
     {
         HBox row = new HBox();
         row.setPrefWidth(750);
@@ -437,6 +620,9 @@ public class RestaurantHomeController
         acceptOrderButton.setPrefWidth(126);
         acceptOrderButton.setPrefHeight(38);
         acceptOrderButton.setStyle("-fx-font-size: 18px; -fx-font-family: 'Corbel';");
+        acceptOrderButton.setOnAction((ActionEvent event) -> {
+            deliverSingleFood(food, orderCount, username);
+        });
 
         orderButtonContainer.getChildren().add(acceptOrderButton);
 
@@ -458,6 +644,94 @@ public class RestaurantHomeController
 //        rowBackgroundRect.setArcWidth(10);
 //        rowBackgroundRect.setArcHeight(10);
 //        rowBackgroundRect.setFill(javafx.scene.paint.Color.valueOf(new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE, new Stop(0, Color.RED), new Stop(1, Color.BLUE))
+    }
+
+    public void deliverUserAllFood(String username)
+    {
+        System.out.println("Delivering all food for user " + username);
+
+        if (historyOrdersList.containsKey(username))
+        {
+            HashMap<Food, Integer> existingFoodCountMap = historyOrdersList.get(username);
+            for (Food food : pendingOrdersList.get(username).keySet())
+            {
+                if (existingFoodCountMap.containsKey(food))
+                {
+                    existingFoodCountMap.put(food, existingFoodCountMap.get(food) + pendingOrdersList.get(username).get(food));
+                }
+                else
+                {
+                    existingFoodCountMap.put(food, pendingOrdersList.get(username).get(food));
+                }
+            }
+            historyOrdersList.put(username, existingFoodCountMap);
+        }
+        else
+        {
+            historyOrdersList.put(username, pendingOrdersList.get(username));
+        }
+
+        for (var entry : historyOrdersList.entrySet())
+        {
+            for (Food f : entry.getValue().keySet())
+            {
+                System.out.println("Food : " + f.getName() + " x " + entry.getValue().get(f));
+            }
+        }
+
+        for (Food food : pendingOrdersList.get(username).keySet())
+        {
+            pendingOrderCount -= pendingOrdersList.get(username).get(food);
+        }
+        pendingOrdersList.remove(username);
+        updatePendingOrderNotification();
+        displayVBox.getChildren().clear();
+        fillPendingRequest();
+    }
+
+    public void deliverSingleFood(Food food, int orderCount, String username)
+    {
+        System.out.println("Delivering food " + food.getName() + " x " + orderCount);
+
+        pendingOrdersList.get(username).remove(food);
+        if (pendingOrdersList.get(username).size() == 0)
+        {
+            pendingOrdersList.remove(username);
+        }
+
+        if (historyOrdersList.containsKey(username))
+        {
+            HashMap<Food, Integer> existingFoodCountMap = historyOrdersList.get(username);
+            if (existingFoodCountMap.containsKey(food))
+            {
+                existingFoodCountMap.put(food, existingFoodCountMap.get(food) + orderCount);
+            }
+            else
+            {
+                existingFoodCountMap.put(food, orderCount);
+            }
+            historyOrdersList.put(username, existingFoodCountMap);
+        }
+        else
+        {
+            HashMap<Food, Integer> foodCountMap = new HashMap<>();
+            foodCountMap.put(food, orderCount);
+            historyOrdersList.put(username, foodCountMap);
+        }
+
+        for (var entry : historyOrdersList.entrySet())
+        {
+            for (Food f : entry.getValue().keySet())
+            {
+                System.out.println("Food : " + f.getName() + " x " + entry.getValue().get(f));
+            }
+        }
+
+        pendingOrderCount -= orderCount;
+        updatePendingOrderNotification();
+
+        displayVBox.getChildren().clear();
+        fillPendingRequest();
     }
 
     public void addFoodListRow(Food food, int totalOrderCount)
