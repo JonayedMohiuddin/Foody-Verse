@@ -1,5 +1,6 @@
 package client;
 
+import dto.LogoutDTO;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -94,13 +95,12 @@ public class ClientApplication extends Application
 
         stage = primaryStage;
 
-        connectToServer();
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>()
         {
             @Override
             public void handle(WindowEvent event)
             {
-                disconnectFromServer();
+                logoutCleanup();
             }
         });
 
@@ -120,22 +120,26 @@ public class ClientApplication extends Application
         }
     }
 
-    public void disconnectFromServer()
+    public void logoutCleanup()
     {
-        System.out.println("Disconnecting from server");
+        System.out.println("Logging out");
         try
         {
+            socketWrapper.write(new LogoutDTO());
             socketWrapper.closeConnection();
+            showLoginPage();
         }
         catch (IOException e)
         {
-            System.err.println("Class : RestaurantApplication | Method : disconnectFromServer | While closing connection with server");
+            System.err.println("Class : RestaurantApplication | Method : logoutCleanup | While logging out");
             System.err.println("Error : " + e.getMessage());
         }
     }
 
     public void showLoginPage() throws IOException
     {
+        connectToServer();
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/client-login-view.fxml"));
         Parent root = fxmlLoader.load();
 

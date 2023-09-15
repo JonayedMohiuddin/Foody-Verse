@@ -68,7 +68,7 @@ public class ClientLoginController
                     signInMessageText.setStyle("-fx-text-fill: green");
 
                     application.setUserName(name);
-                    application.showHomePage(true);
+                    application.showHomePage(false);
                 }
                 else
                 {

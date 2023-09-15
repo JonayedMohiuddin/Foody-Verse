@@ -3,3 +3,5 @@
 3,Subway,3,3.5,$,1565,Sandwiches,Drinks
 4,IHOP,4,4.0,$$,1565,Breakfast,Drinks
 5,Starbucks,5,4.1,$,1565,Coffee,Drinks
+6,Mashallah Kebab,1,4.5,$,1234,Tasty Masala,Spicy kebab
+7,tat,sadf,123.0,$,asdf,Tasty Masala,Spicy kebab

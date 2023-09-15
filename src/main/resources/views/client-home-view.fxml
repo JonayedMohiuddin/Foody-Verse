@@ -118,7 +118,7 @@
                   </Label>
                </children>
             </GridPane>
-            <Button layoutX="69.0" layoutY="84.0" mnemonicParsing="false" onAction="#logoutButtonClicked" prefHeight="30.0" prefWidth="66.0" text="Logout">
+            <Button layoutX="64.0" layoutY="84.0" mnemonicParsing="false" onAction="#homePageLogOutButtonClicked" prefHeight="30.0" prefWidth="75.0" text="Sign Out">
                <font>
                   <Font name="Verdana" size="12.0" />
                </font>

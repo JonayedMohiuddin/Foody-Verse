@@ -79,7 +79,7 @@ public class ClientCartController
         System.out.println("Back button clicked");
         try
         {
-            application.showHomePage(false);
+            application.showHomePage(true);
         }
         catch (IOException e)
         {
@@ -180,6 +180,10 @@ public class ClientCartController
         // <StackPane>
         StackPane foodImageContainer = new StackPane();
         ImageView foodSmallImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
+        if(foodSmallImageView.getImage().isError())
+        {
+            foodSmallImageView = new ImageView(foodImageMedium);
+        }
         foodSmallImageView.setFitWidth(84);
         foodSmallImageView.setFitHeight(60);
         foodImageContainer.setPadding(new Insets(10, 20, 10, 10)); // top right bottom left

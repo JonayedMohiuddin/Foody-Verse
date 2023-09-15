@@ -254,7 +254,7 @@ public class RestaurantHomeController
             return;
         }
 
-        Food food = new Food(restaurant.getId(), foodName, foodCategory, Double.parseDouble(foodPrice));
+        Food food = new Food(restaurant.getId(), foodCategory, foodName, Double.parseDouble(foodPrice));
         for (Food existingFood : application.getRestaurant().getFoodList())
         {
             if (existingFood.getName().equals(food.getName()) && existingFood.getPrice() == food.getPrice())

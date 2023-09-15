@@ -1,5 +1,6 @@
 package server;
 
+import dto.RestaurantAddUpdateDTO;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -407,6 +408,22 @@ public class ServerController implements Runnable
         Restaurant restaurant = new Restaurant(maxId + 1, name, ratingDouble, priceCategory, zipcode, category);
         restaurantList.put(restaurant.getId(), restaurant);
         restaurantInfos.put(name, password);
+
+        // SEND THIS UPDATE TO ALL CLIENTS
+        RestaurantAddUpdateDTO restaurantAddUpdateDTO = new RestaurantAddUpdateDTO(restaurant);
+        for (SocketWrapper socketWrapper : clientMap.values())
+        {
+            try
+            {
+                socketWrapper.write(restaurantAddUpdateDTO);
+            }
+            catch (IOException e)
+            {
+                System.err.println("Class : ServerController | Method : addRestaurantMenuAddButtonPressed | While sending RestaurantAddUpdateDTO to client");
+                System.err.println("Error : " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
 
         System.out.println("Restaurant Added : " + restaurant.toString());
 

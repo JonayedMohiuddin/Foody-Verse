@@ -2,6 +2,36 @@
 1,3 pc. Breast and Wing Combo,Chicken Wings,20.99
 1,6 pc. Breast and Wing Combo,Chicken Wings,38.99
 1,Crispy Taco,Fast Food,1.19
+1,Bangla Cuisine,Chicken Chap,12.0
+1,Fast Food,Tasty Tacos,123.0
+1,Tasty,Crispy Crunch,123.0
+1,Tasty1,Crispy Crunch,123.0
+1,Tasty12,Crispy Crunch,123.0
+1,TASTY TREAT SOMUSA,FAST FOOD AND BANGLA CUISINE,1234.0
+1,Shingara,Bangladeshi Food,12.99
+1,Tasty Cage,Street Foods,12.99
+1,Tasy Treat,Spicy,123.0
+1,Hello,Hello,1234.0
+1,Tast,adsf,123.0
+1,Tast1,adsf,123.0
+1,Tast12,adsf,123.0
+1,BUGER,TASTY,123.0
+1,afd,asdf,12.0
+1,afd2,asdf,12.0
+1,afd23,asdf,12.0
+1,asdf,sadf,123.0
+1,asdf23,sadf,123.0
+1,asdf233,sadf,123.0
+1,asdf2334,sadf,123.0
+1,asdf2334,sadfsad,1232.0
+1,asdf23341,sadfsad,1232.0
+1,adf,asd,12.0
+1,adf2,asd,12.0
+1,adf23,asd,12.0
+1,adf233,asd,12.0
+1,adf2334,asd,12.0
+1,TASTY TREAT,tast,123.0
+1,1234,1234,1234.0
 2,Big Mac, Burgers,10.99
 2,Quarter Pounder with Cheese, Burgers,11.99
 2,McChicken, Burgers,6.99
@@ -24,3 +54,4 @@
 5,Espresso, Coffee,25.5
 5,Iced Coffee, Drinks,12.2
 5,Iced Tea, Drinks,13.4
+6,Kebab,Kebab,123.0

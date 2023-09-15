@@ -2,7 +2,7 @@ package client;
 
 import dto.DatabaseDTO;
 import dto.DatabaseRequestDTO;
-import javafx.event.ActionEvent;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientHomeController
 {
-    // CHANGABLE LABELS
+    // CHANGEABLE LABELS
     public Label usernameLabel;
 
     // SEARCH BAR
@@ -52,9 +52,11 @@ public class ClientHomeController
     ClientApplication application;
     ArrayList<String> restaurantSearchOptions;
     ArrayList<String> foodSearchOptions;
-    // MY CART //
+    // SEARCH TYPE //
     String currentViewType;
     String currentSearchFilterType;
+    String currentWindowType;
+    int currentRestaurantWindowID = -1;
     // CART DETAILS
     ConcurrentHashMap<Integer, HashMap<Food, Integer>> cartFoodList; // Map<Restaurant ID, Map<Food, Count>>
     double cartTotalPrice = 0;
@@ -63,7 +65,7 @@ public class ClientHomeController
     ConcurrentHashMap<Integer, Restaurant> restaurantList;
     ArrayList<Food> foodList;
     // IMAGES
-    Image restaurantImageMedium;
+    Image restaurantImage_175by125;
 
     // ASSETS //
     Image restaurantImageLarge;
@@ -97,7 +99,7 @@ public class ClientHomeController
         usernameLabel.setText(application.getUsername());
 
         // LOAD IMAGES
-        restaurantImageMedium = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 175, 125, false, false);
+        restaurantImage_175by125 = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 175, 125, false, false);
         restaurantImageLarge = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 263, 188, false, false);
         foodImage = new Image("file:src/main/resources/assets/Burger.jpg", 175, 125, false, false);
 
@@ -111,7 +113,7 @@ public class ClientHomeController
         robotoRegularFont20 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Regular.ttf"), 20);
 
         // REQUEST FOR DATABASE
-        if (isDatabaseLoaded)
+        if (!isDatabaseLoaded)
         {
             DatabaseRequestDTO databaseRequestDTO = new DatabaseRequestDTO(DatabaseRequestDTO.RequestType.RESTAURANT_LIST);
             try
@@ -197,16 +199,65 @@ public class ClientHomeController
         currentViewType = Options.VIEW_RESTAURANT;
         viewChoiceBox.setValue(Options.VIEW_RESTAURANT);
 
-//        restaurantImage = new HashMap<>();
-//        for (Restaurant restaurant : restaurantList.values())
-//        {
-//            Image image = new Image("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg", 175, 125, false, false);
-//            if(image == null)
-//            {
-//                new Image("file:src/main/resources/assets/RestaurantImage.jpg", 175, 125, false, false);
-//            }
-//            restaurantImage.put(restaurant.getName(), image);
-//        }
+        currentWindowType = Options.HOME_WINDOW;
+
+        // CREATE THREAD TO READ FROM SERVER for UPDATES ON -> NEW FOOD, NEW RESTAURANT AND DELIVERED ORDERS
+        // CREATE THIS THREAD ONLY IF NOT ALREADY CREATED !!!
+        if (!isDatabaseLoaded)
+        {
+            new ClientReadThread(this);
+        }
+    }
+
+    public void newFoodAdded(Food food)
+    {
+        restaurantList.get(food.getRestaurantId()).getFoodList().add(food);
+        foodList.add(food);
+
+        application.getRestaurantList().get(food.getRestaurantId()).getFoodList().add(food);
+        application.getFoodList().add(food);
+
+        // If viewing window of recent added food restaurant, update UI
+        if (currentWindowType.equals(Options.RESTAURANT_WINDOW) && currentRestaurantWindowID == food.getRestaurantId())
+        {
+            System.out.println("UPDATING UI : New food added : " + food.getName());
+            Platform.runLater(() -> {
+                resetFlowPane();
+                addRestaurantDetailHeading(restaurantList.get(food.getRestaurantId()));
+                addFoodListToFlowPane(restaurantList.get(food.getRestaurantId()).getFoodList());
+            });
+        }
+        else if (currentViewType.equals(Options.VIEW_FOOD) && currentWindowType.equals(Options.HOME_WINDOW))
+        {
+            System.out.println("UPDATING UI : New food added : " + food.getName());
+            Platform.runLater(() -> {
+                resetFlowPane();
+                addFoodListToFlowPane();
+            });
+        }
+    }
+
+    public void newRestaurantAdded(Restaurant restaurant)
+    {
+        System.out.println("UPDATING UI : New restaurant added : " + restaurant.getName());
+
+        restaurantList.put(restaurant.getId(), restaurant);
+        application.getRestaurantList().put(restaurant.getId(), restaurant);
+
+        for (Food food : restaurant.getFoodList())
+        {
+            foodList.add(food);
+            application.getFoodList().add(food);
+        }
+
+        if (currentWindowType.equals(Options.HOME_WINDOW) && currentViewType.equals(Options.VIEW_RESTAURANT))
+        {
+            System.out.println("UPDATING UI : New restaurant added : " + restaurant.getName());
+            Platform.runLater(() -> {
+                resetFlowPane();
+                addRestaurantListToFlowPane();
+            });
+        }
     }
 
     private void handleViewOptionChange(String newValue)
@@ -273,16 +324,6 @@ public class ClientHomeController
         }
     }
 
-    public void restaurantClicked(Restaurant restaurant)
-    {
-
-        flowpaneTitleLabel.setText("Restaurant " + restaurant.getName());
-        resetFlowPane();
-        addRestaurantDetailHeading(restaurant);
-        addFoodListToFlowPane(restaurant.getFoodList());
-        restaurantViewBackButton.setVisible(true);
-    }
-
     public void updateCartNotification()
     {
         if (cartTotalItems == 0)
@@ -298,6 +339,18 @@ public class ClientHomeController
         }
     }
 
+    // Open restaurant window
+    public void restaurantClicked(Restaurant restaurant)
+    {
+        flowpaneTitleLabel.setText("Restaurant " + restaurant.getName());
+        resetFlowPane();
+        addRestaurantDetailHeading(restaurant);
+        addFoodListToFlowPane(restaurant.getFoodList());
+        restaurantViewBackButton.setVisible(true);
+        currentWindowType = Options.RESTAURANT_WINDOW;
+        currentRestaurantWindowID = restaurant.getId();
+    }
+
     // Add to cart
     public void foodClicked(Food food)
     {
@@ -310,31 +363,10 @@ public class ClientHomeController
         // Get or default : If the key is present, return the value, else return the default value
         // var x = getOrDefault(key, defaultValue);
         // So, x = key if key is present, else x = defaultValue
-
         Integer restaurantId = food.getRestaurantId();
         HashMap<Food, Integer> foodCountMap = cartFoodList.getOrDefault(restaurantId, new HashMap<>());
         cartFoodList.put(restaurantId, foodCountMap);
         foodCountMap.put(food, foodCountMap.getOrDefault(food, 0) + 1);
-
-//        Large but simplistic code
-//        if(cartFoodList.contains(food.getRestaurantId()))
-//        {
-//            HashMap<Food, Integer> foodCountMap = cartFoodList.get(food.getRestaurantId());
-//            if(foodCountMap.containsKey(food))
-//            {
-//                foodCountMap.put(food, foodCountMap.get(food) + 1);
-//            }
-//            else
-//            {
-//                foodCountMap.put(food, 1);
-//            }
-//        }
-//        else
-//        {
-//            HashMap<Food, Integer> foodCountMap = new HashMap<>();
-//            foodCountMap.put(food, 1);
-//            cartFoodList.put(food.getRestaurantId(), foodCountMap);
-//        }
     }
 
     public void resetFlowPane()
@@ -390,9 +422,9 @@ public class ClientHomeController
 //        ImageView restaurantImageView = new ImageView(restaurantImageLarge);
 
         ImageView restaurantImageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg");
-        if(restaurantImageView.getImage().isError())
+        if (restaurantImageView.getImage().isError())
         {
-            restaurantImageView = new ImageView("file:src/main/resources/assets/RestaurantImage.jpg");
+            restaurantImageView = new ImageView(restaurantImage_175by125);
         }
 
         restaurantImageView.setFitHeight(188);
@@ -427,7 +459,7 @@ public class ClientHomeController
         restaurantRatingLabelDescriptor.setAlignment(Pos.CENTER_LEFT);
         restaurantRatingLabelDescriptor.setMinWidth(descriptorWidth);
 
-        Label restaurantRatingLabelContent = new Label(+restaurant.getScore() + " / 5");
+        Label restaurantRatingLabelContent = new Label(restaurant.getScore() + " / 5");
         restaurantRatingLabelContent.setFont(contentFont);
         restaurantRatingLabelContent.setAlignment(Pos.CENTER_LEFT);
 
@@ -436,18 +468,18 @@ public class ClientHomeController
         // Categories
         HBox restaurantCategoryContainer = new HBox();
 
-        String categories = "";
+        StringBuilder categories = new StringBuilder();
         for (int i = 0; i < restaurant.getCategories().size(); i++)
         {
-            categories = categories + restaurant.getCategories().get(i);
-            if (i != restaurant.getCategories().size() - 1) categories += ", ";
+            categories.append(restaurant.getCategories().get(i));
+            if (i != restaurant.getCategories().size() - 1) categories.append(", ");
         }
         Label restaurantCategoryLabelDescriptor = new Label("Categories : ");
         restaurantCategoryLabelDescriptor.setFont(descriptorFont);
         restaurantCategoryLabelDescriptor.setAlignment(Pos.CENTER_LEFT);
         restaurantCategoryLabelDescriptor.setMinWidth(descriptorWidth);
 
-        Label restaurantCategoryLabelContent = new Label(categories);
+        Label restaurantCategoryLabelContent = new Label(categories.toString());
         restaurantCategoryLabelContent.setFont(contentFont);
         restaurantCategoryLabelContent.setAlignment(Pos.CENTER_LEFT);
 
@@ -480,39 +512,19 @@ public class ClientHomeController
         restaurantZipcodeContent.setAlignment(Pos.CENTER_LEFT);
 
         restaurantZipcodeContainer.getChildren().addAll(restaurantZipcodeDescriptor, restaurantZipcodeContent);
-
-//        VBox backButtonContainer = new VBox();
-
-//        Button backButton = new Button("Back");
-//        backButton.setFont(robotoBoldFont15);
-//        backButton.setAlignment(Pos.TOP_RIGHT);
-//        backButton.setOnMouseClicked(event -> backButtonClickedOnRestaurantMenu());
-
-//        backButtonContainer.getChildren().add(backButton);
-
         restaurantInfoBox.getChildren().addAll(restaurantNameContainer, restaurantRatingContainer, restaurantCategoryContainer, restaurantPriceContainer, restaurantZipcodeContainer);
         flowpane.getChildren().addAll(imageContainer, restaurantInfoBox); // ), backButtonContainer);
     }
-
-//    public void backButtonClickedOnRestaurantMenu()
-//    {
-//        resetFlowPane();
-//        addRestaurantListToFlowPane();
-//        viewChoiceBox.setValue(Options.VIEW_RESTAURANT);
-//        searchFilterChoiceBox.setValue(Options.RESTAURANT_NAME);
-//    }
 
     public void addRestaurantToFlowPane(Restaurant restaurant)
     {
         VBox restaurantBox = new VBox();
 
-//        ImageView imageView = new ImageView(restaurantImage.get(restaurant.getName()));
-//        ImageView imageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg");
-
+        // If image not found, use default image
         ImageView imageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg");
-        if(imageView.getImage().isError())
+        if (imageView.getImage().isError())
         {
-            imageView = new ImageView("file:src/main/resources/assets/RestaurantImage.jpg");
+            imageView = new ImageView(restaurantImage_175by125);
         }
         imageView.setFitHeight(125);
         imageView.setFitWidth(175);
@@ -521,12 +533,8 @@ public class ClientHomeController
             restaurantClicked(restaurant);
         });
 
-//        ImageView imageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
-//        imageView.setFitWidth(175);
-//        imageView.setFitHeight(125);
 
         Label restaurantNameLabel = new Label(restaurant.getName());
-//        restaurantNameLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; - fx-font-family: Calibri Light;");
         restaurantNameLabel.setFont(robotoBoldFont15);
         restaurantNameLabel.setAlignment(Pos.CENTER_LEFT);
         restaurantNameLabel.setMaxWidth(175);
@@ -536,14 +544,14 @@ public class ClientHomeController
         ratingAndPriceLabel.setAlignment(Pos.CENTER_LEFT);
         ratingAndPriceLabel.setMaxWidth(175);
 
-        String categoriesString = "";
+        StringBuilder categoriesString = new StringBuilder();
         for (int i = 0; i < restaurant.getCategories().size(); i++)
         {
-            categoriesString += restaurant.getCategories().get(i);
-            if (i != restaurant.getCategories().size() - 1) categoriesString += ", ";
+            categoriesString.append(restaurant.getCategories().get(i));
+            if (i != restaurant.getCategories().size() - 1) categoriesString.append(", ");
         }
 
-        Label categoryLabel = new Label(categoriesString);
+        Label categoryLabel = new Label(categoriesString.toString());
         categoryLabel.setFont(robotoRegularFont12);
         categoryLabel.setAlignment(Pos.CENTER_LEFT);
         categoryLabel.setMaxWidth(175);
@@ -565,15 +573,13 @@ public class ClientHomeController
 
 //        ImageView imageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
         ImageView imageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
-        if(imageView.getImage().isError())
+        if (imageView.getImage().isError())
         {
-            imageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
+            imageView = new ImageView(foodImage);
         }
         imageView.setFitWidth(175);
         imageView.setFitHeight(125);
-        imageView.setOnMouseClicked(event -> {
-            foodClicked(food);
-        });
+        imageView.setOnMouseClicked(event -> foodClicked(food));
 
         Label foodNameLabel = new Label(food.getName());
 //      restaurantNameLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; - fx-font-family: Calibri Light;");
@@ -597,12 +603,13 @@ public class ClientHomeController
         flowpane.getChildren().add(foodBox);
     }
 
-    public void homePageLogOutButtonClicked(ActionEvent actionEvent)
+    public void homePageLogOutButtonClicked()
     {
         System.out.println("Logout button clicked");
+        application.logoutCleanup();
     }
 
-    public void cartButtonClicked(ActionEvent actionEvent)
+    public void cartButtonClicked()
     {
         System.out.println("Cart button clicked");
         try
@@ -615,11 +622,6 @@ public class ClientHomeController
             System.err.println("Class : HomePageController | Method : cartButtonClicked | While showing cart page");
             System.err.println("Error : " + e.getMessage());
         }
-    }
-
-    public void logoutButtonClicked(ActionEvent actionEvent)
-    {
-        System.out.println("Logout button clicked");
     }
 
     public void search()
@@ -642,7 +644,7 @@ public class ClientHomeController
         }
         else if (currentSearchFilterType.equals(Options.RESTAURANT_PRICE))
         {
-            String opt = "";
+            String opt;
             if ("cheap".contains(searchTextField.getText()) || "$".equals(searchTextField.getText()))
             {
                 opt = "$";
@@ -719,7 +721,7 @@ public class ClientHomeController
     public ArrayList<Double> readRangeFromSearchBoxes()
     {
         ArrayList<Double> range = new ArrayList<>();
-        Double min, max;
+        double min, max;
 
         try
         {
@@ -747,7 +749,7 @@ public class ClientHomeController
         return range;
     }
 
-    public void searchButtonClicked(ActionEvent actionEvent)
+    public void searchButtonClicked()
     {
         search();
     }
@@ -778,19 +780,6 @@ public class ClientHomeController
             rangeSearchMaxField.getParent().requestFocus();
             search();
         }
-    }
-
-    public void resetButtonClicked(ActionEvent actionEvent)
-    {
-        flowpaneTitleLabel.setText("All Restaurants");
-        resetFlowPane();
-        addRestaurantListToFlowPane();
-        viewChoiceBox.setValue(Options.VIEW_RESTAURANT);
-        searchFilterChoiceBox.setValue(Options.RESTAURANT_NAME);
-        searchTextField.setText("");
-        rangeSearchMinField.setText("");
-        rangeSearchMaxField.setText("");
-        restaurantViewBackButton.setVisible(false);
     }
 
     public void switchSearchBox()
@@ -824,7 +813,7 @@ public class ClientHomeController
     // UTIL METHODS AND CLASSES
     // ======================================================================================================
 
-    public void restaurantViewBackButtonClicked(ActionEvent event)
+    public void resetAll()
     {
         flowpaneTitleLabel.setText("All Restaurants");
         resetFlowPane();
@@ -835,6 +824,18 @@ public class ClientHomeController
         rangeSearchMinField.setText("");
         rangeSearchMaxField.setText("");
         restaurantViewBackButton.setVisible(false);
+        currentWindowType = Options.HOME_WINDOW;
+        currentRestaurantWindowID = -1;
+    }
+
+    public void resetButtonClicked()
+    {
+        resetAll();
+    }
+
+    public void restaurantViewBackButtonClicked()
+    {
+        resetAll();
     }
 
     // SEARCH OPTIONS
@@ -847,7 +848,8 @@ public class ClientHomeController
         public static String RESTAURANT_ZIPCODE = "Zipcode";
 
         // SPACE AFTER FOOD TO DIFFERENTIATE THESE OPTIONS FROM RESTAURANT OPTIONS IN CHOICE BOX
-        // THERE MIGHT BE A BETTER WAY TO DO THIS, BUT FEELLING LAZY :P
+        // THERE MIGHT BE A BETTER WAY TO DO THIS, BUT FEELING LAZY :P
+        // Should use invisible space 'ㅤ'
         // TODO : FIND A BETTER WAY TO DO THIS
         public static String FOOD_NAME = "Name ";
         public static String FOOD_CATEGORY = "Category ";
@@ -855,6 +857,9 @@ public class ClientHomeController
 
         public static String VIEW_RESTAURANT = "Restaurant";
         public static String VIEW_FOOD = "Food";
+
+        public static String RESTAURANT_WINDOW = "RestaurantWindow";
+        public static String HOME_WINDOW = "HomeWindow";
     }
 }
 

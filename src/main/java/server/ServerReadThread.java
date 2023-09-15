@@ -17,6 +17,13 @@ public class ServerReadThread implements Runnable
     int restaurantId; // if client is a restaurant
     int clientType;
 
+    static class ClientType
+    {
+        public static final int UNDEFINED = -1;
+        public static final int CLIENT = 0;
+        public static final int RESTAURANT = 1;
+    }
+
     ServerReadThread(ServerController serverController, SocketWrapper socketWrapper)
     {
         this.socketWrapper = socketWrapper;
@@ -35,8 +42,6 @@ public class ServerReadThread implements Runnable
         {
             while ((obj = socketWrapper.read()) != null)
             {
-                System.out.println(thread.getName() + " : " + obj);
-
                 // CLIENT LOGIN REQUEST RECEIVED
                 if (obj instanceof ClientLoginRequestDTO)
                 {
@@ -147,7 +152,7 @@ public class ServerReadThread implements Runnable
                     }
                     else if (databaseRequestDTO.getRequestType() == DatabaseRequestDTO.RequestType.SINGLE_RESTAURANT)
                     {
-                        // JUST SEND THE RESTAURANT WITH THE GIVEN ID - DONT SEND THE WHOLE LIST
+                        // JUST SEND THE RESTAURANT WITH THE GIVEN ID - DON'T SEND THE WHOLE LIST
                         DatabaseDTO databaseDTO = new DatabaseDTO(serverController.getRestaurantList().get(restaurantId));
                         socketWrapper.write(databaseDTO);
                         System.out.println(thread.getName() + " : Database response sent. " + databaseDTO);
@@ -192,6 +197,12 @@ public class ServerReadThread implements Runnable
                     System.out.println(thread.getName() + " : " + foodAddRequestDTO);
 
                     serverController.getRestaurantList().get(restaurantId).getFoodList().add(foodAddRequestDTO.getFood());
+
+                    // SEND THE UPDATED FOOD LIST TO ALL CLIENTS
+                    for (SocketWrapper socketWrapper : serverController.getClientMap().values())
+                    {
+                        socketWrapper.write(foodAddRequestDTO);
+                    }
                 }
                 // SIGN UP REQUEST RECEIVED -> ADD THE CLIENT TO THE DATABASE
                 else if (obj instanceof ClientSignUpDTO clientSignUpDTO)
@@ -215,6 +226,30 @@ public class ServerReadThread implements Runnable
 
                     socketWrapper.write(clientSignUpDTO);
                 }
+                // CLIENT LOGGING OUT
+                else if(obj instanceof LogoutDTO logoutDTO)
+                {
+                    System.out.println(thread.getName() + " : " + logoutDTO);
+                    serverController.log(clientName + " logged out.");
+
+                    if (clientType == ClientType.CLIENT)
+                    {
+                        socketWrapper.write(logoutDTO); // send logout dto back , which will be received by thread to stop the thread
+                        serverController.getClientMap().remove(clientName);
+                        serverController.updateClientCountDetails();
+                        serverController.removeClientFromListView(clientName);
+                    }
+                    else if (clientType == ClientType.RESTAURANT)
+                    {
+                        socketWrapper.write(logoutDTO); // send logout dto back , which will be received by thread to stop the thread
+                        serverController.getRestaurantMap().remove(clientName);
+                        serverController.updateClientCountDetails();
+                        serverController.removeRestaurantFromListView(clientName);
+                    }
+
+                    socketWrapper.closeConnection();
+                    break;
+                }
                 else
                 {
                     System.out.println(thread.getName() + " : Unknown/unexpected object received");
@@ -224,7 +259,7 @@ public class ServerReadThread implements Runnable
         }
         catch (ClassNotFoundException | IOException e)
         {
-            serverController.log(clientName + " logged out.");
+            serverController.log(clientName + " closed connection.");
 
             System.out.println(thread.getName() + " : Class : ServerReadThread | Method : run | Error in " + thread.getName() + " while reading/writing from socket");
             System.out.println(thread.getName() + " : Error : " + e.getMessage());
@@ -252,12 +287,19 @@ public class ServerReadThread implements Runnable
                 System.err.println("Error : " + ex.getMessage());
             }
         }
-    }
-
-    static class ClientType
-    {
-        public static final int UNDEFINED = -1;
-        public static final int CLIENT = 0;
-        public static final int RESTAURANT = 1;
+        finally
+        {
+            try
+            {
+                if (socketWrapper.isClosed)
+                {
+                    socketWrapper.closeConnection();
+                }
+            }
+            catch (IOException e)
+            {
+                System.out.println("Couldn't properly close connection.");
+            }
+        }
     }
 }

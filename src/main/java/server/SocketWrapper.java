@@ -10,18 +10,21 @@ public class SocketWrapper
     Socket socket;
     ObjectInputStream objectInputStream;
     ObjectOutputStream objectOutputStream;
+    boolean isClosed;
 
     public SocketWrapper(String ipAddress, int port) throws IOException
     {
         this.socket = new Socket(ipAddress, port);
         this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         this.objectInputStream = new ObjectInputStream(socket.getInputStream());
+        isClosed = false;
     }
 
     public SocketWrapper(Socket socket) throws IOException
     {
         this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         this.objectInputStream = new ObjectInputStream(socket.getInputStream());
+        isClosed = false;
     }
 
     public Object read() throws ClassNotFoundException, IOException
@@ -36,8 +39,14 @@ public class SocketWrapper
 
     public void closeConnection() throws IOException
     {
+        isClosed = true;
         objectOutputStream.close();
         objectInputStream.close();
         if (this.socket != null) socket.close();
+    }
+
+    public boolean isClosed()
+    {
+        return isClosed;
     }
 }
