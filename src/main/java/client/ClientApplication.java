@@ -21,7 +21,6 @@ public class ClientApplication extends Application
 {
     // Window or Stage reference so that we can change the scene
     private Stage stage;
-
     public Stage getStage()
     {
         return stage;
@@ -29,7 +28,6 @@ public class ClientApplication extends Application
 
     // Socket Wrapper for communication with server
     private SocketWrapper socketWrapper;
-
     public SocketWrapper getSocketWrapper()
     {
         return socketWrapper;
@@ -37,12 +35,10 @@ public class ClientApplication extends Application
 
     // Username of the client
     private String userName;
-
     public String getUsername()
     {
         return userName;
     }
-
     public void setUserName(String userName)
     {
         this.userName = userName;
@@ -51,12 +47,10 @@ public class ClientApplication extends Application
     // DATABASE //
     // RESTAURANT LIST
     private ConcurrentHashMap<Integer, Restaurant> restaurantList;
-
     public ConcurrentHashMap<Integer, Restaurant> getRestaurantList()
     {
         return restaurantList;
     }
-
     public void setRestaurantList(ConcurrentHashMap<Integer, Restaurant> restaurantList)
     {
         this.restaurantList = restaurantList;
@@ -64,12 +58,10 @@ public class ClientApplication extends Application
 
     // FOOD LIST
     private ArrayList<Food> foodList;
-
     public ArrayList<Food> getFoodList()
     {
         return foodList;
     }
-
     public void setFoodList(ArrayList<Food> foodList)
     {
         this.foodList = foodList;
@@ -77,12 +69,10 @@ public class ClientApplication extends Application
 
     // CART ITEMS LIST
     public ConcurrentHashMap<Integer, HashMap<Food, Integer>> cartFoodList; // Map<Restaurant ID, Map<Food, Count>>
-
     public ConcurrentHashMap<Integer, HashMap<Food, Integer>> getCartFoodList()
     {
         return cartFoodList;
     }
-
     public void setCartFoodList(ConcurrentHashMap<Integer, HashMap<Food, Integer>> cartFoodList)
     {
         this.cartFoodList = cartFoodList;
@@ -91,9 +81,8 @@ public class ClientApplication extends Application
     @Override
     public void start(Stage primaryStage) throws IOException
     {
-        restaurantList = new ConcurrentHashMap<>();
-
         stage = primaryStage;
+        restaurantList = new ConcurrentHashMap<>();
 
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>()
         {
@@ -122,7 +111,7 @@ public class ClientApplication extends Application
 
     public void logoutCleanup()
     {
-        System.out.println("Logging out");
+        System.out.println("Log out cleanup");
         try
         {
             socketWrapper.write(new LogoutDTO());

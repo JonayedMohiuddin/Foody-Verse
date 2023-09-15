@@ -61,9 +61,6 @@ public class ClientHomeController
     ConcurrentHashMap<Integer, HashMap<Food, Integer>> cartFoodList; // Map<Restaurant ID, Map<Food, Count>>
     double cartTotalPrice = 0;
     int cartTotalItems = 0;
-    // DATABASE
-    ConcurrentHashMap<Integer, Restaurant> restaurantList;
-    ArrayList<Food> foodList;
     // IMAGES
     Image restaurantImage_175by125;
 
@@ -132,10 +129,8 @@ public class ClientHomeController
                 Object obj = application.getSocketWrapper().read();
                 if (obj instanceof DatabaseDTO databaseDTO)
                 {
-                    restaurantList = databaseDTO.getRestaurantList();
-                    foodList = generateFoodList();
-                    application.setRestaurantList(restaurantList);
-                    application.setFoodList(foodList);
+                    application.setRestaurantList(databaseDTO.getRestaurantList());
+                    application.setFoodList(generateFoodList());
                     System.out.println("RestaurantListDTO received");
                 }
                 else
@@ -152,8 +147,6 @@ public class ClientHomeController
         }
         else
         {
-            restaurantList = application.getRestaurantList();
-            foodList = application.getFoodList();
             cartFoodList = application.getCartFoodList();
             for (HashMap<Food, Integer> foodAndCount : cartFoodList.values())
             {
@@ -211,9 +204,6 @@ public class ClientHomeController
 
     public void newFoodAdded(Food food)
     {
-        restaurantList.get(food.getRestaurantId()).getFoodList().add(food);
-        foodList.add(food);
-
         application.getRestaurantList().get(food.getRestaurantId()).getFoodList().add(food);
         application.getFoodList().add(food);
 
@@ -221,32 +211,26 @@ public class ClientHomeController
         if (currentWindowType.equals(Options.RESTAURANT_WINDOW) && currentRestaurantWindowID == food.getRestaurantId())
         {
             System.out.println("UPDATING UI : New food added : " + food.getName());
-            Platform.runLater(() -> {
-                resetFlowPane();
-                addRestaurantDetailHeading(restaurantList.get(food.getRestaurantId()));
-                addFoodListToFlowPane(restaurantList.get(food.getRestaurantId()).getFoodList());
-            });
+            resetFlowPane();
+            addRestaurantDetailHeading(application.getRestaurantList().get(food.getRestaurantId()));
+            addFoodListToFlowPane(application.getRestaurantList().get(food.getRestaurantId()).getFoodList());
+
         }
         else if (currentViewType.equals(Options.VIEW_FOOD) && currentWindowType.equals(Options.HOME_WINDOW))
         {
             System.out.println("UPDATING UI : New food added : " + food.getName());
-            Platform.runLater(() -> {
-                resetFlowPane();
-                addFoodListToFlowPane();
-            });
+
+            resetFlowPane();
+            addFoodListToFlowPane();
         }
     }
 
     public void newRestaurantAdded(Restaurant restaurant)
     {
-        System.out.println("UPDATING UI : New restaurant added : " + restaurant.getName());
-
-        restaurantList.put(restaurant.getId(), restaurant);
         application.getRestaurantList().put(restaurant.getId(), restaurant);
 
         for (Food food : restaurant.getFoodList())
         {
-            foodList.add(food);
             application.getFoodList().add(food);
         }
 
@@ -377,7 +361,7 @@ public class ClientHomeController
 
     public void addRestaurantListToFlowPane()
     {
-        for (Restaurant restaurant : restaurantList.values())
+        for (Restaurant restaurant : application.getRestaurantList().values())
         {
             addRestaurantToFlowPane(restaurant);
         }
@@ -401,7 +385,7 @@ public class ClientHomeController
 
     public void addFoodListToFlowPane()
     {
-        for (Food food : foodList)
+        for (Food food : application.getFoodList())
         {
             addFoodToFlowPane(food);
         }
@@ -631,14 +615,14 @@ public class ClientHomeController
         if (currentSearchFilterType.equals(Options.RESTAURANT_NAME))
         {
             flowpaneTitleLabel.setText("Restaurants with name " + searchTextField.getText());
-            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByName(searchTextField.getText(), restaurantList);
+            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByName(searchTextField.getText(), application.getRestaurantList());
             resetFlowPane();
             addRestaurantListToFlowPane(restaurants);
         }
         else if (currentSearchFilterType.equals(Options.RESTAURANT_CATEGORY))
         {
             flowpaneTitleLabel.setText("Restaurants with category " + searchTextField.getText());
-            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByCattegory(searchTextField.getText(), restaurantList);
+            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByCattegory(searchTextField.getText(), application.getRestaurantList());
             resetFlowPane();
             addRestaurantListToFlowPane(restaurants);
         }
@@ -663,14 +647,14 @@ public class ClientHomeController
             }
             flowpaneTitleLabel.setText("Restaurants with price category " + opt);
 
-            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantByPrice(opt, restaurantList);
+            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantByPrice(opt, application.getRestaurantList());
             resetFlowPane();
             addRestaurantListToFlowPane(restaurants);
         }
         else if (currentSearchFilterType.equals(Options.RESTAURANT_ZIPCODE))
         {
             flowpaneTitleLabel.setText("Restaurants with zipcode " + searchTextField.getText());
-            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByZipcode(searchTextField.getText(), restaurantList);
+            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByZipcode(searchTextField.getText(), application.getRestaurantList());
             resetFlowPane();
             addRestaurantListToFlowPane(restaurants);
         }
@@ -680,21 +664,21 @@ public class ClientHomeController
             if (range.size() < 2) return;
             DecimalFormat decimalFormat = new DecimalFormat("#.##"); // to omit trailing .0 looks ugly
             flowpaneTitleLabel.setText("Restaurants with rating " + decimalFormat.format(range.get(0)) + " to " + decimalFormat.format(range.get(1)));
-            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByRating(range.get(0), range.get(1), restaurantList);
+            ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByRating(range.get(0), range.get(1), application.getRestaurantList());
             resetFlowPane();
             addRestaurantListToFlowPane(restaurants);
         }
         else if (currentSearchFilterType.equals(Options.FOOD_NAME))
         {
             flowpaneTitleLabel.setText("Foods with name " + searchTextField.getText());
-            ArrayList<Food> foods = RestaurantSearches.searchFoodByName(searchTextField.getText(), foodList);
+            ArrayList<Food> foods = RestaurantSearches.searchFoodByName(searchTextField.getText(), application.getFoodList());
             resetFlowPane();
             addFoodListToFlowPane(foods);
         }
         else if (currentSearchFilterType.equals(Options.FOOD_CATEGORY))
         {
             flowpaneTitleLabel.setText("Foods with category " + searchTextField.getText());
-            ArrayList<Food> foods = RestaurantSearches.searchFoodByCategory(searchTextField.getText(), foodList);
+            ArrayList<Food> foods = RestaurantSearches.searchFoodByCategory(searchTextField.getText(), application.getFoodList());
             resetFlowPane();
             addFoodListToFlowPane(foods);
         }
@@ -704,7 +688,7 @@ public class ClientHomeController
             if (range.size() < 2) return;
             DecimalFormat decimalFormat = new DecimalFormat("#.##"); // to omit trailing .0 looks ugly
             flowpaneTitleLabel.setText("Foods with price " + decimalFormat.format(range.get(0)) + "$ to " + decimalFormat.format(range.get(1)) + "$");
-            ArrayList<Food> foods = RestaurantSearches.searchFoodByPriceRange(range.get(0), range.get(1), foodList);
+            ArrayList<Food> foods = RestaurantSearches.searchFoodByPriceRange(range.get(0), range.get(1), application.getFoodList());
             resetFlowPane();
             addFoodListToFlowPane(foods);
         }
@@ -801,7 +785,7 @@ public class ClientHomeController
     {
         ArrayList<Food> foodList = new ArrayList<>();
 
-        for (Restaurant restaurant : restaurantList.values())
+        for (Restaurant restaurant : application.getRestaurantList().values())
         {
             foodList.addAll(restaurant.getFoodList());
         }
