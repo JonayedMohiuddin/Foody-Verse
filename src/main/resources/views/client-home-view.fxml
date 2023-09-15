@@ -2,11 +2,12 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
@@ -30,7 +31,7 @@
    <children>
       <AnchorPane prefHeight="650.0" prefWidth="900.0">
          <children>
-            <Rectangle height="136.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="900.0">
+            <Rectangle height="110.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="900.0">
                <fill>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -53,12 +54,12 @@
                   </LinearGradient>
                </fill>
             </Rectangle>
-            <Label layoutX="20.0" layoutY="33.0" text="Foody-Verse" textFill="#ff2525">
+            <Label layoutX="20.0" layoutY="15.0" text="Foody-Verse" textFill="#ff2525">
                <font>
                   <Font name="Corbel Bold" size="30.0" />
                </font>
             </Label>
-            <TextField fx:id="searchTextField" layoutX="209.0" layoutY="31.0" onKeyPressed="#searchFieldKeyPressed" prefHeight="40.0" prefWidth="390.0" promptText="Search restaurants">
+            <TextField fx:id="searchTextField" layoutX="210.0" layoutY="13.0" onKeyPressed="#searchFieldKeyPressed" prefHeight="40.0" prefWidth="417.0" promptText="Search restaurants">
                <font>
                   <Font name="Calibri Light" size="15.0" />
                </font>
@@ -66,7 +67,7 @@
                   <Cursor fx:constant="TEXT" />
                </cursor>
             </TextField>
-            <TextField fx:id="rangeSearchMinField" layoutX="209.0" layoutY="31.0" onKeyPressed="#rangeSearchMinFieldKeyPressed" prefHeight="40.0" prefWidth="178.0" promptText="Minimum Range" visible="false">
+            <TextField fx:id="rangeSearchMinField" layoutX="210.0" layoutY="13.0" nodeOrientation="LEFT_TO_RIGHT" onKeyPressed="#rangeSearchMinFieldKeyPressed" prefHeight="40.0" prefWidth="189.0" promptText="Minimum Range" visible="false">
                <font>
                   <Font name="Calibri Light" size="15.0" />
                </font>
@@ -74,12 +75,12 @@
                   <Cursor fx:constant="TEXT" />
                </cursor>
             </TextField>
-            <Label fx:id="rangeSearchSeparator" alignment="CENTER" layoutX="389.0" layoutY="22.0" prefHeight="58.0" prefWidth="30.0" text="-" textAlignment="CENTER" visible="false">
+            <Label fx:id="rangeSearchSeparator" alignment="CENTER" layoutX="404.0" layoutY="4.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="58.0" prefWidth="30.0" text="-" textAlignment="CENTER" visible="false">
                <font>
                   <Font name="Calibri Light" size="50.0" />
                </font>
             </Label>
-            <TextField fx:id="rangeSearchMaxField" layoutX="422.0" layoutY="31.0" onKeyPressed="#rangeSearchMaxFieldKeyPressed" prefHeight="40.0" prefWidth="178.0" promptText="Maximum Range" visible="false">
+            <TextField fx:id="rangeSearchMaxField" layoutX="438.0" layoutY="13.0" nodeOrientation="LEFT_TO_RIGHT" onKeyPressed="#rangeSearchMaxFieldKeyPressed" prefHeight="40.0" prefWidth="190.0" promptText="Maximum Range" visible="false">
                <font>
                   <Font name="Calibri Light" size="15.0" />
                </font>
@@ -87,74 +88,42 @@
                   <Cursor fx:constant="TEXT" />
                </cursor>
             </TextField>
-            <Button layoutX="599.0" layoutY="31.0" mnemonicParsing="false" onAction="#searchButtonClicked" prefHeight="40.0" prefWidth="65.0" text="Search">
-               <font>
-                  <Font name="Verdana" size="12.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button layoutX="684.0" layoutY="31.0" mnemonicParsing="false" onAction="#resetButtonClicked" prefHeight="40.0" prefWidth="66.0" text="Reset">
-               <font>
-                  <Font name="Verdana" size="12.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <GridPane layoutX="777.0" layoutY="33.0" prefHeight="36.0" prefWidth="115.0">
+            <GridPane layoutX="759.0" layoutY="9.0" prefHeight="48.0" prefWidth="91.0">
                <columnConstraints>
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="48.2" minHeight="10.0" prefHeight="33.000003051757815" valignment="CENTER" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label fx:id="usernameLabel" alignment="CENTER" text="Username" textAlignment="CENTER">
+                  <Label fx:id="usernameLabel" alignment="CENTER_RIGHT" prefHeight="48.0" prefWidth="91.0" text="Username" textAlignment="CENTER" wrapText="true">
                      <font>
-                        <Font name="Calibri Light" size="18.0" />
+                        <Font name="Calibri Light" size="16.0" />
                      </font>
                   </Label>
                </children>
             </GridPane>
-            <Button layoutX="64.0" layoutY="84.0" mnemonicParsing="false" onAction="#homePageLogOutButtonClicked" prefHeight="30.0" prefWidth="75.0" text="Sign Out">
-               <font>
-                  <Font name="Verdana" size="12.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Label layoutX="209.0" layoutY="91.0" text="Filter Search">
+            <Label layoutX="209.0" layoutY="71.0" text="Filter Search">
                <font>
                   <Font name="Calibri Light" size="15.0" />
                </font>
             </Label>
-            <ChoiceBox fx:id="searchFilterChoiceBox" layoutX="299.0" layoutY="86.0" prefHeight="26.0" prefWidth="153.0">
+            <ChoiceBox fx:id="searchFilterChoiceBox" layoutX="321.0" layoutY="67.0" prefHeight="26.0" prefWidth="110.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ChoiceBox>
-            <Label layoutX="493.0" layoutY="90.0" text="View">
+            <Label layoutX="450.0" layoutY="71.0" text="View">
                <font>
                   <Font name="Calibri Light" size="15.0" />
                </font>
             </Label>
-            <ChoiceBox fx:id="viewChoiceBox" layoutX="537.0" layoutY="87.0" prefHeight="26.0" prefWidth="128.0">
+            <ChoiceBox fx:id="viewChoiceBox" layoutX="518.0" layoutY="67.0" prefHeight="26.0" prefWidth="109.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ChoiceBox>
-            <Button layoutX="789.0" layoutY="82.0" mnemonicParsing="false" onAction="#cartButtonClicked" prefHeight="36.0" prefWidth="91.0" text="My Cart">
-               <font>
-                  <Font name="Verdana" size="12.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <GridPane layoutX="-0.800000011920929" layoutY="135.1999969482422">
+            <GridPane layoutY="110.0" prefHeight="540.0" prefWidth="900.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                </columnConstraints>
@@ -162,9 +131,9 @@
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <ScrollPane fx:id="scrollpane" hbarPolicy="NEVER" maxWidth="1.7976931348623157E308" prefHeight="514.0" prefWidth="900.0" vbarPolicy="ALWAYS">
+                  <ScrollPane fx:id="scrollpane" hbarPolicy="NEVER" maxWidth="1.7976931348623157E308" prefHeight="540.0" prefWidth="900.0" vbarPolicy="ALWAYS">
                      <content>
-                        <VBox maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="900.0">
+                        <VBox maxWidth="1.7976931348623157E308" prefHeight="540.0" prefWidth="900.0">
                            <children>
                               <Label fx:id="flowpaneTitleLabel" text="All Restaurants">
                                  <font>
@@ -185,42 +154,93 @@
                   </ScrollPane>
                </children>
             </GridPane>
-            <Label alignment="CENTER" layoutX="801.0" layoutY="14.0" text="Welcome!" textAlignment="CENTER">
-               <font>
-                  <Font name="Calibri Light" size="16.0" />
-               </font>
-               <textFill>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="635.0" layoutY="13.0" onMouseClicked="#searchButtonClicked" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="635.0">
+               <image>
+                  <Image url="@../assets/search-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="684.0" layoutY="11.0" onMouseClicked="#resetButtonClicked" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="684.0">
+               <image>
+                  <Image url="@../assets/cross-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="856.0" layoutY="18.0" onMouseClicked="#resetButtonClicked" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/user-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="841.0" layoutY="55.0" onMouseClicked="#cartButtonClicked" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/cart-icon.png" />
+               </image>
+            </ImageView>
+            <Circle fx:id="cartItemCountBg" layoutX="878.0" layoutY="65.0" onMouseClicked="#cartButtonClicked" opacity="0.7" radius="11.0" stroke="BLACK" strokeType="INSIDE">
+               <fill>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
                         <Stop>
                            <color>
-                              <Color red="0.41604939103126526" green="0.20370370149612427" blue="1.0" />
-                           </color>
-                        </Stop>
-                        <Stop offset="0.42195121951219505">
-                           <color>
-                              <Color red="0.06736841797828674" green="0.5684210658073425" blue="0.12582455575466156" />
+                              <Color red="0.5099999904632568" green="0.8611666560173035" blue="1.0" opacity="0.800000011920929" />
                            </color>
                         </Stop>
                         <Stop offset="1.0">
                            <color>
-                              <Color red="1.0" green="0.007407407276332378" blue="0.8014814853668213" />
+                              <Color red="0.29326000809669495" green="0.19529999792575836" blue="0.9300000071525574" opacity="0.800000011920929" />
                            </color>
                         </Stop>
                      </stops>
                   </LinearGradient>
-               </textFill>
-            </Label>
-            <Button fx:id="restaurantViewBackButton" layoutX="784.0" layoutY="145.0" mnemonicParsing="false" onAction="#restaurantViewBackButtonClicked" prefHeight="40.0" prefWidth="91.0" text="&lt; Back">
+               </fill></Circle>
+            <Label fx:id="cartItemCountLabel" alignment="CENTER" ellipsisString="" layoutX="865.0" layoutY="56.0" onMouseClicked="#cartButtonClicked" prefHeight="18.0" prefWidth="25.0" text="99" textAlignment="CENTER">
                <font>
-                  <Font name="Verdana" size="15.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Circle fx:id="cartItemCountBg" fill="#006aff" layoutX="879.0" layoutY="83.0" opacity="0.7" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
-            <Label fx:id="cartItemCountLabel" alignment="CENTER" ellipsisString="" layoutX="866.0" layoutY="74.0" prefHeight="18.0" prefWidth="25.0" text="99" textAlignment="CENTER" />
+                  <Font size="10.0" />
+               </font></Label>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="82.0" layoutY="54.0" onMouseClicked="#homePageLogOutButtonClicked" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/logout-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="restaurantViewBackButton" fitHeight="50.0" fitWidth="50.0" layoutX="822.0" layoutY="126.0" onDragDetected="#restaurantViewBackButtonClicked" onMouseClicked="#deliveredIconClicked" onMousePressed="#restaurantViewBackButtonClicked" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/back-button-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="778.0" layoutY="54.0" onMouseClicked="#deliveredIconClicked" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="778.0" AnchorPane.topAnchor="54.0">
+               <image>
+                  <Image url="@../assets/delivered-icon.png" />
+               </image></ImageView>
+            <Circle fx:id="deliveredItemBg" layoutX="818.0" layoutY="67.0" onMouseClicked="#deliveredIconClicked" opacity="0.7" radius="11.0" stroke="BLACK" strokeType="INSIDE">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.307407408952713" green="1.0" blue="0.7460494041442871" opacity="0.800000011920929" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.5521247386932373" green="0.7684210538864136" blue="0.22768031060695648" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Circle>
+            <Label fx:id="deliveredItemCount" alignment="CENTER" ellipsisString="" layoutX="805.0" layoutY="58.0" onMouseClicked="#deliveredIconClicked" prefHeight="18.0" prefWidth="25.0" text="99" textAlignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font></Label>
+            <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="288.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/zipcode-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="486.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/restaurant-icon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </children>

@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -47,7 +48,7 @@ public class ClientHomeController
     // CART NOTIFICATION ICON
     public Circle cartItemCountBg;
     public Label cartItemCountLabel;
-    public Button restaurantViewBackButton;
+    public ImageView restaurantViewBackButton;
     // CLIENT APPLICATION REFERENCE
     ClientApplication application;
     ArrayList<String> restaurantSearchOptions;
@@ -820,6 +821,10 @@ public class ClientHomeController
     public void restaurantViewBackButtonClicked()
     {
         resetAll();
+    }
+
+    public void deliveredIconClicked(MouseEvent event)
+    {
     }
 
     // SEARCH OPTIONS
