@@ -149,7 +149,7 @@
                   </ScrollPane>
                </children>
             </GridPane>
-            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="635.0" layoutY="13.0" onMouseClicked="#searchButtonClicked" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="635.0">
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="641.0" layoutY="13.0" onMouseClicked="#searchButtonClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="641.0">
                <image>
                   <Image url="@../assets/search-icon.png" />
                </image>
@@ -157,7 +157,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="684.0" layoutY="11.0" onMouseClicked="#resetButtonClicked" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="684.0">
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="693.0" layoutY="11.0" onMouseClicked="#resetButtonClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="693.0">
                <image>
                   <Image url="@../assets/cross-icon.png" />
                </image>
@@ -170,7 +170,7 @@
                   <Image url="@../assets/user-icon.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cartButtonImageView" fitHeight="40.0" fitWidth="40.0" layoutX="836.0" layoutY="60.0" onMouseClicked="#cartButtonClicked" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="cartButtonImageView" fitHeight="40.0" fitWidth="40.0" layoutX="836.0" layoutY="60.0" onMouseClicked="#cartButtonClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/cart-icon.png" />
                </image>
@@ -202,7 +202,7 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Label>
-            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="82.0" layoutY="60.0" onMouseClicked="#homePageLogOutButtonClicked" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="82.0" layoutY="60.0" onMouseClicked="#homePageLogOutButtonClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/logout-icon.png" />
                </image>
@@ -210,7 +210,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <ImageView fx:id="restaurantViewBackButton" fitHeight="50.0" fitWidth="50.0" layoutX="822.0" layoutY="126.0" onDragDetected="#restaurantViewBackButtonClicked" onMouseClicked="#deliveredIconClicked" onMousePressed="#restaurantViewBackButtonClicked" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="restaurantViewBackButton" fitHeight="50.0" fitWidth="50.0" layoutX="822.0" layoutY="126.0" onDragDetected="#restaurantViewBackButtonClicked" onMouseClicked="#deliveredIconClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" onMousePressed="#restaurantViewBackButtonClicked" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/back-button-icon.png" />
                </image>
@@ -218,14 +218,14 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <ImageView fx:id="deliveredButtonImageView" fitHeight="40.0" fitWidth="40.0" layoutX="778.0" layoutY="60.0" onMouseClicked="#deliveredIconClicked" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="778.0" AnchorPane.topAnchor="60.0">
+            <ImageView fx:id="deliveredButtonImageView" fitHeight="40.0" fitWidth="40.0" layoutX="770.0" layoutY="60.0" onMouseClicked="#deliveredIconClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="770.0" AnchorPane.topAnchor="60.0">
                <image>
                   <Image url="@../assets/delivered-icon.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></ImageView>
-            <Circle fx:id="deliveredItemBg" layoutX="818.0" layoutY="67.0" onMouseClicked="#deliveredIconClicked" opacity="0.7" radius="11.0" stroke="BLACK" strokeType="INSIDE">
+            <Circle fx:id="deliveredItemCountBg" layoutX="809.0" layoutY="67.0" onMouseClicked="#deliveredIconClicked" opacity="0.7" radius="11.0" stroke="BLACK" strokeType="INSIDE">
                <fill>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -243,16 +243,16 @@
                   </LinearGradient>
                </fill>
             </Circle>
-            <Label fx:id="deliveredItemCount" alignment="CENTER" ellipsisString="" layoutX="805.0" layoutY="58.0" onMouseClicked="#deliveredIconClicked" prefHeight="18.0" prefWidth="25.0" text="99" textAlignment="CENTER">
+            <Label fx:id="deliveredItemCountLabel" alignment="CENTER" ellipsisString="" layoutX="796.0" layoutY="58.0" onMouseClicked="#deliveredIconClicked" prefHeight="18.0" prefWidth="25.0" text="99" textAlignment="CENTER">
                <font>
                   <Font size="10.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Label>
-            <ImageView fx:id="searchFIlterImageView" fitHeight="26.0" fitWidth="26.0" layoutX="288.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="searchFilterImageView" fitHeight="26.0" fitWidth="26.0" layoutX="288.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../assets/zipcode-icon.png" />
+                  <Image url="@../assets/category-search-icon.png" />
                </image>
             </ImageView>
             <ImageView fx:id="viewImageView" fitHeight="26.0" fitWidth="26.0" layoutX="486.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">

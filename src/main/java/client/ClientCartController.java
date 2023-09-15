@@ -2,6 +2,7 @@ package client;
 
 import dto.ClientToServerCartOrderDTO;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -9,12 +10,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import models.Food;
+import util.ImageTransitions;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -34,6 +37,8 @@ public class ClientCartController
     Image foodImageMedium;
     Image restaurantImageMedium;
 
+    Image addButtonImage, removeButtonImage;
+
     Font robotoBoldFont20;
     Font robotoBoldFont15;
     Font robotoRegularFont20;
@@ -46,6 +51,9 @@ public class ClientCartController
 
     public void init()
     {
+        addButtonImage = new Image("file:src/main/resources/assets/add-button-icon.png");
+        removeButtonImage = new Image("file:src/main/resources/assets/remove-button-icon.png");
+
         decimalFormat = new DecimalFormat("#.##");
 
         foodImageMedium = new Image("file:src/main/resources/assets/Burger.jpg", 175, 125, false, false);
@@ -74,7 +82,7 @@ public class ClientCartController
         fillListView();
     }
 
-    public void backButtonClicked(ActionEvent event)
+    public void backButtonClicked(Event event)
     {
         System.out.println("Back button clicked");
         try
@@ -202,7 +210,6 @@ public class ClientCartController
         Label foodCategoryLabel = new Label(food.getCategory());
         foodCategoryLabel.setWrapText(true);
         foodCategoryLabel.setFont(robotoRegularFont12);
-        foodCategoryLabel.setPadding(new Insets(0, 0, 0, 0)); // top right bottom left
 
         foodDetailsContainer.getChildren().addAll(foodNameLabel, foodCategoryLabel);
         // </VBox>
@@ -210,36 +217,36 @@ public class ClientCartController
         // <HBox>
         HBox foodButtonsContainer = new HBox();
 
-        int buttonSide = 39;
+        int buttonSide = 45;
 
         VBox removeButtonContainer = new VBox();
-        Button removeButton = new Button("-");
-        removeButton.setFont(robotoBoldFont20);
-        removeButton.setPrefWidth(buttonSide);
-        removeButton.setPrefHeight(buttonSide);
-        removeButton.setMinHeight(buttonSide);
-        removeButton.setMinWidth(buttonSide);
-        removeButton.setMaxHeight(buttonSide);
-        removeButton.setMaxWidth(buttonSide);
-        removeButtonContainer.setPadding(new Insets(0, 0, 0, 0)); // top right bottom left
         removeButtonContainer.setAlignment(Pos.CENTER);
+//        Button removeButton = new Button("-");
+//        removeButton.setFont(robotoBoldFont20);
+//        removeButton.setPrefWidth(buttonSide);
+//        removeButton.setPrefHeight(buttonSide);
+//        removeButton.setMinHeight(buttonSide);
+//        removeButton.setMinWidth(buttonSide);
+//        removeButton.setMaxHeight(buttonSide);
+//        removeButton.setMaxWidth(buttonSide);
+//        removeButtonContainer.setAlignment(Pos.CENTER);
+
+        ImageView removeButton = new ImageView(removeButtonImage);
+        removeButton.setFitWidth(buttonSide);
+        removeButton.setFitHeight(buttonSide);
 
         removeButtonContainer.getChildren().add(removeButton);
 
         // <VBox>
         VBox foodCountAndPriceContainer = new VBox();
 
-        foodCountAndPriceContainer.setPadding(new Insets(0, 0, 0, 0)); // top right bottom left
-
         Label foodCountLabel = new Label("X " + foodCount);
         foodCountLabel.setFont(robotoBoldFont15);
-        foodCountLabel.setPadding(new Insets(0, 0, 0, 0)); // top right bottom left
         foodCountLabel.setAlignment(Pos.CENTER);
         foodCountLabel.setMinWidth(70);
 
         Label foodPriceLabel = new Label(food.getPrice() * foodCount + " $");
         foodPriceLabel.setFont(robotoBoldFont15);
-        foodPriceLabel.setPadding(new Insets(0, 0, 0, 0)); // top right bottom left
         foodPriceLabel.setAlignment(Pos.CENTER);
         foodPriceLabel.setMinWidth(70);
 
@@ -248,26 +255,42 @@ public class ClientCartController
         // </VBox>
 
         VBox addButtonContainer = new VBox();
-        Button addButton = new Button("+");
-        addButton.setFont(robotoBoldFont20);
-        addButton.setPrefWidth(buttonSide);
-        addButton.setPrefHeight(buttonSide);
-        addButton.setMinWidth(buttonSide);
-        addButton.setMinHeight(buttonSide);
-        addButton.setMaxHeight(buttonSide);
-        addButton.setMaxWidth(buttonSide);
+//        Button addButton = new Button("+");
+//        addButton.setFont(robotoBoldFont20);
+//        addButton.setPrefWidth(buttonSide);
+//        addButton.setPrefHeight(buttonSide);
+//        addButton.setMinWidth(buttonSide);
+//        addButton.setMinHeight(buttonSide);
+//        addButton.setMaxHeight(buttonSide);
+//        addButton.setMaxWidth(buttonSide);
 
-        addButtonContainer.setPadding(new Insets(0, 0, 0, 0)); // top right bottom left
-        addButtonContainer.setAlignment(Pos.CENTER);
-        addButtonContainer.getChildren().add(addButton);
+        ImageView addButton = new ImageView(addButtonImage);
+        removeButton.setFitWidth(buttonSide);
+        removeButton.setFitHeight(buttonSide);
 
-        // EVENT LISTENERS FOR ADD AND REMOVE BUTTONS
+
         addButton.setOnMouseClicked(event -> {
             cartItemAddButtonClicked(food, foodCountLabel, foodPriceLabel);
         });
+        addButton.setOnMouseEntered(event -> {
+            ImageTransitions.imageMouseHoverEntered(event, 1.2, 0.3);
+        });
+        addButton.setOnMouseExited(event -> {
+            ImageTransitions.imageMouseHoverExited(event, 1.2, 0.3);
+        });
+
         removeButton.setOnMouseClicked(event -> {
             cartItemRemoveButtonClicked(food, foodCountLabel, foodPriceLabel);
         });
+        removeButton.setOnMouseEntered(event -> {
+            ImageTransitions.imageMouseHoverEntered(event, 1.2, 0.3);
+        });
+        removeButton.setOnMouseExited(event -> {
+            ImageTransitions.imageMouseHoverExited(event, 1.2, 0.3);
+        });
+
+        addButtonContainer.setAlignment(Pos.CENTER);
+        addButtonContainer.getChildren().add(addButton);
 
         HBox.setHgrow(foodDetailsContainer, Priority.ALWAYS);
         foodButtonsContainer.setSpacing(18);
@@ -345,5 +368,15 @@ public class ClientCartController
             System.err.println(e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public void buttonHoverEntered(MouseEvent event)
+    {
+        ImageTransitions.imageMouseHoverEntered(event);
+    }
+
+    public void buttonHoverExited(MouseEvent event)
+    {
+        ImageTransitions.imageMouseHoverExited(event);
     }
 }

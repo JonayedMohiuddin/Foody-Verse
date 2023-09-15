@@ -2,10 +2,15 @@ package client;
 
 import dto.DatabaseDTO;
 import dto.DatabaseRequestDTO;
+import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -17,9 +22,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import models.Food;
 import models.Restaurant;
 import models.RestaurantSearches;
+import util.ImageTransitions;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -48,7 +55,14 @@ public class ClientHomeController
     // CART NOTIFICATION ICON
     public Circle cartItemCountBg;
     public Label cartItemCountLabel;
+    public Circle deliveredItemCountBg;
+    public Label deliveredItemCountLabel;
+
+    // DYNAMIC IMAGES
     public ImageView restaurantViewBackButton;
+    public ImageView searchFilterImageView;
+    public ImageView viewImageView;
+
     // CLIENT APPLICATION REFERENCE
     ClientApplication application;
     ArrayList<String> restaurantSearchOptions;
@@ -62,6 +76,7 @@ public class ClientHomeController
     ConcurrentHashMap<Integer, HashMap<Food, Integer>> cartFoodList; // Map<Restaurant ID, Map<Food, Count>>
     double cartTotalPrice = 0;
     int cartTotalItems = 0;
+    int deliveredTotalItems = 0;
     // IMAGES
     Image restaurantImage_175by125;
 
@@ -78,6 +93,10 @@ public class ClientHomeController
     Font robotoLightFont20;
     Font robotoLightFont15;
 
+    // IMAGES
+    Image searchByNameImage, searchByRatingImage, searchByPriceImage, searchByCategoryImage, searchByZipcodeImage;
+    Image viewRestaurantImage, viewFoodImage;
+
     public void setApplication(ClientApplication application)
     {
         this.application = application;
@@ -85,10 +104,17 @@ public class ClientHomeController
 
     public void init(boolean isDatabaseLoaded)
     {
+        searchByNameImage = new Image("file:src/main/resources/assets/name-search-icon.png");
+        searchByRatingImage = new Image("file:src/main/resources/assets/rating-search-icon.png");
+        searchByPriceImage = new Image("file:src/main/resources/assets/price-search-icon.png");
+        searchByCategoryImage = new Image("file:src/main/resources/assets/category-search-icon.png");
+        searchByZipcodeImage = new Image("file:src/main/resources/assets/zipcode-search-icon.png");
+
+        viewRestaurantImage = new Image("file:src/main/resources/assets/restaurant-icon.png");
+        viewFoodImage = new Image("file:src/main/resources/assets/food-icon.png");
+
         restaurantViewBackButton.setVisible(false);
 
-        cartItemCountBg.setVisible(false);
-        cartItemCountLabel.setVisible(false);
         cartFoodList = new ConcurrentHashMap<>();
 
         System.out.println("Client Home Page");
@@ -145,6 +171,8 @@ public class ClientHomeController
                 System.err.println("Class : HomePageController | Method : init | While reading restaurant list from server");
                 System.err.println("Error : " + e.getMessage());
             }
+
+            updateNotification();
         }
         else
         {
@@ -157,7 +185,7 @@ public class ClientHomeController
                     cartTotalItems += foodAndCount.get(food);
                 }
             }
-            updateCartNotification();
+            updateNotification();
         }
 
         // POPULATE RESTAURANT SEARCH OPTIONS
@@ -252,17 +280,21 @@ public class ClientHomeController
 
         if (newValue.equals(Options.VIEW_RESTAURANT))
         {
+            viewImageView.setImage(viewRestaurantImage);
             resetFlowPane();
             addRestaurantListToFlowPane();
             searchFilterChoiceBox.getItems().addAll(restaurantSearchOptions);
             searchFilterChoiceBox.setValue(Options.RESTAURANT_NAME);
+            flowpaneTitleLabel.setText("All Restaurants");
         }
         else if (newValue.equals(Options.VIEW_FOOD))
         {
+            viewImageView.setImage(viewFoodImage);
             resetFlowPane();
             addFoodListToFlowPane();
             searchFilterChoiceBox.getItems().addAll(foodSearchOptions);
             searchFilterChoiceBox.setValue(Options.FOOD_NAME);
+            flowpaneTitleLabel.setText("All Foods");
         }
     }
 
@@ -277,39 +309,47 @@ public class ClientHomeController
 
         if (currentSearchFilterType.equals(Options.RESTAURANT_NAME))
         {
+            searchFilterImageView.setImage(searchByNameImage);
             searchTextField.setPromptText("Search by restaurant name");
         }
         else if (currentSearchFilterType.equals(Options.RESTAURANT_RATING))
         {
+            searchFilterImageView.setImage(searchByRatingImage);
             switchSearchBox();
         }
         else if (currentSearchFilterType.equals(Options.RESTAURANT_PRICE))
         {
+            searchFilterImageView.setImage(searchByPriceImage);
             searchTextField.setPromptText("cheap, medium, expensive or $, $$, $$$");
         }
         else if (currentSearchFilterType.equals(Options.RESTAURANT_CATEGORY))
         {
+            searchFilterImageView.setImage(searchByCategoryImage);
             searchTextField.setPromptText("Search by restaurant category");
         }
         else if (currentSearchFilterType.equals(Options.RESTAURANT_ZIPCODE))
         {
+            searchFilterImageView.setImage(searchByZipcodeImage);
             searchTextField.setPromptText("Search by restaurant zipcode");
         }
         else if (currentSearchFilterType.equals(Options.FOOD_NAME))
         {
+            searchFilterImageView.setImage(searchByNameImage);
             searchTextField.setPromptText("Search by food name");
         }
         else if (currentSearchFilterType.equals(Options.FOOD_CATEGORY))
         {
+            searchFilterImageView.setImage(searchByCategoryImage);
             searchTextField.setPromptText("Search by food category");
         }
         else if (currentSearchFilterType.equals(Options.FOOD_PRICE))
         {
+            searchFilterImageView.setImage(searchByPriceImage);
             switchSearchBox();
         }
     }
 
-    public void updateCartNotification()
+    public void updateNotification()
     {
         if (cartTotalItems == 0)
         {
@@ -321,6 +361,18 @@ public class ClientHomeController
             cartItemCountLabel.setText(String.valueOf(cartTotalItems));
             cartItemCountLabel.setVisible(true);
             cartItemCountBg.setVisible(true);
+        }
+
+        if (deliveredTotalItems == 0)
+        {
+            deliveredItemCountBg.setVisible(false);
+            deliveredItemCountLabel.setVisible(false);
+        }
+        else
+        {
+            deliveredItemCountLabel.setText(String.valueOf(deliveredTotalItems));
+            deliveredItemCountLabel.setVisible(true);
+            deliveredItemCountBg.setVisible(true);
         }
     }
 
@@ -343,7 +395,7 @@ public class ClientHomeController
 
         cartTotalItems++;
         cartTotalPrice += food.getPrice();
-        updateCartNotification();
+        updateNotification();
 
         // Get or default : If the key is present, return the value, else return the default value
         // var x = getOrDefault(key, defaultValue);
@@ -514,8 +566,13 @@ public class ClientHomeController
         imageView.setFitHeight(125);
         imageView.setFitWidth(175);
         imageView.setOnMouseClicked(event -> {
-            System.out.println("Restaurant clicked. Restaurant name : " + restaurant.getName());
             restaurantClicked(restaurant);
+        });
+        imageView.setOnMouseEntered(event -> {
+            ImageTransitions.imageMouseHoverEntered(event, 1.05, 0.15);
+        });
+        imageView.setOnMouseExited(event -> {
+            ImageTransitions.imageMouseHoverExited(event, 1.05, 0.15);
         });
 
 
@@ -565,6 +622,12 @@ public class ClientHomeController
         imageView.setFitWidth(175);
         imageView.setFitHeight(125);
         imageView.setOnMouseClicked(event -> foodClicked(food));
+        imageView.setOnMouseEntered(event -> {
+            ImageTransitions.imageMouseHoverEntered(event, 1.05, 0.15);
+        });
+        imageView.setOnMouseExited(event -> {
+            ImageTransitions.imageMouseHoverExited(event, 1.05, 0.15);
+        });
 
         Label foodNameLabel = new Label(food.getName());
 //      restaurantNameLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; - fx-font-family: Calibri Light;");
@@ -823,8 +886,19 @@ public class ClientHomeController
         resetAll();
     }
 
+
     public void deliveredIconClicked(MouseEvent event)
     {
+    }
+
+    public void imageMouseHoverEntered(MouseEvent event)
+    {
+        ImageTransitions.imageMouseHoverEntered(event, 1.2, 0.3);
+    }
+
+    public void imageMouseHoverExited(MouseEvent event)
+    {
+        ImageTransitions.imageMouseHoverExited(event, 1.2, 0.3);
     }
 
     // SEARCH OPTIONS

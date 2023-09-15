@@ -78,12 +78,12 @@
                   <Image url="@../assets/foody-verse.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="546.0" layoutY="10.0" onMouseClicked="#backButtonClicked" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="547.0" layoutY="10.0" onMouseClicked="#backButtonClicked" onMouseEntered="#buttonHoverEntered" onMouseExited="#buttonHoverExited" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/back-button-icon.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="260.0" layoutY="10.0" onMouseClicked="#backButtonClicked" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="260.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/cart-icon.png" />
                </image>
