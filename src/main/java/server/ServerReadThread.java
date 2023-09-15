@@ -229,7 +229,8 @@ public class ServerReadThread implements Runnable
                 // CLIENT LOGGING OUT
                 else if(obj instanceof LogoutDTO logoutDTO)
                 {
-                    System.out.println(thread.getName() + " : " + logoutDTO);
+                    System.out.println("Server : " + clientName + " requested to logout.");
+                    System.out.println();
                     serverController.log(clientName + " logged out.");
 
                     if (clientType == ClientType.CLIENT)

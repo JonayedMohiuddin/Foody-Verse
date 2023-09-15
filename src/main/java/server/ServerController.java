@@ -75,61 +75,40 @@ public class ServerController implements Runnable
     {
         return serverSocket;
     }
+
     public ConcurrentHashMap<String, SocketWrapper> getClientMap()
     {
         return clientMap;
     }
+
     public ConcurrentHashMap<String, SocketWrapper> getRestaurantMap()
     {
         return restaurantMap;
     }
+
     public ConcurrentHashMap<Integer, Restaurant> getRestaurantList()
     {
         return restaurantList;
     }
+
     public ConcurrentHashMap<String, String> getUserInfos()
     {
         return userInfos;
     }
+
     public ConcurrentHashMap<String, String> getRestaurantInfos()
     {
         return restaurantInfos;
     }
+
     public ServerApplication getServerApplication()
     {
         return serverApplication;
     }
+
     public void setServerApplication(ServerApplication serverApplication)
     {
         this.serverApplication = serverApplication;
-    }
-
-    public void addClientToListView(String client)
-    {
-        Platform.runLater(() -> {
-            clients.add(client);
-        });
-    }
-
-    public void removeClientFromListView(String client)
-    {
-        Platform.runLater(() -> {
-            clients.remove(client);
-        });
-    }
-
-    public void addRestaurantToListView(String restaurant)
-    {
-        Platform.runLater(() -> {
-            restaurants.add(restaurant);
-        });
-    }
-
-    public void removeRestaurantFromListView(String restaurant)
-    {
-        Platform.runLater(() -> {
-            restaurants.remove(restaurant);
-        });
     }
 
     // Initialization
@@ -263,7 +242,36 @@ public class ServerController implements Runnable
         portAddressLabel.setText(Integer.toString(serverPort));
     }
 
-    public void updateClientCountDetails()
+    public synchronized void addClientToListView(String client)
+    {
+        Platform.runLater(() -> {
+            clients.add(client);
+        });
+    }
+
+    // Multiple threads can access these methods at the same time so made them synchronized
+    public synchronized void removeClientFromListView(String client)
+    {
+        Platform.runLater(() -> {
+            clients.remove(client);
+        });
+    }
+
+    public synchronized void addRestaurantToListView(String restaurant)
+    {
+        Platform.runLater(() -> {
+            restaurants.add(restaurant);
+        });
+    }
+
+    public synchronized void removeRestaurantFromListView(String restaurant)
+    {
+        Platform.runLater(() -> {
+            restaurants.remove(restaurant);
+        });
+    }
+
+    public synchronized void updateClientCountDetails()
     {
         Platform.runLater(() -> {
             clientOnlineCount.setText(Integer.toString(clientMap.size()));
@@ -273,7 +281,7 @@ public class ServerController implements Runnable
         });
     }
 
-    public void log(String log)
+    public synchronized void log(String log)
     {
         Platform.runLater(() -> {
             serverLog.add(log);
@@ -311,6 +319,8 @@ public class ServerController implements Runnable
             System.err.println("Error : " + e.getMessage());
         }
     }
+
+    /// ADD RESTAURANT ///
 
     public void markErrorField(TextField textField)
     {
@@ -355,6 +365,8 @@ public class ServerController implements Runnable
             category[i] = restaurantCategories.get(i);
         }
 
+        boolean isInputValid = true;
+
         if (name.isEmpty() || priceCategory.isEmpty() || zipcode.isEmpty() || rating.isEmpty() || category.length == 0 || password.isEmpty())
         {
             if (name.isEmpty())
@@ -382,10 +394,10 @@ public class ServerController implements Runnable
                 addRestaurantPasswordField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
             }
 
-            return;
+            isInputValid = false;
         }
 
-        double ratingDouble;
+        double ratingDouble = 0;
         try
         {
             ratingDouble = Double.parseDouble(rating);
@@ -393,8 +405,10 @@ public class ServerController implements Runnable
         catch (NumberFormatException e)
         {
             markErrorField(addRestaurantRatingTextField);
-            return;
+            isInputValid = false;
         }
+
+        if (isInputValid == false) return;
 
         int maxId = 0;
         for (Integer id : restaurantList.keySet())
@@ -429,16 +443,6 @@ public class ServerController implements Runnable
 
         log("New Restaurant Registered : " + restaurant.toString());
         updateClientCountDetails();
-
-//        try
-//        {
-//            FileOperations.writeRestaurants(restaurantList);
-//        }
-//        catch (IOException e)
-//        {
-//            System.err.println("Class : ServerController | Method : addRestaurantMenuAddButtonPressed");
-//            System.err.println("Error : " + e.getMessage());
-//        }
 
         addRestaurantMenu.setVisible(false);
     }
