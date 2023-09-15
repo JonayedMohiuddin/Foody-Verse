@@ -46,6 +46,16 @@ public class RestaurantHomeController
     public TextField foodPriceTextField;
     public TextField foodCategoryField;
     public AnchorPane addNewFoodMenu;
+
+    // INTERNAL WINDOW SYSTEM
+    public static class WindowType
+    {
+        public static final int UNDEFINED = -1;
+        public static final int ORDERS = 0;
+        public static final int FOOD_LIST = 1;
+        public static final int HISTORY = 2;
+        public static final int ADD_FOODS = 3;
+    }
     int currentWindow = WindowType.UNDEFINED;
     // IMAGES
     Image restaurantImageMedium;
@@ -338,6 +348,8 @@ public class RestaurantHomeController
 
     public void logoutButtonClicked(ActionEvent event)
     {
+        System.out.println("Logout button clicked");
+        application.logoutCleanup();
     }
 
     public void fillDeliveredRequest()
@@ -659,17 +671,6 @@ public class RestaurantHomeController
 
         row.getChildren().add(rowStackPane);
         displayVBox.getChildren().add(row);
-
-//        StackPane rowStackPane = new StackPane();
-//        rowStackPane.setPrefWidth(800);
-//        rowStackPane.setPrefHeight(80);
-
-//        Rectangle rowBackgroundRect = new Rectangle();
-//        rowBackgroundRect.setWidth(800);
-//        rowBackgroundRect.setHeight(80);
-//        rowBackgroundRect.setArcWidth(10);
-//        rowBackgroundRect.setArcHeight(10);
-//        rowBackgroundRect.setFill(javafx.scene.paint.Color.valueOf(new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE, new Stop(0, Color.RED), new Stop(1, Color.BLUE))
     }
 
     public void deliverUserAllFood(String username)
@@ -861,31 +862,10 @@ public class RestaurantHomeController
 
         row.getChildren().add(rowStackPane);
         displayVBox.getChildren().add(row);
-
-//        StackPane rowStackPane = new StackPane();
-//        rowStackPane.setPrefWidth(800);
-//        rowStackPane.setPrefHeight(80);
-
-//        Rectangle rowBackgroundRect = new Rectangle();
-//        rowBackgroundRect.setWidth(800);
-//        rowBackgroundRect.setHeight(80);
-//        rowBackgroundRect.setArcWidth(10);
-//        rowBackgroundRect.setArcHeight(10);
-//        rowBackgroundRect.setFill(javafx.scene.paint.Color.valueOf(new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE, new Stop(0, Color.RED), new Stop(1, Color.BLUE))
     }
 
     public void setApplication(RestaurantApplication application)
     {
         this.application = application;
-    }
-
-    // WINDOW
-    public static class WindowType
-    {
-        public static final int UNDEFINED = -1;
-        public static final int ORDERS = 0;
-        public static final int FOOD_LIST = 1;
-        public static final int HISTORY = 2;
-        public static final int ADD_FOODS = 3;
     }
 }

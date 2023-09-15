@@ -1,5 +1,6 @@
 package restaurant;
 
+import dto.LogoutDTO;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -15,22 +16,13 @@ import java.io.IOException;
 public class RestaurantApplication extends Application
 {
     public String username;
-
-    public String getUsername()
-    {
-        return username;
-    }
-
-    public void setUsername(String username)
-    {
-        this.username = username;
-    }
-
+    private Stage stage;
     private SocketWrapper socketWrapper;
+    private Restaurant restaurant;
 
-    public SocketWrapper getSocketWrapper()
+    public static void main(String[] args)
     {
-        return socketWrapper;
+        launch();
     }
 
     public Stage getStage()
@@ -38,15 +30,24 @@ public class RestaurantApplication extends Application
         return stage;
     }
 
-    private Stage stage;
+    public SocketWrapper getSocketWrapper()
+    {
+        return socketWrapper;
+    }
 
-    private Restaurant restaurant;
+    public String getUsername()
+    {
+        return username;
+    }
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
 
     public Restaurant getRestaurant()
     {
         return restaurant;
     }
-
     public void setRestaurant(Restaurant restaurant)
     {
         this.restaurant = restaurant;
@@ -57,13 +58,12 @@ public class RestaurantApplication extends Application
     {
         stage = primaryStage;
 
-        connectToServer();
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>()
         {
             @Override
             public void handle(WindowEvent event)
             {
-                disconnectFromServer();
+                logoutCleanup();
             }
         });
 
@@ -84,12 +84,15 @@ public class RestaurantApplication extends Application
         }
     }
 
-    public void disconnectFromServer()
+    public void logoutCleanup()
     {
         System.out.println("Disconnecting from server");
+
         try
         {
+            socketWrapper.write(new LogoutDTO());
             socketWrapper.closeConnection();
+            showLoginPage();
         }
         catch (IOException e)
         {
@@ -100,6 +103,8 @@ public class RestaurantApplication extends Application
 
     public void showLoginPage() throws IOException
     {
+        connectToServer();
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/restaurant-login-view.fxml"));
         Parent root = fxmlLoader.load();
 
@@ -126,10 +131,5 @@ public class RestaurantApplication extends Application
         stage.setScene(new Scene(root, 800, 650));
         stage.setResizable(false);
         stage.show();
-    }
-
-    public static void main(String[] args)
-    {
-        launch();
     }
 }
