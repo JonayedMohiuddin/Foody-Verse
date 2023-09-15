@@ -1,6 +1,7 @@
 package models;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class Food implements Serializable
 {
@@ -60,5 +61,27 @@ public class Food implements Serializable
     public void print(String restaurantName)
     {
         System.out.println("[" + restaurantName + "] : " + name + " (" + category + "), " + price + " $");
+    }
+
+    @Override
+    public String toString()
+    {
+        return name + " (" + category + "), " + price + " $";
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == null) return false;
+        if (!(obj instanceof Food)) return false;
+        Food food = (Food) obj;
+        // FOOD SAME CRITERIA : restaurantId, category, name. EXCLUDING PRICE : same food can not have different prices
+        return restaurantId == food.getRestaurantId() && category.equals(food.getCategory()) && name.equals(food.getName());
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return restaurantId + category.hashCode() + name.hashCode();
     }
 }

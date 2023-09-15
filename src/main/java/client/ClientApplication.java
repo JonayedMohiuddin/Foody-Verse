@@ -78,6 +78,9 @@ public class ClientApplication extends Application
         this.cartFoodList = cartFoodList;
     }
 
+    String ipAddress = "127.0.0.1";
+    int serverPort = 44444;
+
     @Override
     public void start(Stage primaryStage) throws IOException
     {
@@ -100,12 +103,16 @@ public class ClientApplication extends Application
     {
         try
         {
-            socketWrapper = new SocketWrapper("127.0.0.1", 44444);
+            socketWrapper = new SocketWrapper(ipAddress, serverPort);
         }
         catch (IOException e)
         {
-            System.err.println("Class : ClientApplication | Method : connectToServer | While connecting to server");
-            System.err.println("Error : " + e.getMessage());
+            System.out.println("Could not connect to server");
+            System.out.println("[*] Check if server is online");
+            System.out.println("[*] Check if server is running on ip " + ipAddress);
+            System.out.println("[*] Check if server is running on port " + serverPort);
+            System.out.println("Aborting application");
+            System.exit(1);
         }
     }
 

@@ -72,8 +72,10 @@ public class RestaurantHomeController
     Font robotoRegularFont12;
     Font robotoLightFont20;
     Font robotoLightFont15;
+
     ConcurrentHashMap<String, HashMap<Food, Integer>> pendingOrdersList;
     ConcurrentHashMap<String, HashMap<Food, Integer>> historyOrdersList;
+
     int pendingOrderCount = 0;
     // DATABASE
     private Restaurant restaurant;
@@ -145,7 +147,7 @@ public class RestaurantHomeController
         System.out.println("Switching to window " + window);
         if (currentWindow == window) return;
 
-        // Unselect previous window button -> UNCLICK IT
+        // Unselect previous window button -> REMOVE CLICK EFFECT
         if (currentWindow != WindowType.UNDEFINED)
         {
             if (currentWindow == WindowType.ORDERS)
@@ -546,30 +548,6 @@ public class RestaurantHomeController
         displayVBox.getChildren().add(headerRow);
     }
 
-    public void fillFoodList(ArrayList<Food> foodList)
-    {
-        int itemOrderCount = 0;
-
-        System.out.println("Food list size : " + foodList.size());
-
-        for (Food food : foodList)
-        {
-            itemOrderCount = 0;
-            for (var map : historyOrdersList.entrySet())
-            {
-                if (map.getValue().containsKey(food))
-                {
-                    for (Food f : map.getValue().keySet())
-                    {
-                        System.out.println("Food : " + f.getName() + " x " + map.getValue().get(f));
-                        itemOrderCount += map.getValue().get(food);
-                    }
-                }
-            }
-            addFoodListRow(food, itemOrderCount);
-        }
-    }
-
     public void addPendingOrderRow(Food food, int orderCount, String username)
     {
         HBox row = new HBox();
@@ -759,6 +737,31 @@ public class RestaurantHomeController
 
         displayVBox.getChildren().clear();
         fillPendingRequest();
+    }
+
+    // ERROR FIXED : WARNING :
+    // REMEMBER WHEN WORKING WITH HASH MAP ALWAYS OVERRIDE THE CLASSES EQUALS AND HASHCODE METHOD
+    public void fillFoodList(ArrayList<Food> foodList)
+    {
+        int itemOrderCount = 0;
+
+        System.out.println("Food list size : " + foodList.size());
+
+        for (Food food : foodList)
+        {
+            itemOrderCount = 0;
+            for(HashMap<Food, Integer> foodCount : historyOrdersList.values())
+            {
+                // IF HASH CODE IS NOT OVERRIDDEN THEN THIS WILL NOT WORK
+                // AS THE OBJECTS WILL BE COMPARED BY THEIR MEMORY ADDRESS
+                // SO EVEN IF THE OBJECTS ARE SAME BUT THEIR MEMORY ADDRESS IS DIFFERENT THEY WILL BE CONSIDERED DIFFERENT
+                if (foodCount.containsKey(food))
+                {
+                    itemOrderCount += foodCount.get(food);
+                }
+            }
+            addFoodListRow(food, itemOrderCount);
+        }
     }
 
     public void addFoodListRow(Food food, int totalOrderCount)

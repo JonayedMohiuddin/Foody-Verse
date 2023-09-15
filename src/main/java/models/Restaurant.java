@@ -139,4 +139,19 @@ public class Restaurant implements Serializable
         }
         System.out.println();
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == null) return false;
+        if (!(obj instanceof Restaurant)) return false;
+        Restaurant restaurant = (Restaurant) obj;
+        return id == restaurant.id;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return id;
+    }
 }
