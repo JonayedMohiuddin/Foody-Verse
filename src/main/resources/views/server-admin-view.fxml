@@ -339,7 +339,7 @@
             </Label>
          </children>
       </GridPane>
-      <ImageView fitHeight="26.0" fitWidth="117.0" layoutX="4.0" layoutY="1.0" onMouseClicked="#homePageLogOutButtonClicked" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="26.0" fitWidth="117.0" layoutX="4.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/foody-verse.png" />
          </image>

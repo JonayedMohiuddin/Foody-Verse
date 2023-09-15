@@ -95,7 +95,7 @@
             <Font name="Calibri" size="15.0" />
          </font>
       </Label>
-      <ImageView fitHeight="68.0" fitWidth="186.0" layoutY="7.0" onMouseClicked="#homePageLogOutButtonClicked" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="68.0" fitWidth="186.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/foody-verse.png" />
          </image>

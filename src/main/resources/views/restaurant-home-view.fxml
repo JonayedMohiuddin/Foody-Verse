@@ -198,7 +198,7 @@
                   <Font name="Corbel" size="18.0" />
                </font>
             </Button>
-            <ImageView fitHeight="50.0" fitWidth="200.0" onMouseClicked="#homePageLogOutButtonClicked" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/foody-verse.png" />
                </image>
