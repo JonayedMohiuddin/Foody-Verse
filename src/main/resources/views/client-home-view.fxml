@@ -54,11 +54,6 @@
                   </LinearGradient>
                </fill>
             </Rectangle>
-            <Label layoutX="20.0" layoutY="15.0" text="Foody-Verse" textFill="#ff2525">
-               <font>
-                  <Font name="Corbel Bold" size="30.0" />
-               </font>
-            </Label>
             <TextField fx:id="searchTextField" layoutX="210.0" layoutY="13.0" onKeyPressed="#searchFieldKeyPressed" prefHeight="40.0" prefWidth="417.0" promptText="Search restaurants">
                <font>
                   <Font name="Calibri Light" size="15.0" />
@@ -169,12 +164,12 @@
                   <Image url="@../assets/user-icon.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="841.0" layoutY="55.0" onMouseClicked="#cartButtonClicked" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="cartButtonImageView" fitHeight="40.0" fitWidth="40.0" layoutX="836.0" layoutY="60.0" onMouseClicked="#cartButtonClicked" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/cart-icon.png" />
                </image>
             </ImageView>
-            <Circle fx:id="cartItemCountBg" layoutX="878.0" layoutY="65.0" onMouseClicked="#cartButtonClicked" opacity="0.7" radius="11.0" stroke="BLACK" strokeType="INSIDE">
+            <Circle fx:id="cartItemCountBg" layoutX="876.0" layoutY="67.0" onMouseClicked="#cartButtonClicked" opacity="0.7" radius="11.0" stroke="BLACK" strokeType="INSIDE">
                <fill>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -191,11 +186,11 @@
                      </stops>
                   </LinearGradient>
                </fill></Circle>
-            <Label fx:id="cartItemCountLabel" alignment="CENTER" ellipsisString="" layoutX="865.0" layoutY="56.0" onMouseClicked="#cartButtonClicked" prefHeight="18.0" prefWidth="25.0" text="99" textAlignment="CENTER">
+            <Label fx:id="cartItemCountLabel" alignment="CENTER" ellipsisString="" layoutX="863.0" layoutY="58.0" onMouseClicked="#cartButtonClicked" prefHeight="18.0" prefWidth="25.0" text="99" textAlignment="CENTER">
                <font>
                   <Font size="10.0" />
                </font></Label>
-            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="82.0" layoutY="54.0" onMouseClicked="#homePageLogOutButtonClicked" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="82.0" layoutY="60.0" onMouseClicked="#homePageLogOutButtonClicked" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/logout-icon.png" />
                </image>
@@ -205,7 +200,7 @@
                   <Image url="@../assets/back-button-icon.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="778.0" layoutY="54.0" onMouseClicked="#deliveredIconClicked" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="778.0" AnchorPane.topAnchor="54.0">
+            <ImageView fx:id="deliveredButtonImageView" fitHeight="40.0" fitWidth="40.0" layoutX="778.0" layoutY="60.0" onMouseClicked="#deliveredIconClicked" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="778.0" AnchorPane.topAnchor="60.0">
                <image>
                   <Image url="@../assets/delivered-icon.png" />
                </image></ImageView>
@@ -231,14 +226,19 @@
                <font>
                   <Font size="10.0" />
                </font></Label>
-            <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="288.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="searchFIlterImageView" fitHeight="26.0" fitWidth="26.0" layoutX="288.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/zipcode-icon.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="486.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="viewImageView" fitHeight="26.0" fitWidth="26.0" layoutX="486.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/restaurant-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="200.0" layoutX="2.0" layoutY="7.0" onMouseClicked="#homePageLogOutButtonClicked" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/foody-verse.png" />
                </image>
             </ImageView>
          </children>

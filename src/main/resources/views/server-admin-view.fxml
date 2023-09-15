@@ -50,11 +50,6 @@
             </LinearGradient>
          </fill>
       </Rectangle>
-      <Label layoutX="18.0" layoutY="7.0" text="Foody-Verse" textFill="#ff2525" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="7.0">
-         <font>
-            <Font name="Corbel Bold" size="16.0" />
-         </font>
-      </Label>
       <Button layoutX="16.0" layoutY="28.0" mnemonicParsing="false" onAction="#shutdownServer" prefHeight="26.0" prefWidth="118.0" text="Shutdown Server" textFill="#b12802">
          <font>
             <Font name="Corbel Bold" size="13.0" />
@@ -344,5 +339,10 @@
             </Label>
          </children>
       </GridPane>
+      <ImageView fitHeight="26.0" fitWidth="117.0" layoutX="4.0" layoutY="1.0" onMouseClicked="#homePageLogOutButtonClicked" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/foody-verse.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

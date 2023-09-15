@@ -64,11 +64,6 @@
             <Font name="Corbel" size="16.0" />
          </font>
       </PasswordField>
-      <Label layoutX="71.0" layoutY="123.0" text="Foody-Verse" textFill="RED">
-         <font>
-            <Font name="Corbel Bold" size="20.0" />
-         </font>
-      </Label>
       <ImageView fitHeight="34.0" fitWidth="34.0" layoutX="83.0" layoutY="214.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assets/username-icon.png" />
@@ -100,5 +95,10 @@
             <Font name="Calibri" size="15.0" />
          </font>
       </Label>
+      <ImageView fitHeight="68.0" fitWidth="186.0" layoutY="7.0" onMouseClicked="#homePageLogOutButtonClicked" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/foody-verse.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
