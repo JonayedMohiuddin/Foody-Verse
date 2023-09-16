@@ -123,21 +123,22 @@ public class ServerController implements Runnable
         serverPort = 44444;
         clientMap = new ConcurrentHashMap<>();
         restaurantMap = new ConcurrentHashMap<>();
+        offlineRestaurantCartList = new ConcurrentHashMap<>();
+        deliveryList = new ConcurrentHashMap<>();
 
         try
         {
             userInfos = FileOperations.readUserinfo();
             restaurantInfos = FileOperations.readRestaurantInfo();
             restaurantList = FileOperations.readRestaurants();
+            offlineRestaurantCartList = FileOperations.readPendingOrderList();
+            deliveryList = FileOperations.readDeliveredOrderList();
         }
         catch (IOException e)
         {
             System.out.println("Class : ServerController | Method : init");
             System.out.println("Error : " + e.getMessage());
         }
-
-        offlineRestaurantCartList = new ConcurrentHashMap<>();
-        deliveryList = new ConcurrentHashMap<>();
 
         clients = FXCollections.observableArrayList();
         restaurants = FXCollections.observableArrayList();
@@ -194,6 +195,26 @@ public class ServerController implements Runnable
         catch (IOException e)
         {
             System.out.println("Class : ServerController | Method : shutDownServer | While writing userinfo to file");
+            System.out.println("Error : " + e.getMessage());
+        }
+
+        try
+        {
+            FileOperations.writePendingOrdersList(offlineRestaurantCartList);
+        }
+        catch (IOException e)
+        {
+            System.out.println("Class : ServerController | Method : shutDownServer | While writing pending orders to file");
+            System.out.println("Error : " + e.getMessage());
+        }
+
+        try
+        {
+            FileOperations.writeDeliveredOrderList(deliveryList);
+        }
+        catch (IOException e)
+        {
+            System.out.println("Class : ServerController | Method : shutDownServer | While writing delivered orders to file");
             System.out.println("Error : " + e.getMessage());
         }
 

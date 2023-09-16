@@ -1,0 +1,6 @@
+1,1
+a,4
+Crispy Taco,Fast Food,1.19,1,1
+2 pc. Breast and Wing Combo,Chicken Wings,11.99,1,1
+3 pc. Breast and Wing Combo,Chicken Wings,20.99,1,1
+6 pc. Breast and Wing Combo,Chicken Wings,38.99,1,1

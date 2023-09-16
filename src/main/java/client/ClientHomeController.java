@@ -458,11 +458,11 @@ public class ClientHomeController
             cartItemCountBg.setVisible(true);
         }
 
-//        if (deliveredTotalItems == 0)
-//        {
-//            deliveredItemCountBg.setVisible(false);
-//            deliveredItemCountLabel.setVisible(false);
-//        }
+        if (deliveredTotalItems == 0)
+        {
+            deliveredItemCountBg.setVisible(false);
+            deliveredItemCountLabel.setVisible(false);
+        }
 //        else
 //        {
 //            System.out.println("Delivered total items : " + deliveredTotalItems);
