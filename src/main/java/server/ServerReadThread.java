@@ -172,6 +172,7 @@ public class ServerReadThread implements Runnable
                         {
                             serverController.log("Sending order to restaurant " + restaurantName);
                             serverController.getRestaurantMap().get(restaurantName).write(serverToRestaurantCartOrderDTO);
+
                             System.out.println(thread.getName() + " : Order sent to restaurant " + restaurantName);
                             System.out.println(thread.getName() + " : " + serverToRestaurantCartOrderDTO);
                             System.out.println();
@@ -180,21 +181,42 @@ public class ServerReadThread implements Runnable
                         {
                             serverController.log("Restaurant " + restaurantName + " is offline. Could not send order.");
                             System.out.println(thread.getName() + " : Restaurant " + restaurantName + " is offline");
+                        }
 
-                            // save them at offline map
-                            HashMap<Food, Integer> foodCount = cartFoodList.get(restaurantId);
-                            HashMap<String, HashMap<Food, Integer>> userFoodCount = new HashMap<>();
-                            userFoodCount.put(clientName, foodCount);
-                            serverController.offlineRestaurantCartList.put(restaurantId, userFoodCount);
+                        // KEEP PENDING LIST COPY IN SERVER
+                        if (!serverController.offlineRestaurantCartList.containsKey(restaurantId))
+                        {
+                            serverController.offlineRestaurantCartList.put(restaurantId, new HashMap<>());
+                        }
+
+                        HashMap<String, HashMap<Food, Integer>> userFoodCount = serverController.offlineRestaurantCartList.get(restaurantId);
+                        if (!userFoodCount.containsKey(clientName))
+                        {
+                            userFoodCount.put(clientName, new HashMap<>());
+                        }
+
+                        HashMap<Food, Integer> foodCount = userFoodCount.get(clientName);
+                        for (Food food : cartFoodList.get(restaurantId).keySet())
+                        {
+                            if (!foodCount.containsKey(food))
+                            {
+                                foodCount.put(food, 0);
+                            }
+                            foodCount.put(food, foodCount.get(food) + cartFoodList.get(restaurantId).get(food));
                         }
                     }
                 }
-                else if (obj instanceof RequestOfflinePendingOrDeliveryDataDTO requestOfflinePendingOrDeliveryDataDTO)
+                // OFFLINE DATA LIKE PENDING OR DELIVERY DATA -> SEND THEM TO THE CLIENT / RESTAURANT , IF CLIENT REQUESTED
+                // STOP DTO MARKS THE END OF THE DATA STREAM
+                else if (obj instanceof RequestOfflinePendingOrDeliveryDataDTO)
                 {
                     serverController.log(clientName + " requested offline data");
                     if (clientType == ClientType.RESTAURANT)
                     {
+                        // RESTAURANTS NEED PENDING AND DELIVERY LIST
+                        // SO TWO STOP DTO WILL BE SENT SEQUNTIALLY
                         // CHECK IF THERE ARE ANY ORDERS FOR THIS RESTAURANT
+                        // SEND THE PENDING LIST
                         if (serverController.offlineRestaurantCartList.containsKey(restaurantId))
                         {
                             HashMap<String, HashMap<Food, Integer>> userFoodCount = serverController.offlineRestaurantCartList.get(restaurantId);
@@ -202,13 +224,39 @@ public class ServerReadThread implements Runnable
                             {
                                 ServerToRestaurantCartOrderDTO serverToRestaurantCartOrderDTO = new ServerToRestaurantCartOrderDTO(userName, userFoodCount.get(userName));
                                 socketWrapper.write(serverToRestaurantCartOrderDTO);
-                                System.out.println(thread.getName() + " : Offline order sent to restaurant " + clientName);
+
+                                System.out.println(thread.getName() + " : Offline pending order sent to restaurant " + clientName);
                                 System.out.println(thread.getName() + " : " + serverToRestaurantCartOrderDTO);
                                 System.out.println();
                             }
-                            serverController.offlineRestaurantCartList.remove(restaurantId);
+                            // DON'T REMOVE FROM PENDING REQUEST YET!! LET THE RESTAURANT ACCEPT THEM FIRST
+                            // serverController.offlineRestaurantCartList.remove(restaurantId);
                         }
 
+                        // FIRST STOP DTO end PENDING LIST
+                        socketWrapper.write(new StopDTO());
+
+                        // SEND THE DELIVERY LIST
+                        if (serverController.deliveryList.containsKey(restaurantId))
+                        {
+                            ConcurrentHashMap<String, HashMap<Food, Integer>> userFoodCount = new ConcurrentHashMap<>();
+                            for (String username : serverController.deliveryList.get(restaurantId).keySet())
+                            {
+                                HashMap<Food, Integer> foodCount = serverController.deliveryList.get(restaurantId).get(username);
+                                if (foodCount.size() > 0)
+                                {
+                                    userFoodCount.put(username, foodCount);
+                                }
+                            }
+                            DeliverDTO deliverDTO = new DeliverDTO(restaurantId, userFoodCount);
+                            socketWrapper.write(deliverDTO);
+
+                            System.out.println(thread.getName() + " : Offline delivery data sent to restaurant " + clientName);
+                            System.out.println(thread.getName() + " : " + deliverDTO);
+                            System.out.println();
+                        }
+
+                        // LAST STOP DTO end DELIVERY LIST
                         socketWrapper.write(new StopDTO());
                     }
                     else if (clientType == ClientType.CLIENT)
@@ -221,6 +269,10 @@ public class ServerReadThread implements Runnable
                                 deliverDTO.getDeliverList().put(clientName, serverController.deliveryList.get(restaurantId).get(clientName));
                                 socketWrapper.write(deliverDTO);
                                 System.out.println("Sending delivery data to " + clientName);
+                                for (Food food : serverController.deliveryList.get(restaurantId).get(clientName).keySet())
+                                {
+                                    System.out.println(food.getName() + " -> " + serverController.deliveryList.get(restaurantId).get(clientName).get(food));
+                                }
                                 System.out.println();
                             }
                         }
@@ -264,14 +316,14 @@ public class ServerReadThread implements Runnable
 
                     socketWrapper.write(clientSignUpDTO);
                 }
-                // RESRTAURANT DELIVERY DTO -> SEND THIS TO CORRESPONDING CLIENTS
+                // RESTAURANT DELIVERY DTO -> SEND THIS TO CORRESPONDING CLIENTS
                 // AND UPDATE LOCAL DATABASE ACCORDINGLY
                 else if (obj instanceof DeliverDTO deliverDTO)
                 {
                     System.out.println("Order delivery request received from " + clientName);
                     serverController.log("Order delivery request received from " + clientName);
 
-                    // SEND THE UPDATED FOOD LIST TO ALL CLIENTS
+                    // SEND THE FOOD LIST TO ALL CLIENTS (USER)
                     for (String username : deliverDTO.getDeliverList().keySet())
                     {
                         if (serverController.getClientMap().containsKey(username))
@@ -280,24 +332,63 @@ public class ServerReadThread implements Runnable
                         }
                     }
 
+                    // ADD THE DATA TO DELIVERY LIST
                     if (!serverController.deliveryList.containsKey(deliverDTO.getRestaurantId()))
                     {
                         serverController.deliveryList.put(deliverDTO.getRestaurantId(), new HashMap<>());
                     }
-                    serverController.deliveryList.get(deliverDTO.getRestaurantId()).putAll(deliverDTO.getDeliverList());
 
-//                    for (Integer restaurantId : serverController.deliveryList.keySet())
-//                    {
-//                        System.out.println("Restaurant " + restaurantId);
-//                        for (String username : serverController.deliveryList.get(restaurantId).keySet())
-//                        {
-//                            System.out.println("Restaurant " + restaurantId + " -> " + username);
-//                            for (Food food : serverController.deliveryList.get(restaurantId).get(username).keySet())
-//                            {
-//                                System.out.println("Restaurant " + restaurantId + " -> " + username + " -> " + food.getName() + " -> " + serverController.deliveryList.get(restaurantId).get(username).get(food));
-//                            }
-//                        }
-//                    }
+                    HashMap<String, HashMap<Food, Integer>> userFoodCount = serverController.deliveryList.get(deliverDTO.getRestaurantId());
+
+                    for (String username : deliverDTO.getDeliverList().keySet())
+                    {
+                        if (!userFoodCount.containsKey(username))
+                        {
+                            userFoodCount.put(username, new HashMap<>());
+                        }
+                        HashMap<Food, Integer> foodCount = userFoodCount.get(username);
+
+                        for (Food food : deliverDTO.getDeliverList().get(username).keySet())
+                        {
+                            if (!foodCount.containsKey(food))
+                            {
+                                foodCount.put(food, 0);
+                            }
+                            foodCount.put(food, foodCount.get(food) + deliverDTO.getDeliverList().get(username).get(food));
+                        }
+                    }
+
+                    // REMOVE THOSE FOOD DATA FROM PENDING LIST
+                    if (serverController.offlineRestaurantCartList.containsKey(deliverDTO.getRestaurantId()))
+                    {
+                        HashMap<String, HashMap<Food, Integer>> pendingUserFoodCount = serverController.offlineRestaurantCartList.get(deliverDTO.getRestaurantId());
+
+                        for (String username : deliverDTO.getDeliverList().keySet())
+                        {
+                            if (pendingUserFoodCount.containsKey(username))
+                            {
+                                HashMap<Food, Integer> pendingFoodCount = pendingUserFoodCount.get(username);
+
+                                for (Food food : deliverDTO.getDeliverList().get(username).keySet())
+                                {
+                                    pendingFoodCount.remove(food);
+                                }
+                            }
+                        }
+                    }
+
+                    for (Integer restaurantId : serverController.deliveryList.keySet())
+                    {
+                        System.out.println("Restaurant " + restaurantId);
+                        for (String username : serverController.deliveryList.get(restaurantId).keySet())
+                        {
+                            System.out.println("Restaurant " + restaurantId + " -> " + username);
+                            for (Food food : serverController.deliveryList.get(restaurantId).get(username).keySet())
+                            {
+                                System.out.println("Restaurant " + restaurantId + " -> " + username + " -> " + food.getName() + " -> " + serverController.deliveryList.get(restaurantId).get(username).get(food));
+                            }
+                        }
+                    }
                 }
                 // CLIENT LOGGING OUT
                 else if (obj instanceof LogoutDTO logoutDTO)

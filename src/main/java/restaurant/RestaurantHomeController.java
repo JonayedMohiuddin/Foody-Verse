@@ -24,6 +24,7 @@ import models.Restaurant;
 import util.ImageTransitions;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -103,8 +104,12 @@ public class RestaurantHomeController
     private String restaurantName;
     private RestaurantApplication application;
 
+    DecimalFormat decimalFormat;
+
     public void init()
     {
+        decimalFormat = new DecimalFormat("#.#");
+
         pendingOrdersList = new ConcurrentHashMap<>();
         historyOrdersList = new ConcurrentHashMap<>();
 
@@ -141,6 +146,7 @@ public class RestaurantHomeController
         {
             application.getSocketWrapper().write(new RequestOfflinePendingOrDeliveryDataDTO());
             Object obj;
+            // READ PENDING ORDERS
             while((obj = application.getSocketWrapper().read()) != null)
             {
                 if(obj instanceof ServerToRestaurantCartOrderDTO serverToRestaurantCartOrderDTO)
@@ -148,13 +154,27 @@ public class RestaurantHomeController
                     String username = serverToRestaurantCartOrderDTO.getUsername();
                     HashMap<Food, Integer> foodCountMap = serverToRestaurantCartOrderDTO.getCartFoodList();
 
-                     for (Food food : foodCountMap.keySet())
+                    for (Food food : foodCountMap.keySet())
                     {
                         System.out.println(food.getName() + " : " + foodCountMap.get(food));
                     }
                     System.out.println();
 
                     updatePendingOrdersList(username, foodCountMap);
+                }
+                else if(obj instanceof StopDTO)
+                {
+                    break;
+                }
+            }
+
+            // READ PREVIOUS DELIVERED ORDERS
+            while((obj = application.getSocketWrapper().read()) != null)
+            {
+                if(obj instanceof DeliverDTO deliverDTO)
+                {
+                    System.out.println("Reading previous delivered orders");
+                    updateDeliveryList(deliverDTO);
                 }
                 else if(obj instanceof StopDTO)
                 {
@@ -261,7 +281,7 @@ public class RestaurantHomeController
             displayVBox.setSpacing(15);
             displayVBox.getChildren().clear();
 
-            fillFoodList(application.getRestaurant().getFoodList());
+            fillInfoFoodList(application.getRestaurant().getFoodList());
         }
         else if (window == WindowType.DELIVERED)
         {
@@ -352,7 +372,7 @@ public class RestaurantHomeController
         Food food = new Food(restaurant.getId(), foodCategory, foodName, Double.parseDouble(foodPrice));
         for (Food existingFood : application.getRestaurant().getFoodList())
         {
-            if (existingFood.getName().equals(food.getName()) && existingFood.getPrice() == food.getPrice())
+            if (existingFood.equals(food))
             {
                 System.out.println("Food already exists");
                 foodNameTextField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
@@ -378,6 +398,8 @@ public class RestaurantHomeController
 
     public void updatePendingOrdersList(String username, HashMap<Food, Integer> foodCountMap)
     {
+        if(foodCountMap.size() == 0) return;
+
         if (pendingOrdersList.containsKey(username))
         {
             HashMap<Food, Integer> existingFoodCountMap = pendingOrdersList.get(username);
@@ -413,6 +435,32 @@ public class RestaurantHomeController
         {
             displayVBox.getChildren().clear();
             fillPendingRequest();
+        }
+    }
+
+    public void updateDeliveryList(DeliverDTO deliverDTO)
+    {
+        for(String username : deliverDTO.getDeliverList().keySet())
+        {
+            if(historyOrdersList.containsKey(username))
+            {
+                HashMap<Food, Integer> foodCount = historyOrdersList.get(username);
+                for(Food food : deliverDTO.getDeliverList().get(username).keySet())
+                {
+                    if(foodCount.containsKey(food))
+                    {
+                        foodCount.put(food, foodCount.get(food) + deliverDTO.getDeliverList().get(username).get(food));
+                    }
+                    else
+                    {
+                        foodCount.put(food, deliverDTO.getDeliverList().get(username).get(food));
+                    }
+                }
+            }
+            else
+            {
+                historyOrdersList.put(username, deliverDTO.getDeliverList().get(username));
+            }
         }
     }
 
@@ -582,7 +630,7 @@ public class RestaurantHomeController
         Label orderCountLabel = new Label("X " + orderCount);
         orderCountLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-font-family: Calibri;");
 
-        Label orderPriceLabel = new Label(food.getPrice() * orderCount + "$");
+        Label orderPriceLabel = new Label( decimalFormat.format(food.getPrice() * orderCount) + "$");
         orderPriceLabel.setStyle("-fx-font-size: 18px; -fx-font-family: 'Roboto Black';");
 
         orderDetailsContainer.getChildren().addAll(orderCountLabel, orderPriceLabel);
@@ -729,7 +777,7 @@ public class RestaurantHomeController
         Label orderCountLabel = new Label("X " + orderCount);
         orderCountLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-font-family: Calibri;");
 
-        Label orderPriceLabel = new Label(food.getPrice() * orderCount + "$");
+        Label orderPriceLabel = new Label( decimalFormat.format(food.getPrice() * orderCount) + "$");
         orderPriceLabel.setStyle("-fx-font-size: 18px; -fx-font-family: 'Roboto Black';");
 
         orderDetailsContainer.getChildren().addAll(orderCountLabel, orderPriceLabel);
@@ -878,8 +926,9 @@ public class RestaurantHomeController
 
     // ERROR FIXED : WARNING :
     // REMEMBER WHEN WORKING WITH HASH MAP ALWAYS OVERRIDE THE CLASSES EQUALS AND HASHCODE METHOD
-    public void fillFoodList(ArrayList<Food> foodList)
+    public void fillInfoFoodList(ArrayList<Food> foodList)
     {
+        foodListVBox.getChildren().clear();
         int itemOrderCount = 0;
 
         System.out.println("Food list size : " + foodList.size());
@@ -897,26 +946,26 @@ public class RestaurantHomeController
                     itemOrderCount += foodCount.get(food);
                 }
             }
-            addFoodListRow(food, itemOrderCount);
+            System.out.println("Food : " + food.getName() + " | Order count : " + itemOrderCount);
+
+            addInfoFoodListRow(food, itemOrderCount);
         }
     }
 
-    public void addFoodListRow(Food food, int totalOrderCount)
+    public void addInfoFoodListRow(Food food, int totalOrderCount)
     {
         HBox row = new HBox();
-        row.setPrefWidth(780);
-        row.setPrefHeight(200);
-        row.setMinWidth(780);
-        row.setMinHeight(200);
-        row.setStyle("-fx-border-insets: 0 20px 20px 0px;");
+        row.setPrefWidth(460);
+        row.setPrefHeight(170);
+        row.setStyle("-fx-border-insets: 0px 0px 20px 0px;");
 
         StackPane rowStackPane = new StackPane();
-        rowStackPane.setPrefWidth(750);
-        rowStackPane.setPrefHeight(200);
+        rowStackPane.setPrefHeight(170);
+        rowStackPane.setPrefWidth(460);
 
         Rectangle rowBackgroundRect = new Rectangle();
-        rowBackgroundRect.setWidth(750);
-        rowBackgroundRect.setHeight(200);
+        rowBackgroundRect.setWidth(460);
+        rowBackgroundRect.setHeight(170);
         rowBackgroundRect.setArcWidth(10);
         rowBackgroundRect.setArcHeight(10);
         LinearGradient linearGradient = new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE, new Stop(0, Color.web("#4027ff", 0.4)), new Stop(1, Color.web("#ada3f7", 0.4)));
@@ -924,54 +973,46 @@ public class RestaurantHomeController
         rowBackgroundRect.setStroke(Color.web("#000000"));
 
         HBox rowHBoxContent = new HBox();
-        rowHBoxContent.setPrefWidth(750);
-        rowHBoxContent.setPrefHeight(200);
+        rowHBoxContent.setPrefWidth(460);
+        rowHBoxContent.setPrefHeight(170);
 
         VBox foodImageContainer = new VBox();
-        //ImageView rowImageView = new ImageView(new Image("file:src/main/resources/food-images/" + food.getName() + ".jpg", 175, 125, false, false));
         ImageView rowImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
         if (rowImageView.getImage().isError())
         {
             rowImageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
         }
-        rowImageView.setFitWidth(250);
-        rowImageView.setFitHeight(180);
-        rowImageView.minWidth(250);
-        rowImageView.minHeight(180);
-        rowImageView.maxWidth(250);
-        rowImageView.maxHeight(180);
+        rowImageView.setFitWidth(130);
+        rowImageView.setFitHeight(100);
         rowImageView.setPreserveRatio(false);
         foodImageContainer.setPadding(new Insets(10, 0, 0, 10));
         foodImageContainer.getChildren().addAll(rowImageView);
 
         VBox foodDetailsContainer = new VBox();
-        foodDetailsContainer.setPadding(new Insets(10, 0, 0, 30));
-        foodDetailsContainer.setPrefWidth(548);
-        foodDetailsContainer.setPrefHeight(180);
-        foodDetailsContainer.setSpacing(12);
+        foodDetailsContainer.setPadding(new Insets(10, 0, 0, 10));
+        foodDetailsContainer.setSpacing(10);
 
         Label foodNameLabel = new Label(food.getName());
-        foodNameLabel.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-font-family: Calibri;");
-        foodNameLabel.setMinWidth(450);
+        foodNameLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-font-family: Calibri;");
 
         HBox foodOtherDetailsContainer = new HBox();
 
         VBox foodDetailsDescriptionContainer = new VBox();
-        foodDetailsDescriptionContainer.setPrefWidth(140);
-        foodDetailsDescriptionContainer.setPrefHeight(120);
+        foodDetailsDescriptionContainer.setPrefWidth(80);
+        foodDetailsDescriptionContainer.setPrefHeight(90);
         foodDetailsDescriptionContainer.setSpacing(10);
 
         Label foodCategoryDescriptorLabel = new Label("Category : ");
-        foodCategoryDescriptorLabel.setStyle("-fx-font-size: 20px;-fx-font-weight: bold; -fx-font-family: Calibri;");
+        foodCategoryDescriptorLabel.setStyle("-fx-font-size: 18px;-fx-font-weight: bold; -fx-font-family: Calibri;");
 
         Label foodPriceDescriptorLabel = new Label("Price : ");
-        foodPriceDescriptorLabel.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;  -fx-font-family: Calibri");
+        foodPriceDescriptorLabel.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;  -fx-font-family: Calibri");
 
-        Label foodTotalOrderDescriptorLabel = new Label("Total Order : ");
-        foodTotalOrderDescriptorLabel.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;  -fx-font-family: Calibri;");
+        Label foodTotalOrderDescriptorLabel = new Label("Orders : ");
+        foodTotalOrderDescriptorLabel.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;  -fx-font-family: Calibri;");
 
-        Label foodTotalProfitDescriptorLabel = new Label("Total Profit : ");
-        foodTotalProfitDescriptorLabel.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;  -fx-font-family: Calibri;");
+        Label foodTotalProfitDescriptorLabel = new Label("Profit : ");
+        foodTotalProfitDescriptorLabel.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;  -fx-font-family: Calibri;");
 
         foodDetailsDescriptionContainer.getChildren().addAll(foodCategoryDescriptorLabel, foodPriceDescriptorLabel, foodTotalOrderDescriptorLabel, foodTotalProfitDescriptorLabel);
 
@@ -979,16 +1020,16 @@ public class RestaurantHomeController
         foodDetailsContentContainer.setSpacing(10);
 
         Label foodCategoryContentLabel = new Label(food.getCategory());
-        foodCategoryContentLabel.setStyle("-fx-font-size: 20px; -fx-font-family: Roboto;");
+        foodCategoryContentLabel.setStyle("-fx-font-size: 18px; -fx-font-family: Calibri;");
 
         Label foodPriceContentLabel = new Label(food.getPrice() + " $");
-        foodPriceContentLabel.setStyle("-fx-font-size: 20; -fx-font-family: Roboto;");
+        foodPriceContentLabel.setStyle("-fx-font-size: 18px; -fx-font-family: Calibri;");
 
         Label foodTotalOrderContentLabel = new Label(Integer.toString(totalOrderCount));
-        foodTotalOrderContentLabel.setStyle("-fx-font-size: 20px; -fx-font-family: Roboto;");
+        foodTotalOrderContentLabel.setStyle("-fx-font-size: 18px; -fx-font-family: Calibri;");
 
-        Label foodTotalProfitContentLabel = new Label(food.getPrice() * totalOrderCount + " $");
-        foodTotalProfitContentLabel.setStyle("-fx-font-size: 20px; -fx-font-family: Roboto;");
+        Label foodTotalProfitContentLabel = new Label(decimalFormat.format(food.getPrice() * totalOrderCount) + " $");
+        foodTotalProfitContentLabel.setStyle("-fx-font-size: 18px; -fx-font-family: Calibri;");
 
         foodDetailsContentContainer.getChildren().addAll(foodCategoryContentLabel, foodPriceContentLabel, foodTotalOrderContentLabel, foodTotalProfitContentLabel);
 
@@ -1001,7 +1042,7 @@ public class RestaurantHomeController
         rowStackPane.getChildren().addAll(rowBackgroundRect, rowHBoxContent);
 
         row.getChildren().add(rowStackPane);
-        displayVBox.getChildren().add(row);
+        foodListVBox.getChildren().add(row);
     }
 
     public void setApplication(RestaurantApplication application)

@@ -201,11 +201,16 @@ public class ClientHomeController
             {
                 if (obj instanceof DeliverDTO deliverDTO)
                 {
-                    if (!deliveredFoodList.containsKey(deliverDTO.getRestaurantId()))
+                    int restaurantId = deliverDTO.getRestaurantId();
+                    if (!deliveredFoodList.containsKey(restaurantId))
                     {
                         deliveredFoodList.put(deliverDTO.getRestaurantId(), new HashMap<>());
                     }
-                    deliveredFoodList.get(deliverDTO.getRestaurantId()).putAll(deliverDTO.getDeliverList().get(application.getUsername()));
+                    HashMap<Food, Integer> deliveredFoodCount = deliveredFoodList.get(restaurantId);
+                    for (Food food : deliverDTO.getDeliverList().get(application.getUsername()).keySet())
+                    {
+                        deliveredFoodCount.put(food, deliveredFoodCount.getOrDefault(food, 0) + deliverDTO.getDeliverList().get(application.getUsername()).get(food));
+                    }
 
                     for (Integer restId : deliveredFoodList.keySet())
                     {
@@ -279,18 +284,29 @@ public class ClientHomeController
 
     public void newDelivery(DeliverDTO deliverDTO)
     {
-        if (!deliveredFoodList.containsKey(deliverDTO.getRestaurantId()))
+        int restaurantId = deliverDTO.getRestaurantId();
+        if (!deliveredFoodList.containsKey(restaurantId))
         {
             deliveredFoodList.put(deliverDTO.getRestaurantId(), new HashMap<>());
         }
-        deliveredFoodList.get(deliverDTO.getRestaurantId()).putAll(deliverDTO.getDeliverList().get(application.getUsername()));
+        HashMap<Food, Integer> deliveredFoodCount = deliveredFoodList.get(restaurantId);
+        for (Food food : deliverDTO.getDeliverList().get(application.getUsername()).keySet())
+        {
+            deliveredFoodCount.put(food, deliveredFoodCount.getOrDefault(food, 0) + deliverDTO.getDeliverList().get(application.getUsername()).get(food));
+        }
 
         for (Integer restId : deliveredFoodList.keySet())
         {
+            System.out.println("Restaurant ID " + restId);
             for (Food food : deliveredFoodList.get(restId).keySet())
             {
                 System.out.println("Food name " + food.getName() + " count " + deliveredFoodList.get(restId).get(food));
             }
+        }
+
+        if(currentMenuWindow == Menu.DELIVERED)
+        {
+            deliveredMenuInit();
         }
     }
 
@@ -748,16 +764,6 @@ public class ClientHomeController
             currentMenuWindow = Menu.CART;
             cartMenuInit();
         }
-//        try
-//        {
-//            application.setCartFoodList(cartFoodList);
-//            application.showCartPage();
-//        }
-//        catch (IOException e)
-//        {
-//            System.err.println("Class : HomePageController | Method : cartButtonClicked | While showing cart page");
-//            System.err.println("Error : " + e.getMessage());
-//        }
     }
 
     public void deliveredIconClicked(MouseEvent event)
@@ -769,6 +775,7 @@ public class ClientHomeController
             currentMenuWindow = Menu.DELIVERED;
             deliveredMenuInit();
         }
+        deliveredMenuInit();
     }
 
     public void search()
@@ -1218,12 +1225,127 @@ public class ClientHomeController
 
     public void cartMenuInit()
     {
+        cartItemListView.getItems().clear();
         fillCartMenuList();
+    }
+
+    public void fillDeliveredMenuList()
+    {
+        for (Integer restaurantID : deliveredFoodList.keySet())
+        {
+            addRestaurantNameHeaderDeliveredMenu(application.getRestaurantList().get(restaurantID).getName());
+            for (Food food : deliveredFoodList.get(restaurantID).keySet())
+            {
+                addFoodToDeliveredMenuListView(food, deliveredFoodList.get(restaurantID).get(food));
+            }
+        }
+    }
+
+    public void addRestaurantNameHeaderDeliveredMenu(String restaurantName)
+    {
+        HBox row = new HBox();
+
+        StackPane restaurantImageContainer = new StackPane();
+        ImageView foodSmallImageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurantName + ".jpg");
+        foodSmallImageView.setFitWidth(60);
+        foodSmallImageView.setFitHeight(40);
+        restaurantImageContainer.setPadding(new Insets(5, 20, 5, 5)); // top right bottom left
+        restaurantImageContainer.getChildren().add(foodSmallImageView);
+
+        Label restaurantNameLabel = new Label(restaurantName);
+        restaurantNameLabel.setFont(robotoBoldFont20);
+        restaurantNameLabel.setPadding(new Insets(13, 0, 10, 0)); // top right bottom left
+
+        row.getChildren().addAll(restaurantImageContainer, restaurantNameLabel);
+
+        deliveredMenuListView.getItems().add(row);
+    }
+
+    public void addFoodToDeliveredMenuListView(Food food, int foodCount)
+    {
+        // <HBox>
+        HBox row = new HBox();
+        row.setMinWidth(580);
+
+        // <StackPane>
+        StackPane foodImageContainer = new StackPane();
+        ImageView foodSmallImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
+        if (foodSmallImageView.getImage().isError())
+        {
+            foodSmallImageView = new ImageView(foodImage);
+        }
+        foodSmallImageView.setFitWidth(84);
+        foodSmallImageView.setFitHeight(60);
+        foodImageContainer.setPadding(new Insets(10, 20, 10, 10)); // top right bottom left
+        foodImageContainer.getChildren().add(foodSmallImageView);
+        // </StackPane>
+
+        // <VBox>
+        VBox foodDetailsContainer = new VBox();
+
+        Label foodNameLabel = new Label(food.getName());
+        foodNameLabel.setWrapText(true);
+        foodNameLabel.setFont(robotoBoldFont15);
+        foodNameLabel.setMaxWidth(250);
+        foodNameLabel.setPadding(new Insets(15, 0, 10, 0)); // top right bottom left
+
+        Label foodCategoryLabel = new Label(food.getCategory());
+        foodCategoryLabel.setWrapText(true);
+        foodCategoryLabel.setFont(robotoRegularFont12);
+
+        foodDetailsContainer.getChildren().addAll(foodNameLabel, foodCategoryLabel);
+        // </VBox>
+
+        // <HBox>
+        HBox foodButtonsContainer = new HBox();
+
+        int buttonSide = 45;
+
+        VBox removeButtonContainer = new VBox();
+        removeButtonContainer.setAlignment(Pos.CENTER);
+
+        removeButtonContainer.setPrefWidth(buttonSide);
+        removeButtonContainer.setPrefHeight(buttonSide);
+
+        // <VBox>
+        VBox foodCountAndPriceContainer = new VBox();
+
+        Label foodCountLabel = new Label("X " + foodCount);
+        foodCountLabel.setFont(robotoBoldFont15);
+        foodCountLabel.setAlignment(Pos.CENTER);
+        foodCountLabel.setMinWidth(70);
+
+        Label foodPriceLabel = new Label(decimalFormat.format(food.getPrice() * foodCount) + " $");
+        foodPriceLabel.setFont(robotoBoldFont15);
+        foodPriceLabel.setAlignment(Pos.CENTER);
+        foodPriceLabel.setMinWidth(70);
+
+        foodCountAndPriceContainer.setAlignment(Pos.CENTER);
+        foodCountAndPriceContainer.getChildren().addAll(foodCountLabel, foodPriceLabel);
+        // </VBox>
+
+        VBox addButtonContainer = new VBox();
+        addButtonContainer.setPrefWidth(buttonSide);
+        addButtonContainer.setPrefHeight(buttonSide);
+        addButtonContainer.setAlignment(Pos.CENTER);
+
+        HBox.setHgrow(foodDetailsContainer, Priority.ALWAYS);
+        foodButtonsContainer.setSpacing(18);
+        foodButtonsContainer.setAlignment(Pos.CENTER_RIGHT);
+        foodButtonsContainer.setPadding(new Insets(0, 20, 0, 0)); // top right bottom left
+        foodButtonsContainer.getChildren().addAll(removeButtonContainer, foodCountAndPriceContainer, addButtonContainer);
+        // </HBox>
+
+        row.getChildren().addAll(foodImageContainer, foodDetailsContainer, foodButtonsContainer);
+        // </HBox>
+
+        deliveredMenuListView.getItems().add(row);
     }
 
     public void deliveredMenuInit()
     {
-
+        deliveredMenuListView.getItems().clear();
+        fillDeliveredMenuList();
     }
 
     // BOTH MENU COMMON FUNCTIONALITY
