@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.WindowEvent;
+import models.Food;
 import models.Restaurant;
 import util.FileOperations;
 
@@ -19,6 +20,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerController implements Runnable
@@ -69,6 +71,10 @@ public class ServerController implements Runnable
 
     // Server Application Reference
     private ServerApplication serverApplication;
+
+    // Cart and Deliver list
+    ConcurrentHashMap<Integer, HashMap<String, HashMap<Food, Integer>>> offlineRestaurantCartList;
+    ConcurrentHashMap<Integer, HashMap<String, HashMap<Food, Integer>>> deliveryList;
 
     // Getters and Setters
     public ServerSocket getServerSocket()
@@ -129,6 +135,9 @@ public class ServerController implements Runnable
             System.out.println("Class : ServerController | Method : init");
             System.out.println("Error : " + e.getMessage());
         }
+
+        offlineRestaurantCartList = new ConcurrentHashMap<>();
+        deliveryList = new ConcurrentHashMap<>();
 
         clients = FXCollections.observableArrayList();
         restaurants = FXCollections.observableArrayList();

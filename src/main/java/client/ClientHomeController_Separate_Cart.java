@@ -1,16 +1,23 @@
+/*
 package client;
 
-import dto.*;
-import javafx.event.ActionEvent;
+import dto.DatabaseDTO;
+import dto.DatabaseRequestDTO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import models.Food;
@@ -25,7 +32,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ClientHomeController
+public class ClientHomeController_Separate_Cart
 {
     // CHANGEABLE LABELS
     public Label usernameLabel;
@@ -53,17 +60,6 @@ public class ClientHomeController
     public ImageView searchFilterImageView;
     public ImageView viewImageView;
 
-    // HOME
-    public AnchorPane homeMenu;
-    // CART MENU
-    public StackPane cartMenu;
-    public ListView<HBox> cartItemListView;
-    public Label cartMenuUsernameLabel;
-    // DELIVERED MENU
-    public StackPane deliveredMenu;
-    public ListView deliveredMenuListView;
-    public ImageView deliveredMenuBackButton;
-    public Label deliveredMenuUsernameLabel;
     // CLIENT APPLICATION REFERENCE
     ClientApplication application;
     ArrayList<String> restaurantSearchOptions;
@@ -77,13 +73,10 @@ public class ClientHomeController
     ConcurrentHashMap<Integer, HashMap<Food, Integer>> cartFoodList; // Map<Restaurant ID, Map<Food, Count>>
     double cartTotalPrice = 0;
     int cartTotalItems = 0;
-    // DELIVERED DETAILS
-    ConcurrentHashMap<Integer, HashMap<Food, Integer>> deliveredFoodList; // Map<Restaurant ID, Map<Food, Count>>
     int deliveredTotalItems = 0;
-    double deliveredTotalPrice = 0;
-
     // IMAGES
     Image restaurantImage_175by125;
+
     // ASSETS //
     Image restaurantImageLarge;
     Image foodImage;
@@ -96,41 +89,18 @@ public class ClientHomeController
     Font robotoRegularFont12;
     Font robotoLightFont20;
     Font robotoLightFont15;
+
     // IMAGES
     Image searchByNameImage, searchByRatingImage, searchByPriceImage, searchByCategoryImage, searchByZipcodeImage;
     Image viewRestaurantImage, viewFoodImage;
-    Image addButtonImage, removeButtonImage;
-    DecimalFormat decimalFormat;
-    int currentMenuWindow = Menu.HOME;
 
     public void setApplication(ClientApplication application)
     {
         this.application = application;
     }
 
-    public void init()
+    public void init(boolean isDatabaseLoaded)
     {
-        deliveredFoodList = new ConcurrentHashMap<>();
-
-        System.out.println("Client Home Page");
-
-        // SET MENU VISIBILITY
-        homeMenu.setVisible(true);
-        deliveredMenu.setVisible(false);
-        cartMenu.setVisible(false);
-
-        restaurantViewBackButton.setVisible(false);
-
-        cartFoodList = new ConcurrentHashMap<>();
-
-        decimalFormat = new DecimalFormat("#.#");
-
-        // CHANGE USERNAME LABEL
-        usernameLabel.setText(application.getUsername());
-        cartMenuUsernameLabel.setText(application.getUsername());
-        deliveredMenuUsernameLabel.setText(application.getUsername());
-
-        // LOAD IMAGES
         searchByNameImage = new Image("file:src/main/resources/assets/name-search-icon.png");
         searchByRatingImage = new Image("file:src/main/resources/assets/rating-search-icon.png");
         searchByPriceImage = new Image("file:src/main/resources/assets/price-search-icon.png");
@@ -140,13 +110,19 @@ public class ClientHomeController
         viewRestaurantImage = new Image("file:src/main/resources/assets/restaurant-icon.png");
         viewFoodImage = new Image("file:src/main/resources/assets/food-icon.png");
 
+        restaurantViewBackButton.setVisible(false);
+
+        cartFoodList = new ConcurrentHashMap<>();
+
+        System.out.println("Client Home Page");
+
+        // CHANGE USERNAME LABEL
+        usernameLabel.setText(application.getUsername());
+
+        // LOAD IMAGES
         restaurantImage_175by125 = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 175, 125, false, false);
         restaurantImageLarge = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 263, 188, false, false);
         foodImage = new Image("file:src/main/resources/assets/Burger.jpg", 175, 125, false, false);
-
-        addButtonImage = new Image("file:src/main/resources/assets/add-button-icon.png");
-        removeButtonImage = new Image("file:src/main/resources/assets/remove-button-icon.png");
-
 
         // LOAD FONTS
         robotoBoldFont15 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Bold.ttf"), 15);
@@ -158,83 +134,56 @@ public class ClientHomeController
         robotoRegularFont20 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Regular.ttf"), 20);
 
         // REQUEST FOR DATABASE
-        DatabaseRequestDTO databaseRequestDTO = new DatabaseRequestDTO(DatabaseRequestDTO.RequestType.RESTAURANT_LIST);
-        try
+        if (!isDatabaseLoaded)
         {
-            application.getSocketWrapper().write(databaseRequestDTO);
-        }
-        catch (IOException e)
-        {
-            System.err.println("Class : HomePageController | Method : init | While sending restaurant list request to server");
-            System.err.println("Error : " + e.getMessage());
-        }
-
-        // READ DATABASE - RESTAURANT LIST
-        try
-        {
-            Object obj = application.getSocketWrapper().read();
-            if (obj instanceof DatabaseDTO databaseDTO)
+            DatabaseRequestDTO databaseRequestDTO = new DatabaseRequestDTO(DatabaseRequestDTO.RequestType.RESTAURANT_LIST);
+            try
             {
-                application.setRestaurantList(databaseDTO.getRestaurantList());
-                application.setFoodList(generateFoodList());
-                System.out.println("RestaurantListDTO received");
+                application.getSocketWrapper().write(databaseRequestDTO);
             }
-            else
+            catch (IOException e)
             {
-                System.err.println("Class : HomePageController | Method : init | While reading restaurant list from server");
-                System.err.println("Expected Restaurant List DTO but got something else");
+                System.err.println("Class : HomePageController | Method : init | While sending restaurant list request to server");
+                System.err.println("Error : " + e.getMessage());
             }
-        }
-        catch (IOException | ClassNotFoundException e)
-        {
-            System.err.println("Class : HomePageController | Method : init | While reading restaurant list from server");
-            System.err.println("Error : " + e.getMessage());
-        }
 
-        // READ OFFLINE DATA
-        try
-        {
-            application.getSocketWrapper().write(new RequestOfflinePendingOrDeliveryDataDTO());
-
-            Object obj;
-            while ((obj = application.getSocketWrapper().read()) != null)
+            // READ DATABASE - RESTAURANT LIST
+            try
             {
-                if (obj instanceof DeliverDTO deliverDTO)
+                Object obj = application.getSocketWrapper().read();
+                if (obj instanceof DatabaseDTO databaseDTO)
                 {
-                    if (!deliveredFoodList.containsKey(deliverDTO.getRestaurantId()))
-                    {
-                        deliveredFoodList.put(deliverDTO.getRestaurantId(), new HashMap<>());
-                    }
-                    deliveredFoodList.get(deliverDTO.getRestaurantId()).putAll(deliverDTO.getDeliverList().get(application.getUsername()));
-
-                    for (Integer restId : deliveredFoodList.keySet())
-                    {
-                        for (Food food : deliveredFoodList.get(restId).keySet())
-                        {
-                            System.out.println("Food name " + food.getName() + " count " + deliveredFoodList.get(restId).get(food));
-                        }
-                    }
-                }
-                else if (obj instanceof StopDTO stopDTO)
-                {
-                    break;
+                    application.setRestaurantList(databaseDTO.getRestaurantList());
+                    application.setFoodList(generateFoodList());
+                    System.out.println("RestaurantListDTO received");
                 }
                 else
                 {
-                    System.out.println("Unknow DTO, expected StopDTO or RequestOfflinePendingOrDeliveryDataDTO");
-                    System.out.println("Class : HomePageController | Method : init | While reading offline data from server");
-                    application.logoutCleanup();
+                    System.err.println("Class : HomePageController | Method : init | While reading restaurant list from server");
+                    System.err.println("Expected Restaurant List DTO but got something else");
                 }
             }
+            catch (IOException | ClassNotFoundException e)
+            {
+                System.err.println("Class : HomePageController | Method : init | While reading restaurant list from server");
+                System.err.println("Error : " + e.getMessage());
+            }
+
+            updateNotification();
         }
-        catch (IOException | ClassNotFoundException e)
+        else
         {
-            System.err.println("Class : HomePageController | Method : init | While reading offline data from server");
-            System.err.println("Error : " + e.getMessage());
+            cartFoodList = application.getCartFoodList();
+            for (HashMap<Food, Integer> foodAndCount : cartFoodList.values())
+            {
+                for (Food food : foodAndCount.keySet())
+                {
+                    cartTotalPrice += food.getPrice() * foodAndCount.get(food);
+                    cartTotalItems += foodAndCount.get(food);
+                }
+            }
+            updateNotification();
         }
-
-        updateNotification();
-
 
         // POPULATE RESTAURANT SEARCH OPTIONS
         restaurantSearchOptions = new ArrayList<>();
@@ -271,42 +220,35 @@ public class ClientHomeController
 
         currentWindowType = Options.HOME_WINDOW;
 
-        System.out.println("Creating new thread to read from server");
-        System.out.println();
-        new ClientReadThread(this, application.getUsername() + " ##C RT");
-
-    }
-
-    public void newDelivery(DeliverDTO deliverDTO)
-    {
-        if (!deliveredFoodList.containsKey(deliverDTO.getRestaurantId()))
+        // CREATE THREAD TO READ FROM SERVER for UPDATES ON -> NEW FOOD, NEW RESTAURANT AND DELIVERED ORDERS
+        // CREATE THIS THREAD ONLY IF NOT ALREADY CREATED !!!
+        if (!isDatabaseLoaded)
         {
-            deliveredFoodList.put(deliverDTO.getRestaurantId(), new HashMap<>());
-        }
-        deliveredFoodList.get(deliverDTO.getRestaurantId()).putAll(deliverDTO.getDeliverList().get(application.getUsername()));
-
-        for (Integer restId : deliveredFoodList.keySet())
-        {
-            for (Food food : deliveredFoodList.get(restId).keySet())
-            {
-                System.out.println("Food name " + food.getName() + " count " + deliveredFoodList.get(restId).get(food));
-            }
+            System.out.println("Creating new thread to read from server");
+            System.out.println();
+            new ClientReadThread(this, application.getUsername() + " ##C RT");
         }
     }
 
+    // TODO : FIX BUG
+    // WEIRD BUG :
+    // [*] REALTIME FOOD ADD WORKS FINE ON FIRST TIME (GETS ADDED TWICE)
+    // [*] BUT WHEN RETURNS FROM CART MENU REAL TIME FOOD/RESTAURANT UPDATE DOESN'T WORK PROPERLY
+    // [*] AND EVERY FOOD GETS ADDED TWICE. BUT WEIRDLY RESTAURANTS DOESN'T GET ADDED TWICE.
     public void newFoodAdded(Food food)
     {
+        application.getRestaurantList().get(food.getRestaurantId()).getFoodList().add(food);
         application.getFoodList().add(food);
 
         // If viewing window of recent added food restaurant, update UI
         if (currentWindowType.equals(Options.RESTAURANT_WINDOW) && currentRestaurantWindowID == food.getRestaurantId())
         {
             System.out.println("UPDATING UI : New food added : " + food.getName());
-
-            resetFlowPane();
-            addRestaurantDetailHeading(application.getRestaurantList().get(food.getRestaurantId()));
-            addFoodListToFlowPane(application.getRestaurantList().get(food.getRestaurantId()).getFoodList());
-
+//            Platform.runLater(() -> {
+                resetFlowPane();
+                addRestaurantDetailHeading(application.getRestaurantList().get(food.getRestaurantId()));
+                addFoodListToFlowPane(application.getRestaurantList().get(food.getRestaurantId()).getFoodList());
+//            });
             System.out.println("UI updated");
 
         }
@@ -314,10 +256,10 @@ public class ClientHomeController
         {
             System.out.println("UPDATING UI : New food added : " + food.getName());
 
-
-            resetFlowPane();
-            addFoodListToFlowPane();
-
+//            Platform.runLater(() -> {
+                resetFlowPane();
+                addFoodListToFlowPane();
+//            });
             System.out.println("UI UPDATED");
         }
     }
@@ -335,8 +277,8 @@ public class ClientHomeController
         {
             System.out.println("UPDATING UI : New restaurant added : " + restaurant.getName());
 //            Platform.runLater(() -> {
-            resetFlowPane();
-            addRestaurantListToFlowPane();
+                resetFlowPane();
+                addRestaurantListToFlowPane();
 //            });
         }
     }
@@ -520,10 +462,6 @@ public class ClientHomeController
             addFoodToFlowPane(food);
         }
     }
-
-    // ======================================================================================================
-    // SEARCH RELATED METHODS
-    // ======================================================================================================
 
     // FlowPane
     //     |---+ VBox
@@ -741,33 +679,15 @@ public class ClientHomeController
     public void cartButtonClicked()
     {
         System.out.println("Cart button clicked");
-
-        if (currentMenuWindow == Menu.HOME)
+        try
         {
-            cartMenu.setVisible(true);
-            currentMenuWindow = Menu.CART;
-            cartMenuInit();
+            application.setCartFoodList(cartFoodList);
+            application.showCartPage();
         }
-//        try
-//        {
-//            application.setCartFoodList(cartFoodList);
-//            application.showCartPage();
-//        }
-//        catch (IOException e)
-//        {
-//            System.err.println("Class : HomePageController | Method : cartButtonClicked | While showing cart page");
-//            System.err.println("Error : " + e.getMessage());
-//        }
-    }
-
-    public void deliveredIconClicked(MouseEvent event)
-    {
-        System.out.println("Delivered icon clicked");
-        if (currentMenuWindow == Menu.HOME)
+        catch (IOException e)
         {
-            deliveredMenu.setVisible(true);
-            currentMenuWindow = Menu.DELIVERED;
-            deliveredMenuInit();
+            System.err.println("Class : HomePageController | Method : cartButtonClicked | While showing cart page");
+            System.err.println("Error : " + e.getMessage());
         }
     }
 
@@ -862,7 +782,7 @@ public class ClientHomeController
     }
 
     // ======================================================================================================
-    // UTIL METHODS AND CLASSES
+    // SEARCH RELATED METHODS
     // ======================================================================================================
 
     public ArrayList<Double> readRangeFromSearchBoxes()
@@ -956,6 +876,10 @@ public class ClientHomeController
         return foodList;
     }
 
+    // ======================================================================================================
+    // UTIL METHODS AND CLASSES
+    // ======================================================================================================
+
     public void resetAll()
     {
         flowpaneTitleLabel.setText("All Restaurants");
@@ -981,6 +905,11 @@ public class ClientHomeController
         resetAll();
     }
 
+
+    public void deliveredIconClicked(MouseEvent event)
+    {
+    }
+
     public void imageMouseHoverEntered(MouseEvent event)
     {
         ImageTransitions.imageMouseHoverEntered(event, 1.2, 0.3);
@@ -989,266 +918,6 @@ public class ClientHomeController
     public void imageMouseHoverExited(MouseEvent event)
     {
         ImageTransitions.imageMouseHoverExited(event, 1.2, 0.3);
-    }
-
-    public void fillCartMenuList()
-    {
-        for (Integer restaurantID : cartFoodList.keySet())
-        {
-            addRestaurantNameHeaderCartMenu(application.getRestaurantList().get(restaurantID).getName());
-            for (Food food : cartFoodList.get(restaurantID).keySet())
-            {
-                addFoodToCartMenuListView(food, cartFoodList.get(restaurantID).get(food));
-            }
-//            addRestaurantFooter();
-        }
-    }
-
-    public void addRestaurantNameHeaderCartMenu(String restaurantName)
-    {
-        HBox row = new HBox();
-
-        StackPane restaurantImageContainer = new StackPane();
-        ImageView foodSmallImageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurantName + ".jpg");
-        foodSmallImageView.setFitWidth(60);
-        foodSmallImageView.setFitHeight(40);
-        restaurantImageContainer.setPadding(new Insets(5, 20, 5, 5)); // top right bottom left
-        restaurantImageContainer.getChildren().add(foodSmallImageView);
-
-        Label restaurantNameLabel = new Label(restaurantName);
-        restaurantNameLabel.setFont(robotoBoldFont20);
-        restaurantNameLabel.setPadding(new Insets(13, 0, 10, 0)); // top right bottom left
-
-        row.getChildren().addAll(restaurantImageContainer, restaurantNameLabel);
-
-        cartItemListView.getItems().add(row);
-    }
-
-    private void cartItemAddButtonClicked(Food food, Label foodCountLabel, Label foodPriceLabel)
-    {
-        System.out.println("Add button clicked");
-        cartTotalItems++;
-        cartTotalPrice += food.getPrice();
-        for (HashMap<Food, Integer> foodCount : cartFoodList.values())
-        {
-            if (foodCount.containsKey(food))
-            {
-                foodCount.put(food, foodCount.get(food) + 1);
-            }
-        }
-        foodCountLabel.setText("X " + cartFoodList.get(food.getRestaurantId()).get(food));
-        String formattedFoodPrice = decimalFormat.format(food.getPrice() * cartFoodList.get(food.getRestaurantId()).get(food));
-        foodPriceLabel.setText(formattedFoodPrice + " $");
-    }
-
-    private void cartItemRemoveButtonClicked(Food food, Label foodCountLabel, Label foodPriceLabel)
-    {
-        System.out.println("Remove button clicked");
-        cartTotalItems--;
-        cartTotalPrice -= food.getPrice();
-
-        for (HashMap<Food, Integer> foodCount : cartFoodList.values())
-        {
-            if (foodCount.containsKey(food))
-            {
-                if (foodCount.get(food) == 1)
-                {
-                    cartFoodList.get(food.getRestaurantId()).remove(food);
-                    cartItemListView.getItems().clear();
-                    if (cartFoodList.get(food.getRestaurantId()).isEmpty())
-                    {
-                        cartFoodList.remove(food.getRestaurantId());
-                    }
-                    fillCartMenuList();
-                    return;
-                }
-                else
-                {
-                    foodCount.put(food, foodCount.get(food) - 1);
-                }
-            }
-        }
-
-        foodCountLabel.setText("X " + cartFoodList.get(food.getRestaurantId()).get(food));
-        String formattedFoodPrice = decimalFormat.format(food.getPrice() * cartFoodList.get(food.getRestaurantId()).get(food));
-        foodPriceLabel.setText(formattedFoodPrice + " $");
-    }
-
-    public void addFoodToCartMenuListView(Food food, int foodCount)
-    {
-        // <HBox>
-        HBox row = new HBox();
-        row.setMinWidth(580);
-
-        // <StackPane>
-        StackPane foodImageContainer = new StackPane();
-        ImageView foodSmallImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
-        if (foodSmallImageView.getImage().isError())
-        {
-            foodSmallImageView = new ImageView(foodImage);
-        }
-        foodSmallImageView.setFitWidth(84);
-        foodSmallImageView.setFitHeight(60);
-        foodImageContainer.setPadding(new Insets(10, 20, 10, 10)); // top right bottom left
-        foodImageContainer.getChildren().add(foodSmallImageView);
-        // </StackPane>
-
-        // <VBox>
-        VBox foodDetailsContainer = new VBox();
-
-        Label foodNameLabel = new Label(food.getName());
-        foodNameLabel.setWrapText(true);
-        foodNameLabel.setFont(robotoBoldFont15);
-        foodNameLabel.setMaxWidth(250);
-        foodNameLabel.setPadding(new Insets(15, 0, 10, 0)); // top right bottom left
-
-        Label foodCategoryLabel = new Label(food.getCategory());
-        foodCategoryLabel.setWrapText(true);
-        foodCategoryLabel.setFont(robotoRegularFont12);
-
-        foodDetailsContainer.getChildren().addAll(foodNameLabel, foodCategoryLabel);
-        // </VBox>
-
-        // <HBox>
-        HBox foodButtonsContainer = new HBox();
-
-        int buttonSide = 45;
-
-        VBox removeButtonContainer = new VBox();
-        removeButtonContainer.setAlignment(Pos.CENTER);
-
-        ImageView removeButton = new ImageView(removeButtonImage);
-        removeButton.setFitWidth(buttonSide);
-        removeButton.setFitHeight(buttonSide);
-
-        removeButtonContainer.getChildren().add(removeButton);
-
-        // <VBox>
-        VBox foodCountAndPriceContainer = new VBox();
-
-        Label foodCountLabel = new Label("X " + foodCount);
-        foodCountLabel.setFont(robotoBoldFont15);
-        foodCountLabel.setAlignment(Pos.CENTER);
-        foodCountLabel.setMinWidth(70);
-
-        Label foodPriceLabel = new Label(decimalFormat.format(food.getPrice() * foodCount) + " $");
-        foodPriceLabel.setFont(robotoBoldFont15);
-        foodPriceLabel.setAlignment(Pos.CENTER);
-        foodPriceLabel.setMinWidth(70);
-
-        foodCountAndPriceContainer.setAlignment(Pos.CENTER);
-        foodCountAndPriceContainer.getChildren().addAll(foodCountLabel, foodPriceLabel);
-        // </VBox>
-
-        VBox addButtonContainer = new VBox();
-//        Button addButton = new Button("+");
-//        addButton.setFont(robotoBoldFont20);
-//        addButton.setPrefWidth(buttonSide);
-//        addButton.setPrefHeight(buttonSide);
-//        addButton.setMinWidth(buttonSide);
-//        addButton.setMinHeight(buttonSide);
-//        addButton.setMaxHeight(buttonSide);
-//        addButton.setMaxWidth(buttonSide);
-
-        ImageView addButton = new ImageView(addButtonImage);
-        removeButton.setFitWidth(buttonSide);
-        removeButton.setFitHeight(buttonSide);
-
-
-        addButton.setOnMouseClicked(event -> {
-            cartItemAddButtonClicked(food, foodCountLabel, foodPriceLabel);
-        });
-        addButton.setOnMouseEntered(event -> {
-            ImageTransitions.imageMouseHoverEntered(event, 1.2, 0.3);
-        });
-        addButton.setOnMouseExited(event -> {
-            ImageTransitions.imageMouseHoverExited(event, 1.2, 0.3);
-        });
-
-        removeButton.setOnMouseClicked(event -> {
-            cartItemRemoveButtonClicked(food, foodCountLabel, foodPriceLabel);
-        });
-        removeButton.setOnMouseEntered(event -> {
-            ImageTransitions.imageMouseHoverEntered(event, 1.2, 0.3);
-        });
-        removeButton.setOnMouseExited(event -> {
-            ImageTransitions.imageMouseHoverExited(event, 1.2, 0.3);
-        });
-
-        addButtonContainer.setAlignment(Pos.CENTER);
-        addButtonContainer.getChildren().add(addButton);
-
-        HBox.setHgrow(foodDetailsContainer, Priority.ALWAYS);
-        foodButtonsContainer.setSpacing(18);
-        foodButtonsContainer.setAlignment(Pos.CENTER_RIGHT);
-        foodButtonsContainer.setPadding(new Insets(0, 20, 0, 0)); // top right bottom left
-        foodButtonsContainer.getChildren().addAll(removeButtonContainer, foodCountAndPriceContainer, addButtonContainer);
-        // </HBox>
-
-        row.getChildren().addAll(foodImageContainer, foodDetailsContainer, foodButtonsContainer);
-        // </HBox>
-
-        cartItemListView.getItems().add(row);
-    }
-
-    public void orderAllButtonClicked(ActionEvent event)
-    {
-        System.out.println("Order all button clicked");
-
-        try
-        {
-            ClientToServerCartOrderDTO clientToServerCartOrderDTO = new ClientToServerCartOrderDTO(cartFoodList, cartTotalItems, cartTotalPrice);
-            application.getSocketWrapper().write(clientToServerCartOrderDTO);
-            cartFoodList = new ConcurrentHashMap<>();
-            cartItemListView.getItems().clear();
-            fillCartMenuList();
-            cartTotalItems = 0;
-            cartTotalPrice = 0;
-            updateNotification();
-
-            System.out.println("Order sent to server");
-        }
-        catch (IOException e)
-        {
-            System.err.println("Class : ClientCartController | Method : orderAllButtonClicked | While ordering all items");
-            System.err.println(e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public void cartMenuInit()
-    {
-        fillCartMenuList();
-    }
-
-    public void deliveredMenuInit()
-    {
-
-    }
-
-    // BOTH MENU COMMON FUNCTIONALITY
-    public void menuBackButtonClicked(MouseEvent event)
-    {
-        if (currentMenuWindow == Menu.CART)
-        {
-            System.out.println("Back button clicked on cart menu");
-            cartMenu.setVisible(false);
-            deliveredMenu.setVisible(false);
-        }
-        else if (currentMenuWindow == Menu.DELIVERED)
-        {
-            System.out.println("Back button clicked on delivered menu");
-            cartMenu.setVisible(false);
-            deliveredMenu.setVisible(false);
-        }
-        currentMenuWindow = Menu.HOME;
-    }
-
-    private static class Menu
-    {
-        public static final int HOME = 1;
-        public static final int CART = 2;
-        public static final int DELIVERED = 3;
     }
 
     // SEARCH OPTIONS
@@ -1274,4 +943,4 @@ public class ClientHomeController
         public static String RESTAURANT_WINDOW = "RestaurantWindow";
         public static String HOME_WINDOW = "HomeWindow";
     }
-}
+}*/

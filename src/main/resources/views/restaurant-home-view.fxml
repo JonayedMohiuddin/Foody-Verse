@@ -20,7 +20,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<GridPane prefHeight="650.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="restaurant.RestaurantHomeController">
+<GridPane prefHeight="650.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="restaurant.RestaurantHomeController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
@@ -28,9 +28,9 @@
       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <AnchorPane prefHeight="650.0" prefWidth="800.0">
+      <AnchorPane prefHeight="650.0" prefWidth="500.0">
          <children>
-            <Rectangle height="80.0" layoutY="-9.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="800.0">
+            <Rectangle height="75.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="500.0">
                <fill>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -53,75 +53,129 @@
                   </LinearGradient>
                </fill>
             </Rectangle>
-            <GridPane layoutX="279.0" layoutY="11.0" prefHeight="36.0" prefWidth="242.0">
-               <columnConstraints>
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <Button layoutX="713.0" layoutY="14.0" mnemonicParsing="false" onAction="#logoutButtonClicked" prefHeight="30.0" prefWidth="66.0" text="Logout">
-               <font>
-                  <Font name="Corbel Bold" size="12.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button fx:id="pendingOrdersButton" layoutY="57.0" mnemonicParsing="false" onAction="#pendingOrdersButtonClicked" prefHeight="47.0" prefWidth="260.0" style=": #b1dff;" text="Pending Orders" textAlignment="CENTER">
-               <font>
-                  <Font name="Corbel" size="18.0" />
-               </font>
-            </Button>
-            <Button fx:id="historyButton" layoutX="260.0" layoutY="57.0" mnemonicParsing="false" onAction="#historyButtonClicked" prefHeight="47.0" prefWidth="180.0" text="Delivered">
-               <font>
-                  <Font name="Corbel" size="18.0" />
-               </font>
-            </Button>
-            <Button fx:id="addFoodButton" layoutX="620.0" layoutY="57.0" mnemonicParsing="false" onAction="#addFoodButtonClicked" prefHeight="47.0" prefWidth="180.0" text="Add Food">
-               <font>
-                  <Font name="Corbel" size="18.0" />
-               </font>
-            </Button>
-            <Rectangle fx:id="pendingOrderCountBg" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="207.0" layoutY="71.0" mouseTransparent="true" stroke="BLACK" strokeType="INSIDE" width="30.0" />
-            <Label fx:id="pendingOrderCountLabel" alignment="CENTER" layoutX="207.0" layoutY="71.0" mouseTransparent="true" prefHeight="20.0" prefWidth="30.0" text="999" />
-            <StackPane layoutY="105.19999694824219">
+            <StackPane layoutY="75.0">
                <children>
-                  <AnchorPane prefHeight="530.0" prefWidth="800.0">
+                  <AnchorPane fx:id="listView" prefHeight="575.0" prefWidth="500.0">
                      <children>
-                        <ScrollPane hbarPolicy="NEVER" prefHeight="530.0" prefWidth="800.0">
+                        <ScrollPane hbarPolicy="NEVER" prefHeight="575.0" prefWidth="500.0">
                            <content>
-                              <VBox fx:id="displayVBox" prefHeight="530.0" prefWidth="800.0">
+                              <VBox fx:id="displayVBox" prefHeight="575.0" prefWidth="500.0">
                                  <padding>
-                                    <Insets left="15.0" right="15.0" top="20.0" />
+                                    <Insets left="10.0" top="20.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                        <Label fx:id="noOrderMessage" layoutX="174.0" layoutY="246.0" text="No pending order." textFill="#0000009c">
+                           <font>
+                              <Font name="Calibri Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="infoListView" prefHeight="575.0" prefWidth="500.0" visible="false">
+                     <children>
+                        <AnchorPane layoutX="14.0" layoutY="14.0">
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" height="180.0" stroke="BLACK" strokeType="INSIDE" width="459.0">
+                                 <fill>
+                                    <LinearGradient endX="1.0" endY="1.0">
+                                       <stops>
+                                          <Stop>
+                                             <color>
+                                                <Color red="0.4444444477558136" green="0.6281481385231018" blue="0.800000011920929" opacity="0.8999999761581421" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="1.0">
+                                             <color>
+                                                <Color red="0.1899999976158142" green="0.703000009059906" blue="1.0" opacity="0.800000011920929" />
+                                             </color>
+                                          </Stop>
+                                       </stops>
+                                    </LinearGradient>
+                                 </fill>
+                              </Rectangle>
+                              <ImageView fx:id="restaurantImageView" fitHeight="122.0" fitWidth="180.0" layoutX="11.0" layoutY="10.0" pickOnBounds="true">
+                                 <image>
+                                    <Image url="@../restaurant-images/IHOP.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="202.0" layoutY="10.0" text="Name">
+                                 <font>
+                                    <Font name="Calibri Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="202.0" layoutY="41.0" text="Rating">
+                                 <font>
+                                    <Font name="Calibri Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="202.0" layoutY="73.0" text="Price">
+                                 <font>
+                                    <Font name="Calibri Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="202.0" layoutY="104.0" text="Zipcode">
+                                 <font>
+                                    <Font name="Calibri Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="11.0" layoutY="152.0" text="Categories">
+                                 <font>
+                                    <Font name="Calibri Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="nameLabel" layoutX="269.0" layoutY="10.0" text="IHOP Restaurant">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="ratingLabel" layoutX="269.0" layoutY="41.0" text="4.9">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="priceLabel" layoutX="269.0" layoutY="73.0" text="\$$$">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="zipcodeLabel" layoutX="269.0" layoutY="104.0" text="123456">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="categoriesLabel" layoutX="94.0" layoutY="152.0" text="SPICE, FAST FOOD, VEGAN">
+                                 <font>
+                                    <Font name="Calibri" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="306.0" layoutY="41.0" text="out of 5">
+                                 <font>
+                                    <Font name="Calibri Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <ScrollPane hbarPolicy="NEVER" layoutX="-1.0" layoutY="204.0" prefHeight="370.0">
+                           <content>
+                              <VBox fx:id="foodListVBox" prefHeight="370.0" prefWidth="500.0">
+                                 <padding>
+                                    <Insets left="10.0" top="20.0" />
                                  </padding>
                               </VBox>
                            </content>
                         </ScrollPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="addNewFoodMenu" prefHeight="525.0" prefWidth="800.0">
+                  <AnchorPane fx:id="addNewFoodMenu" prefHeight="575.0" prefWidth="500.0" visible="false">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="47.0" layoutX="124.0" layoutY="43.0" stroke="BLACK" strokeType="INSIDE" width="553.0">
-                           <fill>
-                              <LinearGradient endX="1.0" endY="1.0">
-                                 <stops>
-                                    <Stop>
-                                       <color>
-                                          <Color red="0.25999999046325684" green="0.5683333277702332" blue="1.0" />
-                                       </color>
-                                    </Stop>
-                                    <Stop offset="1.0">
-                                       <color>
-                                          <Color green="0.4166666567325592" blue="1.0" />
-                                       </color>
-                                    </Stop>
-                                 </stops>
-                              </LinearGradient>
-                           </fill>
-                        </Rectangle>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="379.0" layoutX="124.0" layoutY="43.0" stroke="BLACK" strokeType="INSIDE" width="553.0">
+                        <ImageView fitHeight="576.0" fitWidth="500.0" layoutY="-1.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../assets/add-food-bg.jpg" />
+                           </image>
+                        </ImageView>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="367.0" layoutX="14.0" layoutY="44.0" stroke="BLACK" strokeType="INSIDE" width="472.0">
                            <fill>
                               <LinearGradient endX="1.0" endY="1.0">
                                  <stops>
@@ -132,82 +186,178 @@
                                     </Stop>
                                     <Stop offset="0.006729475100942127">
                                        <color>
-                                          <Color red="0.6800000071525574" green="0.8506666421890259" blue="1.0" opacity="0.5" />
+                                          <Color red="0.6899999976158142" green="0.8553333282470703" blue="1.0" opacity="0.800000011920929" />
                                        </color>
                                     </Stop>
                                     <Stop offset="1.0">
                                        <color>
-                                          <Color red="0.25999999046325684" green="0.5683333277702332" blue="1.0" opacity="0.699999988079071" />
+                                          <Color red="0.25999999046325684" green="0.5683333277702332" blue="1.0" opacity="0.949999988079071" />
                                        </color>
                                     </Stop>
                                  </stops>
                               </LinearGradient>
                            </fill>
                         </Rectangle>
-                        <Button layoutX="350.0" layoutY="366.0" mnemonicParsing="false" onAction="#addMenuAddFoodButtonPressed" text="Add Food">
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="47.0" layoutX="14.0" layoutY="43.0" stroke="BLACK" strokeType="INSIDE" width="472.0">
+                           <fill>
+                              <LinearGradient endX="1.0" endY="0.13257574493234808">
+                                 <stops>
+                                    <Stop>
+                                       <color>
+                                          <Color red="0.30877193808555603" green="0.3619883060455322" blue="0.9473684430122375" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="1.0">
+                                       <color>
+                                          <Color red="0.5179727077484131" green="0.7012735605239868" blue="0.9578947424888611" />
+                                       </color>
+                                    </Stop>
+                                 </stops>
+                              </LinearGradient>
+                           </fill>
+                        </Rectangle>
+                        <Button layoutX="361.0" layoutY="350.0" mnemonicParsing="false" onAction="#addMenuAddFoodButtonPressed" style="-fx-border-color: black;" text="Add Food">
                            <font>
-                              <Font name="Corbel Bold" size="18.0" />
+                              <Font name="Corbel Bold" size="16.0" />
                            </font>
                         </Button>
-                        <Label layoutX="331.0" layoutY="53.0" text="Add New Food">
+                        <Label layoutX="173.0" layoutY="53.0" text="Add New Food">
                            <font>
                               <Font name="Calibri" size="23.0" />
                            </font>
                         </Label>
-                        <Label layoutX="188.0" layoutY="129.0" text="Name">
+                        <Label layoutX="37.0" layoutY="136.0" text="Name">
                            <font>
                               <Font name="Artifakt Element Bold" size="25.0" />
                            </font>
                         </Label>
-                        <Label layoutX="188.0" layoutY="197.0" text="Price">
+                        <Label layoutX="37.0" layoutY="204.0" text="Price">
                            <font>
                               <Font name="Artifakt Element Bold" size="25.0" />
                            </font>
                         </Label>
-                        <Label layoutX="188.0" layoutY="265.0" text="Category">
+                        <Label layoutX="37.0" layoutY="272.0" text="Category">
                            <font>
                               <Font name="Artifakt Element Bold" size="25.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="foodNameTextField" layoutX="322.0" layoutY="129.0" prefHeight="36.0" prefWidth="286.0" promptText="Food Name">
+                        <TextField fx:id="foodNameTextField" layoutX="173.0" layoutY="136.0" prefHeight="36.0" prefWidth="279.0" promptText="Food Name">
                            <font>
                               <Font name="Monospace 821 Bold BT" size="14.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="foodPriceTextField" layoutX="322.0" layoutY="197.0" prefHeight="36.0" prefWidth="286.0" promptText="Food Price">
+                        <TextField fx:id="foodPriceTextField" layoutX="173.0" layoutY="204.0" prefHeight="36.0" prefWidth="249.0" promptText="Food Price">
                            <font>
                               <Font name="Monospace 821 Bold BT" size="14.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="foodCategoryField" layoutX="322.0" layoutY="265.0" prefHeight="36.0" prefWidth="286.0" promptText="Food Category">
+                        <TextField fx:id="foodCategoryField" layoutX="173.0" layoutY="272.0" prefHeight="36.0" prefWidth="279.0" promptText="Food Category">
                            <font>
                               <Font name="Monospace 821 Bold BT" size="14.0" />
                            </font>
                         </TextField>
-                        <Label layoutX="619.0" layoutY="197.0" text="\$">
+                        <Label alignment="CENTER" layoutX="423.0" layoutY="203.0" prefHeight="36.0" prefWidth="30.0" style="-fx-background-color: white; -fx-border-color: black;" text="\$">
                            <font>
                               <Font name="Artifakt Element Bold" size="25.0" />
                            </font>
                         </Label>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="129.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/food-icon.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="322.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/food-icon.png" />
+                           </image>
+                        </ImageView>
                      </children>
                   </AnchorPane>
                </children>
             </StackPane>
-            <Button fx:id="foodListButton" layoutX="440.0" layoutY="57.0" mnemonicParsing="false" onAction="#foodListButtonClicked" prefHeight="47.0" prefWidth="180.0" text="Food List">
-               <font>
-                  <Font name="Corbel" size="18.0" />
-               </font>
-            </Button>
-            <ImageView fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="35.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/foody-verse.png" />
                </image>
             </ImageView>
-            <Label fx:id="restaurantNameLabel" layoutX="564.0" layoutY="13.0" text="Foody-Verse">
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="448.0" layoutY="12.0" onMouseClicked="#logoutButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/logout-icon.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="396.0" layoutY="12.0" onMouseClicked="#infoButtonPressed" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/info-icon.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="343.0" layoutY="12.0" onMouseClicked="#addFoodButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="343.0">
+               <image>
+                  <Image url="@../assets/add-icon.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="264.0" layoutY="11.0" onMouseClicked="#historyButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/delivered-icon.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="190.0" layoutY="11.0" onMouseClicked="#pendingOrdersButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="190.0">
+               <image>
+                  <Image url="@../assets/pending-icon.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <Rectangle fx:id="pendingOrderCountBg" arcHeight="15.0" arcWidth="15.0" height="20.0" layoutX="173.0" layoutY="15.0" mouseTransparent="true" stroke="BLACK" strokeType="INSIDE" width="30.0">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.30000001192092896" green="0.6850000023841858" blue="1.0" opacity="0.800000011920929" />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.006729475100942127">
+                           <color>
+                              <Color red="0.30000001192092896" green="0.6850000023841858" blue="1.0" opacity="0.800000011920929" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.33000001311302185" green="1.0" blue="0.46399998664855957" opacity="0.800000011920929" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Rectangle>
+            <Label fx:id="pendingOrderCountLabel" alignment="CENTER" layoutX="172.0" layoutY="15.0" mouseTransparent="true" prefHeight="20.0" prefWidth="30.0" text="999">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Label>
+            <Label fx:id="restaurantNameLabel" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="36.0" text="Restaurant Name" wrapText="true">
                <font>
-                  <Font name="Corbel Bold" size="25.0" />
+                  <Font name="Corbel Bold" size="16.0" />
                </font>
             </Label>
+            <Rectangle fx:id="pendingOrderSelectionBox" arcHeight="5.0" arcWidth="5.0" fill="#21daff38" height="73.0" layoutX="167.0" layoutY="1.0" stroke="#412bffcc" strokeType="INSIDE" width="82.0" />
+            <Rectangle fx:id="deliveredOrderSelectionBox" arcHeight="5.0" arcWidth="5.0" fill="#21daff38" height="73.0" layoutX="248.0" layoutY="1.0" stroke="#412bffcc" strokeType="INSIDE" width="82.0" />
+            <Rectangle fx:id="addFoodSelectionBox" arcHeight="5.0" arcWidth="5.0" fill="#21daff38" height="60.0" layoutX="342.0" layoutY="9.0" stroke="#412bffcc" strokeType="INSIDE" width="52.0" />
+            <Rectangle fx:id="infoSelectionBox" arcHeight="5.0" arcWidth="5.0" fill="#21daff38" height="60.0" layoutX="395.0" layoutY="9.0" stroke="#412bffcc" strokeType="INSIDE" width="52.0" />
          </children>
       </AnchorPane>
    </children>

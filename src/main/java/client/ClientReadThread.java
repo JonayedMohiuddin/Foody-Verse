@@ -1,8 +1,6 @@
 package client;
 
-import dto.FoodAddRequestDTO;
-import dto.LogoutDTO;
-import dto.RestaurantAddUpdateDTO;
+import dto.*;
 import javafx.application.Platform;
 import server.SocketWrapper;
 
@@ -14,11 +12,11 @@ public class ClientReadThread implements Runnable
     SocketWrapper socketWrapper;
     ClientHomeController clientHomeController;
 
-    ClientReadThread(ClientHomeController clientHomeController)
+    ClientReadThread(ClientHomeController clientHomeController, String threadName)
     {
         this.clientHomeController = clientHomeController;
         this.socketWrapper = clientHomeController.application.getSocketWrapper();
-        thread = new Thread(this);
+        thread = new Thread(this, threadName);
         thread.start();
     }
 
@@ -35,6 +33,11 @@ public class ClientReadThread implements Runnable
                     System.out.println("New Food Added request");
                     System.out.println(foodAddRequestDTO);
 
+
+                    clientHomeController.application.getRestaurantList().get(foodAddRequestDTO.getFood().getRestaurantId()).getFoodList().add(foodAddRequestDTO.getFood());
+                    clientHomeController.application.getFoodList().add(foodAddRequestDTO.getFood());
+
+//                    clientHomeController.newFoodAdded(foodAddRequestDTO.getFood());
                     Platform.runLater(() -> clientHomeController.newFoodAdded(foodAddRequestDTO.getFood()));
                 }
                 else if (obj instanceof RestaurantAddUpdateDTO restaurantAddUpdateDTO)
@@ -42,7 +45,15 @@ public class ClientReadThread implements Runnable
                     System.out.println("New Restaurant Add request");
                     System.out.println(restaurantAddUpdateDTO);
 
+//                    clientHomeController.newRestaurantAdded(restaurantAddUpdateDTO.getRestaurant());
                     Platform.runLater(() -> clientHomeController.newRestaurantAdded(restaurantAddUpdateDTO.getRestaurant()));
+                }
+                else if(obj instanceof DeliverDTO deliverDTO)
+                {
+                    System.out.println("New delivery received,");
+                    System.out.println();
+
+                    Platform.runLater(() -> { clientHomeController.newDelivery(deliverDTO); });
                 }
                 else if (obj instanceof LogoutDTO logoutDTO)
                 {

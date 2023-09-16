@@ -67,17 +67,6 @@ public class ClientApplication extends Application
         this.foodList = foodList;
     }
 
-    // CART ITEMS LIST
-    public ConcurrentHashMap<Integer, HashMap<Food, Integer>> cartFoodList; // Map<Restaurant ID, Map<Food, Count>>
-    public ConcurrentHashMap<Integer, HashMap<Food, Integer>> getCartFoodList()
-    {
-        return cartFoodList;
-    }
-    public void setCartFoodList(ConcurrentHashMap<Integer, HashMap<Food, Integer>> cartFoodList)
-    {
-        this.cartFoodList = cartFoodList;
-    }
-
     String ipAddress = "127.0.0.1";
     int serverPort = 44444;
 
@@ -153,14 +142,14 @@ public class ClientApplication extends Application
     // We might call showHomePage() from multiple times we don't want to load database again and again
     // Reference of database is stored in ClientApplication class so that any controller can access it
     // without having to load it again.
-    public void showHomePage(boolean isDatabaseLoaded) throws IOException
+    public void showHomePage() throws IOException
     {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/client-home-view.fxml"));
         Parent root = fxmlLoader.load();
 
         ClientHomeController controller = fxmlLoader.getController();
         controller.setApplication(this);
-        controller.init(isDatabaseLoaded);
+        controller.init();
 
         stage.setTitle("Home");
         stage.setScene(new Scene(root, 900, 650));
@@ -168,20 +157,20 @@ public class ClientApplication extends Application
         stage.show();
     }
 
-    public void showCartPage() throws IOException
-    {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/client-cart-view.fxml"));
-        Parent root = fxmlLoader.load();
-
-        ClientCartController controller = fxmlLoader.getController();
-        controller.setApplication(this);
-        controller.init();
-
-        stage.setTitle("My Cart");
-        stage.setScene(new Scene(root, 600, 650));
-        stage.setResizable(false);
-        stage.show();
-    }
+//    public void showCartPage() throws IOException
+//    {
+//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/client-cart-view.fxml"));
+//        Parent root = fxmlLoader.load();
+//
+//        ClientCartController controller = fxmlLoader.getController();
+//        controller.setApplication(this);
+//        controller.init();
+//
+//        stage.setTitle("My Cart");
+//        stage.setScene(new Scene(root, 600, 650));
+//        stage.setResizable(false);
+//        stage.show();
+//    }
 
     public void showSignUpPage() throws IOException
     {
@@ -200,11 +189,6 @@ public class ClientApplication extends Application
 
     public static void main(String[] args)
     {
-        launch();
-    }
-
-    public class FoodHBox
-    {
-
+        launch(args);
     }
 }

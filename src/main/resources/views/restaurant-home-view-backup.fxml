@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<GridPane prefHeight="650.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="restaurant.RestaurantHomeController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <AnchorPane prefHeight="650.0" prefWidth="800.0">
+         <children>
+            <Rectangle height="80.0" layoutY="-9.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="800.0">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop>
+                           <color>
+                              <Color red="0.6941176652908325" green="0.8509804010391235" blue="1.0" />
+                           </color>
+                        </Stop>
+                        <Stop offset="0.4707317073170731">
+                           <color>
+                              <Color red="0.7107992172241211" green="0.9052631855010986" blue="0.7432098984718323" />
+                           </color>
+                        </Stop>
+                        <Stop offset="1.0">
+                           <color>
+                              <Color red="0.9111111164093018" green="1.0" blue="0.9259259104728699" />
+                           </color>
+                        </Stop>
+                     </stops>
+                  </LinearGradient>
+               </fill>
+            </Rectangle>
+            <GridPane layoutX="540.0" layoutY="12.0" prefHeight="45.0" prefWidth="154.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label fx:id="restaurantNameLabel" alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="154.0" text="Restaurant Name" wrapText="true">
+                     <font>
+                        <Font name="Corbel Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+            <StackPane layoutY="105.19999694824219">
+               <children>
+                  <AnchorPane prefHeight="530.0" prefWidth="800.0">
+                     <children>
+                        <ScrollPane hbarPolicy="NEVER" prefHeight="530.0" prefWidth="800.0">
+                           <content>
+                              <VBox fx:id="displayVBox" prefHeight="530.0" prefWidth="800.0">
+                                 <padding>
+                                    <Insets left="15.0" right="15.0" top="20.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="addNewFoodMenu" prefHeight="525.0" prefWidth="800.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="47.0" layoutX="124.0" layoutY="43.0" stroke="BLACK" strokeType="INSIDE" width="553.0">
+                           <fill>
+                              <LinearGradient endX="1.0" endY="1.0">
+                                 <stops>
+                                    <Stop>
+                                       <color>
+                                          <Color red="0.25999999046325684" green="0.5683333277702332" blue="1.0" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="1.0">
+                                       <color>
+                                          <Color green="0.4166666567325592" blue="1.0" />
+                                       </color>
+                                    </Stop>
+                                 </stops>
+                              </LinearGradient>
+                           </fill>
+                        </Rectangle>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="379.0" layoutX="124.0" layoutY="43.0" stroke="BLACK" strokeType="INSIDE" width="553.0">
+                           <fill>
+                              <LinearGradient endX="1.0" endY="1.0">
+                                 <stops>
+                                    <Stop>
+                                       <color>
+                                          <Color red="0.6800000071525574" green="0.8506666421890259" blue="1.0" opacity="0.5" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="0.006729475100942127">
+                                       <color>
+                                          <Color red="0.6800000071525574" green="0.8506666421890259" blue="1.0" opacity="0.5" />
+                                       </color>
+                                    </Stop>
+                                    <Stop offset="1.0">
+                                       <color>
+                                          <Color red="0.25999999046325684" green="0.5683333277702332" blue="1.0" opacity="0.699999988079071" />
+                                       </color>
+                                    </Stop>
+                                 </stops>
+                              </LinearGradient>
+                           </fill>
+                        </Rectangle>
+                        <Button layoutX="350.0" layoutY="366.0" mnemonicParsing="false" onAction="#addMenuAddFoodButtonPressed" text="Add Food">
+                           <font>
+                              <Font name="Corbel Bold" size="18.0" />
+                           </font>
+                        </Button>
+                        <Label layoutX="331.0" layoutY="53.0" text="Add New Food">
+                           <font>
+                              <Font name="Calibri" size="23.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="188.0" layoutY="129.0" text="Name">
+                           <font>
+                              <Font name="Artifakt Element Bold" size="25.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="188.0" layoutY="197.0" text="Price">
+                           <font>
+                              <Font name="Artifakt Element Bold" size="25.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="188.0" layoutY="265.0" text="Category">
+                           <font>
+                              <Font name="Artifakt Element Bold" size="25.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="foodNameTextField" layoutX="322.0" layoutY="129.0" prefHeight="36.0" prefWidth="286.0" promptText="Food Name">
+                           <font>
+                              <Font name="Monospace 821 Bold BT" size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="foodPriceTextField" layoutX="322.0" layoutY="197.0" prefHeight="36.0" prefWidth="286.0" promptText="Food Price">
+                           <font>
+                              <Font name="Monospace 821 Bold BT" size="14.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="foodCategoryField" layoutX="322.0" layoutY="265.0" prefHeight="36.0" prefWidth="286.0" promptText="Food Category">
+                           <font>
+                              <Font name="Monospace 821 Bold BT" size="14.0" />
+                           </font>
+                        </TextField>
+                        <Label layoutX="619.0" layoutY="197.0" text="\$">
+                           <font>
+                              <Font name="Artifakt Element Bold" size="25.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </StackPane>
+            <ImageView fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/foody-verse.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="745.0" layoutY="10.0" onMouseClicked="#logoutButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/logout-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="501.0" fitWidth="50.0" layoutX="695.0" layoutY="10.0" onMouseClicked="#infoButtonPressed" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/info-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="455.0" layoutY="6.0" onMouseClicked="#addFoodButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="455.0">
+               <image>
+                  <Image url="@../assets/add-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="372.0" layoutY="10.0" onMouseClicked="#historyButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/delivered-icon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="283.0" layoutY="10.0" onMouseClicked="#pendingOrdersButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="283.0">
+               <image>
+                  <Image url="@../assets/pending-icon.png" />
+               </image>
+            </ImageView>
+            <Rectangle fx:id="pendingOrderCountBg" arcHeight="15.0" arcWidth="15.0" fill="DODGERBLUE" height="20.0" layoutX="265.0" layoutY="10.0" mouseTransparent="true" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+            <Label fx:id="pendingOrderCountLabel" alignment="CENTER" layoutX="266.0" layoutY="10.0" mouseTransparent="true" prefHeight="20.0" prefWidth="30.0" text="999" />
+         </children>
+      </AnchorPane>
+   </children>
+</GridPane>

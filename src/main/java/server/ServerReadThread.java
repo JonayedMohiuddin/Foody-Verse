@@ -17,13 +17,6 @@ public class ServerReadThread implements Runnable
     int restaurantId; // if client is a restaurant
     int clientType;
 
-    static class ClientType
-    {
-        public static final int UNDEFINED = -1;
-        public static final int CLIENT = 0;
-        public static final int RESTAURANT = 1;
-    }
-
     ServerReadThread(ServerController serverController, SocketWrapper socketWrapper)
     {
         this.socketWrapper = socketWrapper;
@@ -187,7 +180,52 @@ public class ServerReadThread implements Runnable
                         {
                             serverController.log("Restaurant " + restaurantName + " is offline. Could not send order.");
                             System.out.println(thread.getName() + " : Restaurant " + restaurantName + " is offline");
+
+                            // save them at offline map
+                            HashMap<Food, Integer> foodCount = cartFoodList.get(restaurantId);
+                            HashMap<String, HashMap<Food, Integer>> userFoodCount = new HashMap<>();
+                            userFoodCount.put(clientName, foodCount);
+                            serverController.offlineRestaurantCartList.put(restaurantId, userFoodCount);
                         }
+                    }
+                }
+                else if (obj instanceof RequestOfflinePendingOrDeliveryDataDTO requestOfflinePendingOrDeliveryDataDTO)
+                {
+                    serverController.log(clientName + " requested offline data");
+                    if (clientType == ClientType.RESTAURANT)
+                    {
+                        // CHECK IF THERE ARE ANY ORDERS FOR THIS RESTAURANT
+                        if (serverController.offlineRestaurantCartList.containsKey(restaurantId))
+                        {
+                            HashMap<String, HashMap<Food, Integer>> userFoodCount = serverController.offlineRestaurantCartList.get(restaurantId);
+                            for (String userName : userFoodCount.keySet())
+                            {
+                                ServerToRestaurantCartOrderDTO serverToRestaurantCartOrderDTO = new ServerToRestaurantCartOrderDTO(userName, userFoodCount.get(userName));
+                                socketWrapper.write(serverToRestaurantCartOrderDTO);
+                                System.out.println(thread.getName() + " : Offline order sent to restaurant " + clientName);
+                                System.out.println(thread.getName() + " : " + serverToRestaurantCartOrderDTO);
+                                System.out.println();
+                            }
+                            serverController.offlineRestaurantCartList.remove(restaurantId);
+                        }
+
+                        socketWrapper.write(new StopDTO());
+                    }
+                    else if (clientType == ClientType.CLIENT)
+                    {
+                        for (Integer restaurantId : serverController.deliveryList.keySet())
+                        {
+                            if (serverController.deliveryList.get(restaurantId).containsKey(clientName))
+                            {
+                                DeliverDTO deliverDTO = new DeliverDTO(restaurantId, new ConcurrentHashMap<>());
+                                deliverDTO.getDeliverList().put(clientName, serverController.deliveryList.get(restaurantId).get(clientName));
+                                socketWrapper.write(deliverDTO);
+                                System.out.println("Sending delivery data to " + clientName);
+                                System.out.println();
+                            }
+                        }
+
+                        socketWrapper.write(new StopDTO());
                     }
                 }
                 // FOOD ADD REQUEST RECEIVED -> ADD THE FOOD TO THE RESTAURANT
@@ -226,8 +264,43 @@ public class ServerReadThread implements Runnable
 
                     socketWrapper.write(clientSignUpDTO);
                 }
+                // RESRTAURANT DELIVERY DTO -> SEND THIS TO CORRESPONDING CLIENTS
+                // AND UPDATE LOCAL DATABASE ACCORDINGLY
+                else if (obj instanceof DeliverDTO deliverDTO)
+                {
+                    System.out.println("Order delivery request received from " + clientName);
+                    serverController.log("Order delivery request received from " + clientName);
+
+                    // SEND THE UPDATED FOOD LIST TO ALL CLIENTS
+                    for (String username : deliverDTO.getDeliverList().keySet())
+                    {
+                        if (serverController.getClientMap().containsKey(username))
+                        {
+                            serverController.getClientMap().get(username).write(deliverDTO);
+                        }
+                    }
+
+                    if (!serverController.deliveryList.containsKey(deliverDTO.getRestaurantId()))
+                    {
+                        serverController.deliveryList.put(deliverDTO.getRestaurantId(), new HashMap<>());
+                    }
+                    serverController.deliveryList.get(deliverDTO.getRestaurantId()).putAll(deliverDTO.getDeliverList());
+
+//                    for (Integer restaurantId : serverController.deliveryList.keySet())
+//                    {
+//                        System.out.println("Restaurant " + restaurantId);
+//                        for (String username : serverController.deliveryList.get(restaurantId).keySet())
+//                        {
+//                            System.out.println("Restaurant " + restaurantId + " -> " + username);
+//                            for (Food food : serverController.deliveryList.get(restaurantId).get(username).keySet())
+//                            {
+//                                System.out.println("Restaurant " + restaurantId + " -> " + username + " -> " + food.getName() + " -> " + serverController.deliveryList.get(restaurantId).get(username).get(food));
+//                            }
+//                        }
+//                    }
+                }
                 // CLIENT LOGGING OUT
-                else if(obj instanceof LogoutDTO logoutDTO)
+                else if (obj instanceof LogoutDTO logoutDTO)
                 {
                     System.out.println("Server : " + clientName + " requested to logout.");
                     System.out.println();
@@ -287,8 +360,7 @@ public class ServerReadThread implements Runnable
                 System.err.println("Class : ServerReadThread | Method : run | While closing connection");
                 System.err.println("Error : " + ex.getMessage());
             }
-        }
-        finally
+        } finally
         {
             try
             {
@@ -302,5 +374,12 @@ public class ServerReadThread implements Runnable
                 System.out.println("Couldn't properly close connection.");
             }
         }
+    }
+
+    static class ClientType
+    {
+        public static final int UNDEFINED = -1;
+        public static final int CLIENT = 0;
+        public static final int RESTAURANT = 1;
     }
 }

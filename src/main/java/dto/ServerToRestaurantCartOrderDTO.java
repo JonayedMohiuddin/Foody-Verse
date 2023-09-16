@@ -9,11 +9,18 @@ public class ServerToRestaurantCartOrderDTO implements Serializable
 {
     String username;
     HashMap<Food, Integer> cartFoodList; // Map<Restaurant ID, Map<Food, Count>>
+    boolean isEmpty;
 
     public ServerToRestaurantCartOrderDTO(String username, HashMap<Food, Integer> cartFoodList)
     {
         this.username = username;
         this.cartFoodList = cartFoodList;
+    }
+
+    public ServerToRestaurantCartOrderDTO()
+    {
+        this.username = null;
+        this.cartFoodList = null;
     }
 
     public String getUsername()

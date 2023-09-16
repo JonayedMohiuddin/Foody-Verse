@@ -135,7 +135,7 @@ public class RestaurantApplication extends Application
         controller.init();
 
         stage.setTitle("Home");
-        stage.setScene(new Scene(root, 800, 650));
+        stage.setScene(new Scene(root, 500, 650));
         stage.setResizable(false);
         stage.show();
     }

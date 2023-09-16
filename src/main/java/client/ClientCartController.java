@@ -1,3 +1,4 @@
+/*
 package client;
 
 import dto.ClientToServerCartOrderDTO;
@@ -380,3 +381,4 @@ public class ClientCartController
         ImageTransitions.imageMouseHoverExited(event);
     }
 }
+*/
