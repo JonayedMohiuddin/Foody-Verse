@@ -226,7 +226,7 @@ public class ClientHomeController
                 }
                 else
                 {
-                    System.out.println("Unknow DTO, expected StopDTO or RequestOfflinePendingOrDeliveryDataDTO");
+                    System.out.println("Unknown DTO, expected StopDTO or RequestOfflinePendingOrDeliveryDataDTO");
                     System.out.println("Class : HomePageController | Method : init | While reading offline data from server");
                     application.logoutCleanup();
                 }
@@ -308,6 +308,8 @@ public class ClientHomeController
         {
             deliveredMenuInit();
         }
+
+        updateNotification();
     }
 
     public void newFoodAdded(Food food)
@@ -456,17 +458,18 @@ public class ClientHomeController
             cartItemCountBg.setVisible(true);
         }
 
-        if (deliveredTotalItems == 0)
-        {
-            deliveredItemCountBg.setVisible(false);
-            deliveredItemCountLabel.setVisible(false);
-        }
-        else
-        {
-            deliveredItemCountLabel.setText(String.valueOf(deliveredTotalItems));
-            deliveredItemCountLabel.setVisible(true);
-            deliveredItemCountBg.setVisible(true);
-        }
+//        if (deliveredTotalItems == 0)
+//        {
+//            deliveredItemCountBg.setVisible(false);
+//            deliveredItemCountLabel.setVisible(false);
+//        }
+//        else
+//        {
+//            System.out.println("Delivered total items : " + deliveredTotalItems);
+//            deliveredItemCountLabel.setText(String.valueOf(deliveredTotalItems));
+//            deliveredItemCountLabel.setVisible(true);
+//            deliveredItemCountBg.setVisible(true);
+//        }
     }
 
     // Open restaurant window
