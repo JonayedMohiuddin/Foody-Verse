@@ -4,7 +4,9 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -55,7 +57,7 @@
             </Rectangle>
             <StackPane layoutY="75.0">
                <children>
-                  <AnchorPane fx:id="listView" prefHeight="575.0" prefWidth="500.0">
+                  <AnchorPane fx:id="listView" prefHeight="575.0" prefWidth="500.0" visible="false">
                      <children>
                         <ScrollPane hbarPolicy="NEVER" prefHeight="575.0" prefWidth="500.0">
                            <content>
@@ -73,7 +75,7 @@
                         </Label>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="infoListView" prefHeight="575.0" prefWidth="500.0">
+                  <AnchorPane fx:id="infoListView" prefHeight="575.0" prefWidth="500.0" visible="false">
                      <children>
                         <AnchorPane layoutX="14.0" layoutY="14.0">
                            <children>
@@ -273,6 +275,27 @@
                         </ImageView>
                      </children>
                   </AnchorPane>
+                  <AnchorPane fx:id="reviewMenu" prefHeight="575.0" prefWidth="500.0">
+                     <children>
+                        <TextArea fx:id="reviewTypeBox" layoutY="410.0" prefHeight="165.0" prefWidth="500.0" promptText="Write your reply here" wrapText="true">
+                           <font>
+                              <Font name="Candara" size="18.0" />
+                           </font>
+                        </TextArea>
+                        <Rectangle arcHeight="25.0" arcWidth="25.0" fill="#e7cececc" height="50.0" layoutX="372.0" layoutY="511.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="91.0" />
+                        <ImageView fx:id="sendReviewButton" fitHeight="35.0" fitWidth="35.0" layoutX="424.0" layoutY="518.0" onMouseClicked="#sendReviewButtonClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/send-icon.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="378.0" layoutY="518.0" onMouseClicked="#resetReviewButtonClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../assets/cancel-icon.png" />
+                           </image>
+                        </ImageView>
+                        <ListView fx:id="reviewMessagesListView" prefHeight="410.0" prefWidth="500.0" />
+                     </children>
+                  </AnchorPane>
                </children>
             </StackPane>
             <ImageView fitHeight="35.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
@@ -280,7 +303,7 @@
                   <Image url="@../assets/foody-verse.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="448.0" layoutY="12.0" onMouseClicked="#logoutButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="454.0" layoutY="19.0" onMouseClicked="#logoutButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/logout-icon.png" />
                </image>
@@ -288,7 +311,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="396.0" layoutY="12.0" onMouseClicked="#infoButtonPressed" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="409.0" layoutY="19.0" onMouseClicked="#infoButtonPressed" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/info-icon.png" />
                </image>
@@ -296,7 +319,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="343.0" layoutY="12.0" onMouseClicked="#addFoodButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="343.0">
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="313.0" layoutY="18.0" onMouseClicked="#addFoodButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="313.0">
                <image>
                   <Image url="@../assets/add-icon.png" />
                </image>
@@ -304,7 +327,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="264.0" layoutY="11.0" onMouseClicked="#historyButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="243.0" layoutY="13.0" onMouseClicked="#historyButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/delivered-icon.png" />
                </image>
@@ -312,7 +335,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="190.0" layoutY="11.0" onMouseClicked="#pendingOrdersButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="190.0">
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="178.0" layoutY="13.0" onMouseClicked="#pendingOrdersButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="178.0">
                <image>
                   <Image url="@../assets/pending-icon.png" />
                </image>
@@ -320,7 +343,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <Rectangle fx:id="pendingOrderCountBg" arcHeight="15.0" arcWidth="15.0" height="20.0" layoutX="173.0" layoutY="15.0" mouseTransparent="true" stroke="BLACK" strokeType="INSIDE" width="30.0">
+            <Rectangle fx:id="pendingOrderCountBg" arcHeight="15.0" arcWidth="15.0" height="20.0" layoutX="167.0" layoutY="12.0" mouseTransparent="true" stroke="BLACK" strokeType="INSIDE" width="30.0">
                <fill>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -345,7 +368,7 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Rectangle>
-            <Label fx:id="pendingOrderCountLabel" alignment="CENTER" layoutX="172.0" layoutY="15.0" mouseTransparent="true" prefHeight="20.0" prefWidth="30.0" text="999">
+            <Label fx:id="pendingOrderCountLabel" alignment="CENTER" layoutX="167.0" layoutY="12.0" mouseTransparent="true" prefHeight="20.0" prefWidth="30.0" text="999">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Label>
@@ -354,10 +377,19 @@
                   <Font name="Corbel Bold" size="16.0" />
                </font>
             </Label>
-            <Rectangle fx:id="pendingOrderSelectionBox" arcHeight="5.0" arcWidth="5.0" fill="#21daff38" height="73.0" layoutX="167.0" layoutY="1.0" stroke="#412bffcc" strokeType="INSIDE" width="82.0" />
-            <Rectangle fx:id="deliveredOrderSelectionBox" arcHeight="5.0" arcWidth="5.0" fill="#21daff38" height="73.0" layoutX="248.0" layoutY="1.0" stroke="#412bffcc" strokeType="INSIDE" width="82.0" />
-            <Rectangle fx:id="addFoodSelectionBox" arcHeight="5.0" arcWidth="5.0" fill="#21daff38" height="60.0" layoutX="342.0" layoutY="9.0" stroke="#412bffcc" strokeType="INSIDE" width="52.0" />
-            <Rectangle fx:id="infoSelectionBox" arcHeight="5.0" arcWidth="5.0" fill="#21daff38" height="60.0" layoutX="395.0" layoutY="9.0" stroke="#412bffcc" strokeType="INSIDE" width="52.0" />
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="361.0" layoutY="18.0" onMouseClicked="#reviewButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/review-icon.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <Rectangle fx:id="infoSelectionBox" arcHeight="5.0" arcWidth="5.0" fill="#21daff38" height="60.0" layoutX="407.0" layoutY="9.0" stroke="#412bffcc" strokeType="INSIDE" width="43.0" />
+            <Rectangle fx:id="reviewSelectionBox" arcHeight="5.0" arcWidth="5.0" fill="#21daff38" height="60.0" layoutX="355.0" layoutY="9.0" stroke="#412bffcc" strokeType="INSIDE" width="50.0" />
+            <Rectangle fx:id="addFoodSelectionBox" arcHeight="5.0" arcWidth="5.0" fill="#21daff38" height="60.0" layoutX="311.0" layoutY="9.0" stroke="#412bffcc" strokeType="INSIDE" width="43.0" />
+            <Rectangle fx:id="pendingOrderSelectionBox" arcHeight="5.0" arcWidth="5.0" fill="#21daff38" height="73.0" layoutX="161.0" layoutY="1.0" stroke="#412bffcc" strokeType="INSIDE" width="75.0" />
+            <Rectangle fx:id="deliveredOrderSelectionBox" arcHeight="5.0" arcWidth="5.0" fill="#21daff38" height="73.0" layoutX="239.0" layoutY="1.0" stroke="#412bffcc" strokeType="INSIDE" width="61.0" />
          </children>
       </AnchorPane>
    </children>
