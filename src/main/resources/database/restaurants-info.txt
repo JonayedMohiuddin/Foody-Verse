@@ -3,3 +3,4 @@
 3,Subway,3,3.5,$,1565,Sandwiches,Drinks
 4,IHOP,4,4.0,$$,1565,Breakfast,Drinks
 5,Starbucks,5,4.1,$,1565,Coffee,Drinks
+6,abc,123,123.0,$$,123,abc

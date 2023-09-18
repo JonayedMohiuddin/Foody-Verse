@@ -454,7 +454,7 @@
             </AnchorPane>
          </children>
       </StackPane>
-      <StackPane fx:id="reviewMenu">
+      <StackPane fx:id="reviewMenu" visible="false">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#70cdff99" height="650.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="900.0" />
             <AnchorPane>

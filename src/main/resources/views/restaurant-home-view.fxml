@@ -275,7 +275,7 @@
                         </ImageView>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="reviewMenu" prefHeight="575.0" prefWidth="500.0">
+                  <AnchorPane fx:id="reviewMenu" prefHeight="575.0" prefWidth="500.0" visible="false">
                      <children>
                         <TextArea fx:id="reviewTypeBox" layoutY="410.0" prefHeight="165.0" prefWidth="500.0" promptText="Write your reply here" wrapText="true">
                            <font>
@@ -293,7 +293,10 @@
                               <Image url="@../assets/cancel-icon.png" />
                            </image>
                         </ImageView>
-                        <ListView fx:id="reviewMessagesListView" prefHeight="410.0" prefWidth="500.0" />
+                        <ListView fx:id="reviewMessagesListView" prefHeight="410.0" prefWidth="500.0">
+                           <padding>
+                              <Insets right="10.0" />
+                           </padding></ListView>
                      </children>
                   </AnchorPane>
                </children>

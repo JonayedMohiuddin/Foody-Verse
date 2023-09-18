@@ -57,9 +57,11 @@ public class RestaurantReadThread implements Runnable
                     System.out.println(threadName + " : Received cart order from server. User : " + username);
                     System.out.println(threadName + " : " + serverToRestaurantCartOrderDTO);
                 }
-                else if (obj instanceof NewReviewRequest newReviewRequest)
+                else if(obj instanceof NewReviewRequest newReviewRequest)
                 {
-
+                    System.out.println(threadName + " : Received new review request from server. User : " + newReviewRequest.getReview().getUsername());
+                    System.out.println(newReviewRequest.getReview().getRestaurantId());
+                    Platform.runLater(() -> restaurantHomeController.newReview(newReviewRequest.getReview()));
                 }
             }
         }

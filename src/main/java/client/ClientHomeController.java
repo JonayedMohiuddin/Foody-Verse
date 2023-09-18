@@ -104,7 +104,6 @@ public class ClientHomeController
     Image addButtonImage, removeButtonImage;
     DecimalFormat decimalFormat;
     int currentMenuWindow = Menu.HOME;
-    int currentViewingRestaurantId = -1;
 
     HashMap<Integer, Image> restaurantImages; // Restaurant ID is unique
     Image restaurantDefaultImage;
@@ -329,15 +328,16 @@ public class ClientHomeController
     {
         System.out.println("New review received");
 
-        if(!restaurantReviews.containsKey(review.getRestaurantId()))
+        if (!restaurantReviews.containsKey(review.getRestaurantId()))
         {
             restaurantReviews.put(review.getRestaurantId(), new ArrayList<>());
         }
         restaurantReviews.get(review.getRestaurantId()).add(review);
 
-        if(currentMenuWindow == Menu.REVIEW)
+        if (currentMenuWindow == Menu.REVIEW)
         {
-            reviewMenuInit();
+            addMessage(review);
+            reviewMessagesListView.scrollTo(reviewMessagesListView.getItems().size() - 1);
         }
     }
 
@@ -542,7 +542,6 @@ public class ClientHomeController
         currentWindowType = Options.RESTAURANT_WINDOW;
         currentRestaurantWindowID = restaurant.getId();
         reviewButton.setVisible(true);
-        currentMenuWindow = Menu.RESTAURANT;
     }
 
     // Add to cart
@@ -613,13 +612,6 @@ public class ClientHomeController
         int descriptorWidth = 150;
 
         GridPane imageContainer = new GridPane();
-//        ImageView restaurantImageView = new ImageView(restaurantImageLarge);
-
-//        ImageView restaurantImageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg");
-//        if (restaurantImageView.getImage().isError())
-//        {
-//            restaurantImageView = new ImageView(restaurantDefaultImage);
-//        }
 
         ImageView restaurantImageView;
         if (restaurantImages.containsKey(restaurant.getId()))
@@ -837,23 +829,18 @@ public class ClientHomeController
     {
         System.out.println("Cart button clicked");
 
-        if (currentMenuWindow == Menu.HOME)
-        {
-            cartMenu.setVisible(true);
-            currentMenuWindow = Menu.CART;
-            cartMenuInit();
-        }
+        cartMenu.setVisible(true);
+        currentMenuWindow = Menu.CART;
+        cartMenuInit();
     }
 
     public void deliveredIconClicked(MouseEvent event)
     {
         System.out.println("Delivered icon clicked");
-        if (currentMenuWindow == Menu.HOME)
-        {
-            deliveredMenu.setVisible(true);
-            currentMenuWindow = Menu.DELIVERED;
-            deliveredMenuInit();
-        }
+
+        deliveredMenu.setVisible(true);
+        currentMenuWindow = Menu.DELIVERED;
+        deliveredMenuInit();
     }
 
     public void search()
@@ -1421,14 +1408,13 @@ public class ClientHomeController
     {
         cartMenu.setVisible(false);
         deliveredMenu.setVisible(false);
-        reviewMenu.setVisible(false);
 
         currentMenuWindow = Menu.HOME;
     }
 
     public void reviewMenuBackButtonClicked(MouseEvent event)
     {
-        currentMenuWindow = Menu.RESTAURANT;
+        currentMenuWindow = Menu.HOME;
         reviewMenu.setVisible(false);
         reviewTypeBox.clear();
     }
@@ -1440,9 +1426,12 @@ public class ClientHomeController
         reviewTypeBox.clear();
         if (message.isEmpty()) return;
 
+        Review newReview = new Review(message, application.getUsername(), currentRestaurantWindowID, Review.ClientType.USER);
+
         try
         {
-            application.getSocketWrapper().write(new NewReviewRequest(new Review(message, application.getUsername(), currentViewingRestaurantId, Review.ClientType.USER)));
+            System.out.println("Sending review to server");
+            application.getSocketWrapper().write(new NewReviewRequest(newReview));
         }
         catch (IOException e)
         {
@@ -1451,19 +1440,18 @@ public class ClientHomeController
             e.printStackTrace();
         }
 
-        if(restaurantReviews.containsKey(currentRestaurantWindowID))
+        if (restaurantReviews.containsKey(currentRestaurantWindowID))
         {
-            restaurantReviews.get(currentRestaurantWindowID).add(new Review(message,application.getUsername(), currentViewingRestaurantId,Review.ClientType.USER));
+            restaurantReviews.get(currentRestaurantWindowID).add(newReview);
         }
         else
         {
             ArrayList<Review> reviews = new ArrayList<>();
-            reviews.add(new Review(message,application.getUsername(), currentViewingRestaurantId,Review.ClientType.USER));
+            reviews.add(newReview);
             restaurantReviews.put(currentRestaurantWindowID, reviews);
         }
 
-        reviewMessagesListView.getItems().clear();
-        fillReviewMenuList();
+        addMessage(newReview);
         reviewMessagesListView.scrollTo(reviewMessagesListView.getItems().size() - 1);
     }
 
@@ -1554,7 +1542,6 @@ public class ClientHomeController
         public static final int CART = 2;
         public static final int DELIVERED = 3;
         public static final int REVIEW = 4;
-        public static final int RESTAURANT = 5;
     }
 
     // SEARCH OPTIONS

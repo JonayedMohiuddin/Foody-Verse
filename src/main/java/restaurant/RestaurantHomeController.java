@@ -84,7 +84,7 @@ public class RestaurantHomeController
     ConcurrentHashMap<String, HashMap<Food, Integer>> historyOrdersList;
     int pendingOrderCount = 0;
     DecimalFormat decimalFormat;
-    HashMap<Integer, ArrayList<Review>> restaurantReviews;
+    ConcurrentHashMap<Integer, ArrayList<Review>> restaurantReviews;
     // DATABASE
     private Restaurant restaurant;
     private String restaurantName;
@@ -92,7 +92,7 @@ public class RestaurantHomeController
 
     public void init()
     {
-        restaurantReviews = new HashMap<>();
+        restaurantReviews = new ConcurrentHashMap<>();
 
         decimalFormat = new DecimalFormat("#.#");
 
@@ -313,8 +313,7 @@ public class RestaurantHomeController
         {
             reviewMenu.setVisible(true);
             reviewSelectionBox.setVisible(true);
-            reviewMessagesListView.getItems().clear();
-            fillReviewMenuList();
+            reviewMenuInit();
         }
 
         currentWindow = window;
@@ -379,14 +378,14 @@ public class RestaurantHomeController
             e.printStackTrace();
         }
 
-        if(restaurantReviews.containsKey(restaurant.getId()))
+        if (restaurantReviews.containsKey(restaurant.getId()))
         {
-            restaurantReviews.get(restaurant.getId()).add(new Review(message,application.getUsername(), restaurant.getId(),Review.ClientType.RESTAURANT));
+            restaurantReviews.get(restaurant.getId()).add(new Review(message, application.getUsername(), restaurant.getId(), Review.ClientType.RESTAURANT));
         }
         else
         {
             ArrayList<Review> reviews = new ArrayList<>();
-            reviews.add(new Review(message,application.getUsername(), restaurant.getId(),Review.ClientType.RESTAURANT));
+            reviews.add(new Review(message, application.getUsername(), restaurant.getId(), Review.ClientType.RESTAURANT));
             restaurantReviews.put(restaurant.getId(), reviews);
         }
 
@@ -405,6 +404,23 @@ public class RestaurantHomeController
         foodNameTextField.setStyle("");
         foodCategoryField.setStyle("");
         foodPriceTextField.setStyle("");
+    }
+
+    public void newReviewAdded(Review review)
+    {
+        System.out.println("New review received");
+
+        if (!restaurantReviews.containsKey(review.getRestaurantId()))
+        {
+            restaurantReviews.put(review.getRestaurantId(), new ArrayList<>());
+        }
+        restaurantReviews.get(review.getRestaurantId()).add(review);
+
+        if (currentWindow == WindowType.REVIEW)
+        {
+            addMessage(review);
+            reviewMessagesListView.scrollTo(reviewMessagesListView.getItems().size() - 1);
+        }
     }
 
     public void addMenuAddFoodButtonPressed(ActionEvent event)
@@ -1132,30 +1148,20 @@ public class RestaurantHomeController
         this.application = application;
     }
 
-    // INTERNAL WINDOW SYSTEM
-    public static class WindowType
-    {
-        public static final int UNDEFINED = -1;
-        public static final int ORDERS = 0;
-        public static final int INFO = 1;
-        public static final int DELIVERED = 2;
-        public static final int ADD_FOODS = 3;
-        public static final int REVIEW = 4;
-    }
-
     public void newReview(Review review)
     {
-        System.out.println("New review received");
-
-        if(!restaurantReviews.containsKey(review.getRestaurantId()))
+        if (!restaurantReviews.containsKey(review.getRestaurantId()))
         {
             restaurantReviews.put(review.getRestaurantId(), new ArrayList<>());
         }
         restaurantReviews.get(review.getRestaurantId()).add(review);
 
-        if(currentWindow == WindowType.REVIEW)
+        System.out.println(review.getRestaurantId());
+
+        if (currentWindow == WindowType.REVIEW && review.getRestaurantId() == restaurant.getId())
         {
-            reviewMenuInit();
+            addMessage(review);
+            reviewMessagesListView.scrollTo(reviewMessagesListView.getItems().size() - 1);
         }
     }
 
@@ -1220,5 +1226,16 @@ public class RestaurantHomeController
         row.getChildren().add(messageAndHeadingContainer);
 
         reviewMessagesListView.getItems().add(row);
+    }
+
+    // INTERNAL WINDOW SYSTEM
+    public static class WindowType
+    {
+        public static final int UNDEFINED = -1;
+        public static final int ORDERS = 0;
+        public static final int INFO = 1;
+        public static final int DELIVERED = 2;
+        public static final int ADD_FOODS = 3;
+        public static final int REVIEW = 4;
     }
 }

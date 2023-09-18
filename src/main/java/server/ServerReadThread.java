@@ -3,6 +3,7 @@ package server;
 import dto.*;
 import models.Food;
 import models.Restaurant;
+import models.Review;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -394,22 +395,38 @@ public class ServerReadThread implements Runnable
                 {
                     serverController.log("New review received from " + clientName);
                     System.out.println(thread.getName() + " : " + newReviewRequest);
+                    int restaurantId = newReviewRequest.getReview().getRestaurantId();
+                    System.out.println(restaurantId);
 
                     // ADD THE REVIEW TO THE RESTAURANT
                     if (!serverController.restaurantReviews.containsKey(newReviewRequest.getReview().getRestaurantId()))
                     {
-                        serverController.restaurantReviews.put(newReviewRequest.getReview().getRestaurantId(), new ArrayList<>());
+                        serverController.restaurantReviews.put(restaurantId, new ArrayList<>());
                     }
-                    serverController.restaurantReviews.get(newReviewRequest.getReview().getRestaurantId()).add(newReviewRequest.getReview());
+                    serverController.restaurantReviews.get(restaurantId).add(newReviewRequest.getReview());
 
-                    // SEND THE UPDATED REVIEW LIST TO ALL CLIENTS / RESTAURANTS
-                    for (SocketWrapper socketWrapper : serverController.getRestaurantMap().values())
+                    // SEND THE UPDATED REVIEW LIST TO RESTAURANT IF IT IS FROM A CLIENT
+                    if(newReviewRequest.getReview().getClientType() != Review.ClientType.RESTAURANT)
                     {
-                        socketWrapper.write(newReviewRequest);
+                        for (String restaurantName : serverController.getRestaurantMap().keySet())
+                        {
+                            if (serverController.getRestaurantList().get(restaurantId).getName().equals(restaurantName))
+                            {
+                                System.out.println("Sending review to " + restaurantName);
+                                serverController.getRestaurantMap().get(restaurantName).write(newReviewRequest);
+                            }
+                        }
                     }
-                    for (SocketWrapper socketWrapper : serverController.getClientMap().values())
+
+                    for (String clientName : serverController.getClientMap().keySet())
                     {
-                        socketWrapper.write(newReviewRequest);
+                        // Review is added by this customer so ignore
+                        if(newReviewRequest.getReview().getClientType() == Review.ClientType.USER && newReviewRequest.getReview().getUsername().equals(clientName))
+                        {
+                            continue;
+                        }
+                        System.out.println("Sending review to " + clientName);
+                        serverController.getClientMap().get(clientName).write(newReviewRequest);
                     }
                 }
                 // CLIENT LOGGING OUT
