@@ -647,7 +647,8 @@ public class ClientHomeController
 
         VBox restaurantInfoBox = new VBox();
 
-        restaurantInfoBox.setPadding(new Insets(5, 150, 30, 30)); // top right bottom left
+        restaurantInfoBox.setPadding(new Insets(5, 0, 30, 30)); // top right bottom left
+        restaurantInfoBox.setMinWidth(500);
         restaurantInfoBox.setSpacing(12);
 
         // Descriptor : Content //
@@ -662,6 +663,7 @@ public class ClientHomeController
         Label restaurantNameLabelContent = new Label(restaurant.getName());
         restaurantNameLabelContent.setFont(contentFont);
         restaurantNameLabelContent.setAlignment(Pos.CENTER_LEFT);
+        restaurantNameLabelContent.setMaxWidth(300);
 
         restaurantNameContainer.getChildren().addAll(restaurantNameLabelDescriptor, restaurantNameLabelContent);
 
@@ -676,6 +678,7 @@ public class ClientHomeController
         Label restaurantRatingLabelContent = new Label(restaurant.getScore() + " / 5");
         restaurantRatingLabelContent.setFont(contentFont);
         restaurantRatingLabelContent.setAlignment(Pos.CENTER_LEFT);
+        restaurantRatingLabelContent.setMaxWidth(300);
 
         restaurantRatingContainer.getChildren().addAll(restaurantRatingLabelDescriptor, restaurantRatingLabelContent);
 
@@ -696,6 +699,8 @@ public class ClientHomeController
         Label restaurantCategoryLabelContent = new Label(categories.toString());
         restaurantCategoryLabelContent.setFont(contentFont);
         restaurantCategoryLabelContent.setAlignment(Pos.CENTER_LEFT);
+        restaurantCategoryLabelContent.setWrapText(true);
+        restaurantCategoryLabelContent.setMaxWidth(400);
 
         restaurantCategoryContainer.getChildren().addAll(restaurantCategoryLabelDescriptor, restaurantCategoryLabelContent);
 
@@ -710,6 +715,7 @@ public class ClientHomeController
         Label restaurantPriceLabelContent = new Label(restaurant.getPrice());
         restaurantPriceLabelContent.setFont(contentFont);
         restaurantPriceLabelContent.setAlignment(Pos.CENTER_LEFT);
+        restaurantPriceLabelContent.setMaxWidth(300);
 
         restaurantPriceContainer.getChildren().addAll(restaurantPriceLabelDescriptor, restaurantPriceLabelContent);
 
@@ -724,6 +730,7 @@ public class ClientHomeController
         Label restaurantZipcodeContent = new Label(restaurant.getZipcode());
         restaurantZipcodeContent.setFont(contentFont);
         restaurantZipcodeContent.setAlignment(Pos.CENTER_LEFT);
+        restaurantZipcodeContent.setMaxWidth(300);
 
         restaurantZipcodeContainer.getChildren().addAll(restaurantZipcodeDescriptor, restaurantZipcodeContent);
         restaurantInfoBox.getChildren().addAll(restaurantNameContainer, restaurantRatingContainer, restaurantCategoryContainer, restaurantPriceContainer, restaurantZipcodeContainer);

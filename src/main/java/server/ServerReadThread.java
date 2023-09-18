@@ -228,10 +228,6 @@ public class ServerReadThread implements Runnable
                             {
                                 ServerToRestaurantCartOrderDTO serverToRestaurantCartOrderDTO = new ServerToRestaurantCartOrderDTO(userName, userFoodCount.get(userName));
                                 socketWrapper.write(serverToRestaurantCartOrderDTO);
-
-                                System.out.println(thread.getName() + " : Offline pending order sent to restaurant " + clientName);
-                                System.out.println(thread.getName() + " : " + serverToRestaurantCartOrderDTO);
-                                System.out.println();
                             }
                             // DON'T REMOVE FROM PENDING REQUEST YET!! LET THE RESTAURANT ACCEPT THEM FIRST
                             // serverController.offlineRestaurantCartList.remove(restaurantId);
@@ -395,19 +391,6 @@ public class ServerReadThread implements Runnable
                             }
                         }
                     }
-
-                    for (Integer restaurantId : serverController.deliveryList.keySet())
-                    {
-                        System.out.println("Restaurant " + restaurantId);
-                        for (String username : serverController.deliveryList.get(restaurantId).keySet())
-                        {
-                            System.out.println("Restaurant " + restaurantId + " -> " + username);
-                            for (Food food : serverController.deliveryList.get(restaurantId).get(username).keySet())
-                            {
-                                System.out.println("Restaurant " + restaurantId + " -> " + username + " -> " + food.getName() + " -> " + serverController.deliveryList.get(restaurantId).get(username).get(food));
-                            }
-                        }
-                    }
                 }
                 else if (obj instanceof NewReviewRequest newReviewRequest)
                 {
@@ -430,7 +413,6 @@ public class ServerReadThread implements Runnable
                         {
                             if (serverController.getRestaurantList().get(restaurantId).getName().equals(restaurantName))
                             {
-                                System.out.println("Sending review to " + restaurantName);
                                 serverController.getRestaurantMap().get(restaurantName).write(newReviewRequest);
                             }
                         }
@@ -443,7 +425,6 @@ public class ServerReadThread implements Runnable
                         {
                             continue;
                         }
-                        System.out.println("Sending review to " + clientName);
                         serverController.getClientMap().get(clientName).write(newReviewRequest);
                     }
                 }
