@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -14,6 +15,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -221,14 +223,14 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="770.0" layoutY="60.0" onMouseClicked="#deliveredIconClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="770.0" AnchorPane.topAnchor="60.0">
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="781.0" layoutY="60.0" onMouseClicked="#deliveredIconClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="781.0" AnchorPane.topAnchor="60.0">
                <image>
                   <Image url="@../assets/delivered-icon.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></ImageView>
-            <Circle fx:id="deliveredItemCountBg" layoutX="809.0" layoutY="67.0" onMouseClicked="#deliveredIconClicked" opacity="0.7" radius="11.0" stroke="BLACK" strokeType="INSIDE">
+            <Circle fx:id="deliveredItemCountBg" layoutX="818.0" layoutY="67.0" onMouseClicked="#deliveredIconClicked" opacity="0.7" radius="11.0" stroke="BLACK" strokeType="INSIDE">
                <fill>
                   <LinearGradient endX="1.0" endY="1.0">
                      <stops>
@@ -246,7 +248,7 @@
                   </LinearGradient>
                </fill>
             </Circle>
-            <Label fx:id="deliveredItemCountLabel" alignment="CENTER" ellipsisString="" layoutX="796.0" layoutY="58.0" onMouseClicked="#deliveredIconClicked" prefHeight="18.0" prefWidth="25.0" text="99" textAlignment="CENTER">
+            <Label fx:id="deliveredItemCountLabel" alignment="CENTER" ellipsisString="" layoutX="805.0" layoutY="58.0" onMouseClicked="#deliveredIconClicked" prefHeight="18.0" prefWidth="25.0" text="99" textAlignment="CENTER">
                <font>
                   <Font size="10.0" />
                </font>
@@ -268,9 +270,17 @@
                   <Image url="@../assets/foody-verse.png" />
                </image>
             </ImageView>
+            <ImageView fx:id="reviewButton" fitHeight="40.0" fitWidth="40.0" layoutX="721.0" layoutY="60.0" onMouseClicked="#reviewButtonClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/review-icon.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
          </children>
       </AnchorPane>
-      <StackPane fx:id="cartMenu">
+      <StackPane fx:id="cartMenu" visible="false">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#70cfffdc" height="650.0" opacity="0.8" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="900.0" />
             <AnchorPane>
@@ -437,6 +447,211 @@
                                     <Font name="Calibri Light" size="18.0" />
                                  </font>
                               </Label>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
+      <StackPane fx:id="reviewMenu">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#70cdff99" height="650.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="900.0" />
+            <AnchorPane>
+               <children>
+                  <GridPane layoutX="100.0" layoutY="25.0" prefHeight="600.0" prefWidth="700.0">
+                     <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <AnchorPane>
+                           <children>
+                              <Rectangle arcHeight="5.0" arcWidth="5.0" height="60.0" stroke="BLACK" strokeType="INSIDE" width="700.0">
+                                 <fill>
+                                    <LinearGradient endX="1.0" endY="1.0">
+                                       <stops>
+                                          <Stop>
+                                             <color>
+                                                <Color red="0.6925926208496094" green="0.8514197468757629" blue="1.0" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="0.4707317073170731">
+                                             <color>
+                                                <Color red="0.7107992172241211" green="0.9052631855010986" blue="0.7432098984718323" />
+                                             </color>
+                                          </Stop>
+                                          <Stop offset="1.0">
+                                             <color>
+                                                <Color red="0.9111111164093018" green="1.0" blue="0.9259259104728699" />
+                                             </color>
+                                          </Stop>
+                                       </stops>
+                                    </LinearGradient>
+                                 </fill>
+                              </Rectangle>
+                              <GridPane layoutX="523.0" layoutY="12.0" prefHeight="36.0" prefWidth="115.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label fx:id="reviewMenuUsernameLabel" alignment="CENTER_RIGHT" text="Username" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="Calibri Light" size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </GridPane>
+                              <ImageView fitHeight="50.0" fitWidth="200.0" layoutX="-3.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/foody-verse.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="reviewMenuBackButtonClicked" fitHeight="40.0" fitWidth="40.0" layoutX="646.0" layoutY="10.0" onMouseClicked="#reviewMenuBackButtonClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/back-button-icon.png" />
+                                 </image>
+                              </ImageView>
+                              <TextArea fx:id="reviewTypeBox" layoutY="460.0" prefHeight="140.0" prefWidth="700.0" promptText="Write your review here" wrapText="true">
+                                 <font>
+                                    <Font name="Candara" size="18.0" />
+                                 </font>
+                              </TextArea>
+                              <Rectangle arcHeight="25.0" arcWidth="25.0" fill="#e7cececc" height="50.0" layoutX="581.0" layoutY="543.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="91.0" />
+                              <ImageView fx:id="sendReviewButton" fitHeight="35.0" fitWidth="35.0" layoutX="633.0" layoutY="550.0" onMouseClicked="#sendReviewButtonClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/send-icon.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="587.0" layoutY="550.0" onMouseClicked="#resetReviewButtonClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/cancel-icon.png" />
+                                 </image>
+                              </ImageView>
+                              <GridPane layoutX="283.0" layoutY="12.0" prefHeight="36.0" prefWidth="134.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label fx:id="reviewMenuRestaurantName" alignment="CENTER_RIGHT" text="Restaurant Name" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="Calibri Light" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </GridPane>
+                              <Label alignment="CENTER_RIGHT" layoutX="432.0" layoutY="20.0" text="Reviews" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Candara Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="236.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../assets/restaurant-icon.png" />
+                                 </image>
+                              </ImageView>
+                              <Rectangle fill="WHITE" height="400.0" layoutY="60.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="700.0" />
+                              <VBox fx:id="reviewVBox1" layoutX="10.0" layoutY="70.0" prefHeight="400.0" prefWidth="700.0" visible="false">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                                 <children>
+                                    <HBox>
+                                       <children>
+                                          <VBox>
+                                             <children>
+                                                <Label alignment="TOP_LEFT" prefWidth="400.0" text="Username" wrapText="true">
+                                                   <font>
+                                                      <Font name="Corbel" size="16.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Label prefWidth="400.0" text="Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!" textAlignment="JUSTIFY" wrapText="true">
+                                                   <font>
+                                                      <Font name="Segoe Print" size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="TOP_RIGHT">
+                                       <children>
+                                          <VBox>
+                                             <children>
+                                                <Label alignment="TOP_RIGHT" prefWidth="400.0" text="Reply" wrapText="true">
+                                                   <font>
+                                                      <Font name="Corbel" size="16.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Label prefWidth="400.0" text="Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!" textAlignment="JUSTIFY" wrapText="true">
+                                                   <font>
+                                                      <Font name="Segoe Print" size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox>
+                                       <children>
+                                          <VBox>
+                                             <children>
+                                                <Label alignment="TOP_LEFT" prefWidth="400.0" text="Username" wrapText="true">
+                                                   <font>
+                                                      <Font name="Corbel" size="16.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Label prefWidth="400.0" text="Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!" textAlignment="JUSTIFY" wrapText="true">
+                                                   <font>
+                                                      <Font name="Segoe Print" size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="TOP_RIGHT">
+                                       <children>
+                                          <VBox>
+                                             <children>
+                                                <Label alignment="TOP_RIGHT" prefWidth="400.0" text="Reply" wrapText="true">
+                                                   <font>
+                                                      <Font name="Corbel" size="16.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Label prefWidth="400.0" text="Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!" textAlignment="JUSTIFY" wrapText="true">
+                                                   <font>
+                                                      <Font name="Segoe Print" size="13.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <ListView fx:id="reviewMessagesListView" layoutY="60.0" prefHeight="400.0" prefWidth="700.0" />
                            </children>
                         </AnchorPane>
                      </children>

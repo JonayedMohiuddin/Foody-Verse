@@ -21,6 +21,7 @@ import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
 import models.Food;
 import models.Restaurant;
+import models.Review;
 import util.ImageTransitions;
 
 import java.io.IOException;
@@ -90,10 +91,12 @@ public class RestaurantHomeController
 
     // ASSETS //
     Image restaurantImageLarge;
-    Image foodImage;
+    Image defaultFoodImage;
     Image userIconImage;
     Image deliverOrderButtonImage;
     Image orderAllImage;
+
+    HashMap<Food, Image> foodImages;
 
     ConcurrentHashMap<String, HashMap<Food, Integer>> pendingOrdersList;
     ConcurrentHashMap<String, HashMap<Food, Integer>> historyOrdersList;
@@ -106,8 +109,12 @@ public class RestaurantHomeController
 
     DecimalFormat decimalFormat;
 
+    HashMap<Integer, ArrayList<Review>> restaurantReviews;
+
     public void init()
     {
+        restaurantReviews = new HashMap<>();
+
         decimalFormat = new DecimalFormat("#.#");
 
         pendingOrdersList = new ConcurrentHashMap<>();
@@ -191,12 +198,23 @@ public class RestaurantHomeController
         restaurantNameLabel.setText(restaurantName);
 
         // LOAD IMAGES
-        restaurantImageMedium = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 175, 125, false, false);
-        restaurantImageLarge = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 263, 188, false, false);
-        foodImage = new Image("file:src/main/resources/assets/Burger.jpg", 175, 125, false, false);
+        restaurantImageMedium = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 350, 250, false, false);
+        restaurantImageLarge = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 520, 370, false, false);
+        defaultFoodImage = new Image("file:src/main/resources/assets/Burger.jpg", 350, 250, false, false);
         userIconImage = new Image("file:src/main/resources/assets/user-icon.png");
         deliverOrderButtonImage = new Image("file:src/main/resources/assets/deliver-order-icon.png");
         orderAllImage = new Image("file:src/main/resources/assets/order-all-icon.png");
+
+        foodImages = new HashMap<>();
+        for (Food food : restaurant.getFoodList())
+        {
+            Image image = new Image("file:src/main/resources/food-images/" + food.getName() + ".jpg", 350, 250, false, false);
+            if (image.isError())
+            {
+                image = defaultFoodImage;
+            }
+            foodImages.put(food, image);
+        }
 
         // RESTAURANT INFO
         restaurantImageView.setImage(new Image("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg"));
@@ -585,11 +603,16 @@ public class RestaurantHomeController
         rowHBoxContent.setPrefHeight(70);
 
         VBox foodImageContainer = new VBox();
-        ImageView rowImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
-        if (rowImageView.getImage().isError())
+        ImageView rowImageView;
+        if (foodImages.containsKey(food))
         {
-            rowImageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
+            rowImageView = new ImageView(foodImages.get(food));
         }
+        else
+        {
+            rowImageView = new ImageView(defaultFoodImage);
+        }
+
         rowImageView.setFitWidth(70);
         rowImageView.setFitHeight(50);
         rowImageView.minWidth(70);
@@ -674,7 +697,6 @@ public class RestaurantHomeController
         imageView.setFitWidth(35);
         imageView.setFitHeight(35);
 
-
         Label usernameLabel = new Label(username);
         usernameLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: 'Roboto Medium';");
         usernameLabel.setPadding(new Insets(0, 0, 0, 20));
@@ -732,11 +754,16 @@ public class RestaurantHomeController
         rowHBoxContent.setPrefHeight(70);
 
         VBox foodImageContainer = new VBox();
-        ImageView rowImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
-        if (rowImageView.getImage().isError())
+        ImageView rowImageView;
+        if (foodImages.containsKey(food))
         {
-            rowImageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
+            rowImageView = new ImageView(foodImages.get(food));
         }
+        else
+        {
+            rowImageView = new ImageView(defaultFoodImage);
+        }
+
         rowImageView.setFitWidth(70);
         rowImageView.setFitHeight(50);
         rowImageView.minWidth(70);
@@ -794,12 +821,8 @@ public class RestaurantHomeController
         acceptOrderButton.setOnMouseClicked((MouseEvent event) -> {
             deliverSingleFood(food, orderCount, username);
         });
-        acceptOrderButton.setOnMouseEntered((MouseEvent event) -> {
-            ImageTransitions.imageMouseHoverEntered(event);
-        });
-        acceptOrderButton.setOnMouseExited((MouseEvent event) -> {
-            ImageTransitions.imageMouseHoverExited(event);
-        });
+        acceptOrderButton.setOnMouseEntered(ImageTransitions::imageMouseHoverEntered);
+        acceptOrderButton.setOnMouseExited(ImageTransitions::imageMouseHoverExited);
 
         orderButtonContainer.getChildren().add(acceptOrderButton);
 
@@ -977,11 +1000,16 @@ public class RestaurantHomeController
         rowHBoxContent.setPrefHeight(170);
 
         VBox foodImageContainer = new VBox();
-        ImageView rowImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
-        if (rowImageView.getImage().isError())
+        ImageView rowImageView;
+        if (foodImages.containsKey(food))
         {
-            rowImageView = new ImageView("file:src/main/resources/assets/Burger.jpg");
+            rowImageView = new ImageView(foodImages.get(food));
         }
+        else
+        {
+            rowImageView = new ImageView(defaultFoodImage);
+        }
+
         rowImageView.setFitWidth(130);
         rowImageView.setFitHeight(100);
         rowImageView.setPreserveRatio(false);

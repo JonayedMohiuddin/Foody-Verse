@@ -76,8 +76,8 @@
          <children>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <ListView fx:id="clientListView" layoutX="20.0" layoutY="45.0" prefHeight="214.0" prefWidth="210.0" />
-                  <ListView fx:id="serverLogListView" layoutX="20.0" layoutY="298.0" prefHeight="150.0" prefWidth="458.0" />
+                  <ListView fx:id="clientListView" layoutX="20.0" layoutY="45.0" prefHeight="176.0" prefWidth="210.0" />
+                  <ListView fx:id="serverLogListView" layoutX="20.0" layoutY="272.0" prefHeight="176.0" prefWidth="458.0" />
                   <Label layoutX="55.0" layoutY="14.0" text="Clients Online">
                      <font>
                         <Font name="Calibri" size="15.0" />
@@ -88,7 +88,7 @@
                         <Font name="Calibri" size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="60.0" layoutY="270.0" text="Server Log ">
+                  <Label layoutX="55.0" layoutY="243.0" text="Server Log ">
                      <font>
                         <Font name="Calibri" size="15.0" />
                      </font>
@@ -133,18 +133,18 @@
                         <Image url="@../assets/restaurant-icon.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="23.0" fitWidth="30.0" layoutX="22.0" layoutY="268.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="23.0" fitWidth="30.0" layoutX="22.0" layoutY="241.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../assets/log-icon.png" />
                      </image>
                   </ImageView>
-                  <ListView fx:id="restaurantListView" layoutX="266.0" layoutY="45.0" prefHeight="214.0" prefWidth="210.0" />
+                  <ListView fx:id="restaurantListView" layoutX="266.0" layoutY="45.0" prefHeight="176.0" prefWidth="210.0" />
                   <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#8efa7040" height="32.0" layoutX="15.0" layoutY="7.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="222.0" />
                   <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#8efa7040" height="32.0" layoutX="260.0" layoutY="7.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="222.0" />
-                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#8efa7040" height="32.0" layoutX="15.0" layoutY="263.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="117.0" />
+                  <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#8efa7040" height="32.0" layoutX="15.0" layoutY="236.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="117.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="addRestaurantMenu" prefHeight="200.0" prefWidth="200.0" visible="false">
+            <AnchorPane fx:id="addRestaurantMenu" prefHeight="200.0" prefWidth="200.0">
                <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" height="462.0" layoutX="40.0" layoutY="-6.0" strokeType="INSIDE" strokeWidth="3.0" width="421.0">
                      <fill>

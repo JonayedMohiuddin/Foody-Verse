@@ -13,9 +13,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import models.Food;
 import models.Restaurant;
 import models.RestaurantSearches;
+import models.Review;
 import util.ImageTransitions;
 
 import java.io.IOException;
@@ -61,9 +63,15 @@ public class ClientHomeController
     public Label cartMenuUsernameLabel;
     // DELIVERED MENU
     public StackPane deliveredMenu;
-    public ListView deliveredMenuListView;
+    public ListView<HBox> deliveredMenuListView;
     public ImageView deliveredMenuBackButton;
     public Label deliveredMenuUsernameLabel;
+    public StackPane reviewMenu;
+    public Label reviewMenuRestaurantName;
+    public Label reviewMenuUsernameLabel;
+    public ListView<HBox> reviewMessagesListView;
+    public ImageView reviewButton;
+    public TextArea reviewTypeBox;
     // CLIENT APPLICATION REFERENCE
     ClientApplication application;
     ArrayList<String> restaurantSearchOptions;
@@ -81,12 +89,6 @@ public class ClientHomeController
     ConcurrentHashMap<Integer, HashMap<Food, Integer>> deliveredFoodList; // Map<Restaurant ID, Map<Food, Count>>
     int deliveredTotalItems = 0;
     double deliveredTotalPrice = 0;
-
-    // IMAGES
-    Image restaurantImage_175by125;
-    // ASSETS //
-    Image restaurantImageLarge;
-    Image foodImage;
     // FONTS
     Font robotoBoldFont20;
     //    HashMap<String, Image> restaurantImage;
@@ -102,6 +104,14 @@ public class ClientHomeController
     Image addButtonImage, removeButtonImage;
     DecimalFormat decimalFormat;
     int currentMenuWindow = Menu.HOME;
+    int currentViewingRestaurantId = -1;
+
+    HashMap<Integer, Image> restaurantImages; // Restaurant ID is unique
+    Image restaurantDefaultImage;
+    HashMap<Food, Image> foodImages; // Food doesn't have any unique identifier, event name is not unique
+    Image foodDefaultImage;
+
+    HashMap<Integer, ArrayList<Review>> restaurantReviews;
 
     public void setApplication(ClientApplication application)
     {
@@ -110,6 +120,13 @@ public class ClientHomeController
 
     public void init()
     {
+        reviewMessagesListView.setStyle("-fx-selection-bar: rgba(255,255,255,0);");
+
+        restaurantReviews = new HashMap<>();
+
+        reviewButton.setVisible(false);
+        reviewMenu.setVisible(false);
+
         deliveredFoodList = new ConcurrentHashMap<>();
 
         System.out.println("Client Home Page");
@@ -140,13 +157,11 @@ public class ClientHomeController
         viewRestaurantImage = new Image("file:src/main/resources/assets/restaurant-icon.png");
         viewFoodImage = new Image("file:src/main/resources/assets/food-icon.png");
 
-        restaurantImage_175by125 = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 175, 125, false, false);
-        restaurantImageLarge = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 263, 188, false, false);
-        foodImage = new Image("file:src/main/resources/assets/Burger.jpg", 175, 125, false, false);
+        restaurantDefaultImage = new Image("file:src/main/resources/assets/RestaurantImage.jpg", 350, 250, false, false);
+        foodDefaultImage = new Image("file:src/main/resources/assets/Burger.jpg", 350, 250, false, false);
 
         addButtonImage = new Image("file:src/main/resources/assets/add-button-icon.png");
         removeButtonImage = new Image("file:src/main/resources/assets/remove-button-icon.png");
-
 
         // LOAD FONTS
         robotoBoldFont15 = Font.loadFont(getClass().getResourceAsStream("/assets/RobotoFonts/Roboto-Bold.ttf"), 15);
@@ -238,6 +253,28 @@ public class ClientHomeController
             System.err.println("Error : " + e.getMessage());
         }
 
+        // LOAD RESTAURANT IMAGES
+        restaurantImages = new HashMap<>();
+        for (Integer restaurantId : application.getRestaurantList().keySet())
+        {
+            Image image = new Image("file:src/main/resources/restaurant-images/" + application.getRestaurantList().get(restaurantId).getName() + ".jpg");
+            if (image.isError())
+            {
+                image = restaurantDefaultImage;
+            }
+            restaurantImages.put(restaurantId, image);
+        }
+        foodImages = new HashMap<>();
+        for (Food food : application.getFoodList())
+        {
+            Image image = new Image("file:src/main/resources/food-images/" + food.getName() + ".jpg");
+            if (image.isError())
+            {
+                image = foodDefaultImage;
+            }
+            foodImages.put(food, image);
+        }
+
         updateNotification();
 
 
@@ -276,10 +313,16 @@ public class ClientHomeController
 
         currentWindowType = Options.HOME_WINDOW;
 
+        restaurantReviews.put(1, new ArrayList<>());
+        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", application.getUsername(), 1, Review.ClientType.USER));
+        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", application.getRestaurantList().get(1).getName(), 1, Review.ClientType.RESTAURANT));
+        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", application.getUsername(), 1, Review.ClientType.USER));
+        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", application.getRestaurantList().get(1).getName(), 1, Review.ClientType.RESTAURANT));
+
+        reviewMessagesListView.setMaxHeight(10000);
         System.out.println("Creating new thread to read from server");
         System.out.println();
         new ClientReadThread(this, application.getUsername() + " ##C RT");
-
     }
 
     public void newDelivery(DeliverDTO deliverDTO)
@@ -304,7 +347,7 @@ public class ClientHomeController
             }
         }
 
-        if(currentMenuWindow == Menu.DELIVERED)
+        if (currentMenuWindow == Menu.DELIVERED)
         {
             deliveredMenuInit();
         }
@@ -482,6 +525,7 @@ public class ClientHomeController
         restaurantViewBackButton.setVisible(true);
         currentWindowType = Options.RESTAURANT_WINDOW;
         currentRestaurantWindowID = restaurant.getId();
+        reviewButton.setVisible(true);
     }
 
     // Add to cart
@@ -540,10 +584,6 @@ public class ClientHomeController
         }
     }
 
-    // ======================================================================================================
-    // SEARCH RELATED METHODS
-    // ======================================================================================================
-
     // FlowPane
     //     |---+ VBox
     //            |---+ HBox
@@ -558,10 +598,20 @@ public class ClientHomeController
         GridPane imageContainer = new GridPane();
 //        ImageView restaurantImageView = new ImageView(restaurantImageLarge);
 
-        ImageView restaurantImageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg");
-        if (restaurantImageView.getImage().isError())
+//        ImageView restaurantImageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg");
+//        if (restaurantImageView.getImage().isError())
+//        {
+//            restaurantImageView = new ImageView(restaurantDefaultImage);
+//        }
+
+        ImageView restaurantImageView;
+        if (restaurantImages.containsKey(restaurant.getId()))
         {
-            restaurantImageView = new ImageView(restaurantImage_175by125);
+            restaurantImageView = new ImageView(restaurantImages.get(restaurant.getId()));
+        }
+        else
+        {
+            restaurantImageView = new ImageView(restaurantDefaultImage);
         }
 
         restaurantImageView.setFitHeight(188);
@@ -658,11 +708,16 @@ public class ClientHomeController
         VBox restaurantBox = new VBox();
 
         // If image not found, use default image
-        ImageView imageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg");
-        if (imageView.getImage().isError())
+        ImageView imageView;
+        if (restaurantImages.containsKey(restaurant.getId()))
         {
-            imageView = new ImageView(restaurantImage_175by125);
+            imageView = new ImageView(restaurantImages.get(restaurant.getId()));
         }
+        else
+        {
+            imageView = new ImageView(restaurantDefaultImage);
+        }
+
         imageView.setFitHeight(125);
         imageView.setFitWidth(175);
         imageView.setOnMouseClicked(event -> {
@@ -714,10 +769,14 @@ public class ClientHomeController
         VBox foodBox = new VBox();
 
 //        ImageView imageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
-        ImageView imageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
-        if (imageView.getImage().isError())
+        ImageView imageView;
+        if (foodImages.containsKey(food))
         {
-            imageView = new ImageView(foodImage);
+            imageView = new ImageView(foodImages.get(food));
+        }
+        else
+        {
+            imageView = new ImageView(foodDefaultImage);
         }
         imageView.setFitWidth(175);
         imageView.setFitHeight(125);
@@ -778,7 +837,6 @@ public class ClientHomeController
             currentMenuWindow = Menu.DELIVERED;
             deliveredMenuInit();
         }
-        deliveredMenuInit();
     }
 
     public void search()
@@ -870,10 +928,6 @@ public class ClientHomeController
             System.err.println("Class : HomePageController | Method : search | Invalid search filter type, How?? IMPOSSIBLE! CDI");
         }
     }
-
-    // ======================================================================================================
-    // UTIL METHODS AND CLASSES
-    // ======================================================================================================
 
     public ArrayList<Double> readRangeFromSearchBoxes()
     {
@@ -979,6 +1033,7 @@ public class ClientHomeController
         restaurantViewBackButton.setVisible(false);
         currentWindowType = Options.HOME_WINDOW;
         currentRestaurantWindowID = -1;
+        reviewButton.setVisible(false);
     }
 
     public void resetButtonClicked()
@@ -1095,7 +1150,7 @@ public class ClientHomeController
         ImageView foodSmallImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
         if (foodSmallImageView.getImage().isError())
         {
-            foodSmallImageView = new ImageView(foodImage);
+            foodSmallImageView = new ImageView(foodDefaultImage);
         }
         foodSmallImageView.setFitWidth(84);
         foodSmallImageView.setFitHeight(60);
@@ -1203,7 +1258,7 @@ public class ClientHomeController
 
     public void orderAllButtonClicked(ActionEvent event)
     {
-        System.out.println("Order all button clicked");
+        System.out.println("Order all button clicked " + event.toString());
 
         try
         {
@@ -1275,7 +1330,7 @@ public class ClientHomeController
         ImageView foodSmallImageView = new ImageView("file:src/main/resources/food-images/" + food.getName() + ".jpg");
         if (foodSmallImageView.getImage().isError())
         {
-            foodSmallImageView = new ImageView(foodImage);
+            foodSmallImageView = new ImageView(foodDefaultImage);
         }
         foodSmallImageView.setFitWidth(84);
         foodSmallImageView.setFitHeight(60);
@@ -1354,19 +1409,117 @@ public class ClientHomeController
     // BOTH MENU COMMON FUNCTIONALITY
     public void menuBackButtonClicked(MouseEvent event)
     {
-        if (currentMenuWindow == Menu.CART)
-        {
-            System.out.println("Back button clicked on cart menu");
-            cartMenu.setVisible(false);
-            deliveredMenu.setVisible(false);
-        }
-        else if (currentMenuWindow == Menu.DELIVERED)
-        {
-            System.out.println("Back button clicked on delivered menu");
-            cartMenu.setVisible(false);
-            deliveredMenu.setVisible(false);
-        }
+        cartMenu.setVisible(false);
+        deliveredMenu.setVisible(false);
+        reviewMenu.setVisible(false);
+
         currentMenuWindow = Menu.HOME;
+    }
+
+    public void reviewMenuBackButtonClicked(MouseEvent event)
+    {
+        reviewMenu.setVisible(false);
+        reviewTypeBox.clear();
+    }
+
+    public void sendReviewButtonClicked(MouseEvent event)
+    {
+        String message = reviewTypeBox.getText();
+        reviewTypeBox.clear();
+        if (message.isEmpty()) return;
+
+        if(restaurantReviews.containsKey(currentRestaurantWindowID))
+        {
+            restaurantReviews.get(currentRestaurantWindowID).add(new Review(message,application.getUsername(), currentViewingRestaurantId,Review.ClientType.USER));
+        }
+        else
+        {
+            ArrayList<Review> reviews = new ArrayList<>();
+            reviews.add(new Review(message,application.getUsername(), currentViewingRestaurantId,Review.ClientType.USER));
+            restaurantReviews.put(currentRestaurantWindowID, reviews);
+        }
+
+        reviewMessagesListView.getItems().clear();
+        fillReviewMenuList();
+        reviewMessagesListView.scrollTo(reviewMessagesListView.getItems().size() - 1);
+    }
+
+    public void resetReviewButtonClicked(MouseEvent event)
+    {
+        reviewTypeBox.clear();
+    }
+
+    public void reviewButtonClicked(MouseEvent event)
+    {
+        System.out.println("Review icon clicked");
+        reviewMenu.setVisible(true);
+        reviewMenuInit();
+    }
+
+    public void reviewMenuInit()
+    {
+        reviewTypeBox.clear();
+        reviewMenuUsernameLabel.setText(application.getUsername());
+        reviewMenuRestaurantName.setText(application.getRestaurantList().get(currentRestaurantWindowID).getName());
+
+        reviewMessagesListView.getItems().clear();
+        fillReviewMenuList();
+    }
+
+    public void fillReviewMenuList()
+    {
+        if (!restaurantReviews.containsKey(currentRestaurantWindowID)) return;
+        for (Review review : restaurantReviews.get(currentRestaurantWindowID))
+        {
+            addMessage(review);
+        }
+    }
+
+    public void addMessage(Review review)
+    {
+        HBox row = new HBox();
+        row.setPrefWidth(680);
+        row.setMinWidth(680);
+        row.setMinWidth(680);
+
+        VBox messageAndHeadingContainer = new VBox();
+        messageAndHeadingContainer.setPrefWidth(680);
+        messageAndHeadingContainer.maxWidth(680);
+//        messageAndHeadingContainer.setStyle("-fx-background-color: rgba(59,70,208,0.4); -fx-background-radius: 10px; ");
+
+        Label clientNameLabel = new Label(review.getUsername());
+        clientNameLabel.setStyle("-fx-font-weight: bold; -fx-font-family: Corbel; -fx-font-size: 18px;");
+        clientNameLabel.setPadding(new Insets(10, 10, 10, 10));
+        clientNameLabel.maxWidth(400);
+        clientNameLabel.setPrefWidth(400);
+
+        Label messageLabel = new Label(review.getMessage());
+        messageLabel.setWrapText(true);
+        messageLabel.setPrefWidth(400);
+        messageLabel.maxWidth(400);
+        messageLabel.setTextAlignment(TextAlignment.JUSTIFY);
+        messageLabel.setPadding(new Insets(10, 10, 10, 10));
+
+        if (review.getClientType() == Review.ClientType.USER)
+        {
+            clientNameLabel.setAlignment(Pos.CENTER_LEFT);
+            messageLabel.setAlignment(Pos.CENTER_LEFT);
+            messageAndHeadingContainer.setAlignment(Pos.CENTER_LEFT);
+            messageLabel.setStyle("-fx-background-color: rgba(59,70,208,0.4); -fx-background-radius: 10px; -fx-font-family: 'Segoe Print'; -fx-font-size: 13px;");
+        }
+        else
+        {
+            clientNameLabel.setAlignment(Pos.CENTER_RIGHT);
+            messageLabel.setAlignment(Pos.CENTER_RIGHT);
+            messageAndHeadingContainer.setAlignment(Pos.CENTER_RIGHT);
+            messageLabel.setStyle("-fx-background-color: rgba(93,80,80,0.4); -fx-background-radius: 10px; -fx-font-family: 'Segoe Print'; -fx-font-size: 13px;");
+        }
+
+        messageAndHeadingContainer.getChildren().addAll(clientNameLabel, messageLabel);
+
+        row.getChildren().add(messageAndHeadingContainer);
+
+        reviewMessagesListView.getItems().add(row);
     }
 
     private static class Menu
@@ -1374,6 +1527,7 @@ public class ClientHomeController
         public static final int HOME = 1;
         public static final int CART = 2;
         public static final int DELIVERED = 3;
+        public static final int REVIEW = 4;
     }
 
     // SEARCH OPTIONS
