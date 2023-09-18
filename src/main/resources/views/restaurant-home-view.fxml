@@ -283,12 +283,12 @@
                            </font>
                         </TextArea>
                         <Rectangle arcHeight="25.0" arcWidth="25.0" fill="#e7cececc" height="50.0" layoutX="372.0" layoutY="511.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="91.0" />
-                        <ImageView fx:id="sendReviewButton" fitHeight="35.0" fitWidth="35.0" layoutX="424.0" layoutY="518.0" onMouseClicked="#sendReviewButtonClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="sendReviewButton" fitHeight="35.0" fitWidth="35.0" layoutX="424.0" layoutY="518.0" onMouseClicked="#sendReviewButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../assets/send-icon.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="378.0" layoutY="518.0" onMouseClicked="#resetReviewButtonClicked" onMouseEntered="#imageMouseHoverEntered" onMouseExited="#imageMouseHoverExited" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="378.0" layoutY="518.0" onMouseClicked="#resetReviewButtonClicked" onMouseEntered="#mouseHoverEntered" onMouseExited="#mouseHoverExited" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../assets/cancel-icon.png" />
                            </image>

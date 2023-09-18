@@ -55,6 +55,13 @@ public class ClientReadThread implements Runnable
 
                     Platform.runLater(() -> { clientHomeController.newDelivery(deliverDTO); });
                 }
+                else if (obj instanceof NewReviewRequest newReviewRequest)
+                {
+                    System.out.println("New review received,");
+                    System.out.println();
+
+                    Platform.runLater(() -> { clientHomeController.newReview(newReviewRequest.getReview()); });
+                }
                 else if (obj instanceof LogoutDTO logoutDTO)
                 {
                     break;

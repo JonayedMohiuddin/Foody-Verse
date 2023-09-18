@@ -13,6 +13,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.WindowEvent;
 import models.Food;
 import models.Restaurant;
+import models.Review;
 import util.FileOperations;
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -75,6 +77,7 @@ public class ServerController implements Runnable
     // Cart and Deliver list
     ConcurrentHashMap<Integer, HashMap<String, HashMap<Food, Integer>>> offlineRestaurantCartList;
     ConcurrentHashMap<Integer, HashMap<String, HashMap<Food, Integer>>> deliveryList;
+    ConcurrentHashMap<Integer, ArrayList<Review>> restaurantReviews;
 
     // Getters and Setters
     public ServerSocket getServerSocket()
@@ -125,6 +128,7 @@ public class ServerController implements Runnable
         restaurantMap = new ConcurrentHashMap<>();
         offlineRestaurantCartList = new ConcurrentHashMap<>();
         deliveryList = new ConcurrentHashMap<>();
+        restaurantReviews = new ConcurrentHashMap<>();
 
         try
         {

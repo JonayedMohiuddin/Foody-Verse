@@ -111,7 +111,7 @@ public class ClientHomeController
     HashMap<Food, Image> foodImages; // Food doesn't have any unique identifier, event name is not unique
     Image foodDefaultImage;
 
-    HashMap<Integer, ArrayList<Review>> restaurantReviews;
+    ConcurrentHashMap<Integer, ArrayList<Review>> restaurantReviews;
 
     public void setApplication(ClientApplication application)
     {
@@ -122,7 +122,7 @@ public class ClientHomeController
     {
         reviewMessagesListView.setStyle("-fx-selection-bar: rgba(255,255,255,0);");
 
-        restaurantReviews = new HashMap<>();
+        restaurantReviews = new ConcurrentHashMap<>();
 
         reviewButton.setVisible(false);
         reviewMenu.setVisible(false);
@@ -319,10 +319,26 @@ public class ClientHomeController
         restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", application.getUsername(), 1, Review.ClientType.USER));
         restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", application.getRestaurantList().get(1).getName(), 1, Review.ClientType.RESTAURANT));
 
-        reviewMessagesListView.setMaxHeight(10000);
         System.out.println("Creating new thread to read from server");
         System.out.println();
+
         new ClientReadThread(this, application.getUsername() + " ##C RT");
+    }
+
+    public void newReview(Review review)
+    {
+        System.out.println("New review received");
+
+        if(!restaurantReviews.containsKey(review.getRestaurantId()))
+        {
+            restaurantReviews.put(review.getRestaurantId(), new ArrayList<>());
+        }
+        restaurantReviews.get(review.getRestaurantId()).add(review);
+
+        if(currentMenuWindow == Menu.REVIEW)
+        {
+            reviewMenuInit();
+        }
     }
 
     public void newDelivery(DeliverDTO deliverDTO)
@@ -526,6 +542,7 @@ public class ClientHomeController
         currentWindowType = Options.RESTAURANT_WINDOW;
         currentRestaurantWindowID = restaurant.getId();
         reviewButton.setVisible(true);
+        currentMenuWindow = Menu.RESTAURANT;
     }
 
     // Add to cart
@@ -1034,6 +1051,7 @@ public class ClientHomeController
         currentWindowType = Options.HOME_WINDOW;
         currentRestaurantWindowID = -1;
         reviewButton.setVisible(false);
+        currentMenuWindow = Menu.HOME;
     }
 
     public void resetButtonClicked()
@@ -1206,14 +1224,6 @@ public class ClientHomeController
         // </VBox>
 
         VBox addButtonContainer = new VBox();
-//        Button addButton = new Button("+");
-//        addButton.setFont(robotoBoldFont20);
-//        addButton.setPrefWidth(buttonSide);
-//        addButton.setPrefHeight(buttonSide);
-//        addButton.setMinWidth(buttonSide);
-//        addButton.setMinHeight(buttonSide);
-//        addButton.setMaxHeight(buttonSide);
-//        addButton.setMaxWidth(buttonSide);
 
         ImageView addButton = new ImageView(addButtonImage);
         removeButton.setFitWidth(buttonSide);
@@ -1418,6 +1428,7 @@ public class ClientHomeController
 
     public void reviewMenuBackButtonClicked(MouseEvent event)
     {
+        currentMenuWindow = Menu.RESTAURANT;
         reviewMenu.setVisible(false);
         reviewTypeBox.clear();
     }
@@ -1425,8 +1436,20 @@ public class ClientHomeController
     public void sendReviewButtonClicked(MouseEvent event)
     {
         String message = reviewTypeBox.getText();
+
         reviewTypeBox.clear();
         if (message.isEmpty()) return;
+
+        try
+        {
+            application.getSocketWrapper().write(new NewReviewRequest(new Review(message, application.getUsername(), currentViewingRestaurantId, Review.ClientType.USER)));
+        }
+        catch (IOException e)
+        {
+            System.err.println("Class : HomePageController | Method : sendReviewButtonClicked | While sending review to server");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
 
         if(restaurantReviews.containsKey(currentRestaurantWindowID))
         {
@@ -1452,6 +1475,7 @@ public class ClientHomeController
     public void reviewButtonClicked(MouseEvent event)
     {
         System.out.println("Review icon clicked");
+        currentMenuWindow = Menu.REVIEW;
         reviewMenu.setVisible(true);
         reviewMenuInit();
     }
@@ -1481,6 +1505,8 @@ public class ClientHomeController
         row.setPrefWidth(680);
         row.setMinWidth(680);
         row.setMinWidth(680);
+
+        row.setPadding(new Insets(0, 16, 0, 10));
 
         VBox messageAndHeadingContainer = new VBox();
         messageAndHeadingContainer.setPrefWidth(680);
@@ -1512,7 +1538,7 @@ public class ClientHomeController
             clientNameLabel.setAlignment(Pos.CENTER_RIGHT);
             messageLabel.setAlignment(Pos.CENTER_RIGHT);
             messageAndHeadingContainer.setAlignment(Pos.CENTER_RIGHT);
-            messageLabel.setStyle("-fx-background-color: rgba(93,80,80,0.4); -fx-background-radius: 10px; -fx-font-family: 'Segoe Print'; -fx-font-size: 13px;");
+            messageLabel.setStyle("-fx-background-color: rgba(78,140,140,0.4); -fx-background-radius: 10px; -fx-font-family: 'Segoe Print'; -fx-font-size: 13px;");
         }
 
         messageAndHeadingContainer.getChildren().addAll(clientNameLabel, messageLabel);
@@ -1528,6 +1554,7 @@ public class ClientHomeController
         public static final int CART = 2;
         public static final int DELIVERED = 3;
         public static final int REVIEW = 4;
+        public static final int RESTAURANT = 5;
     }
 
     // SEARCH OPTIONS

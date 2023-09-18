@@ -5,6 +5,7 @@ import models.Food;
 import models.Restaurant;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -214,7 +215,7 @@ public class ServerReadThread implements Runnable
                     if (clientType == ClientType.RESTAURANT)
                     {
                         // RESTAURANTS NEED PENDING AND DELIVERY LIST
-                        // SO TWO STOP DTO WILL BE SENT SEQUNTIALLY
+                        // SO TWO STOP DTO WILL BE SENT SEQUENTIALLY
                         // CHECK IF THERE ARE ANY ORDERS FOR THIS RESTAURANT
                         // SEND THE PENDING LIST
                         if (serverController.offlineRestaurantCartList.containsKey(restaurantId))
@@ -357,7 +358,6 @@ public class ServerReadThread implements Runnable
                             foodCount.put(food, foodCount.get(food) + deliverDTO.getDeliverList().get(username).get(food));
                         }
                     }
-
                     // REMOVE THOSE FOOD DATA FROM PENDING LIST
                     if (serverController.offlineRestaurantCartList.containsKey(deliverDTO.getRestaurantId()))
                     {
@@ -388,6 +388,28 @@ public class ServerReadThread implements Runnable
                                 System.out.println("Restaurant " + restaurantId + " -> " + username + " -> " + food.getName() + " -> " + serverController.deliveryList.get(restaurantId).get(username).get(food));
                             }
                         }
+                    }
+                }
+                else if (obj instanceof NewReviewRequest newReviewRequest)
+                {
+                    serverController.log("New review received from " + clientName);
+                    System.out.println(thread.getName() + " : " + newReviewRequest);
+
+                    // ADD THE REVIEW TO THE RESTAURANT
+                    if (!serverController.restaurantReviews.containsKey(newReviewRequest.getReview().getRestaurantId()))
+                    {
+                        serverController.restaurantReviews.put(newReviewRequest.getReview().getRestaurantId(), new ArrayList<>());
+                    }
+                    serverController.restaurantReviews.get(newReviewRequest.getReview().getRestaurantId()).add(newReviewRequest.getReview());
+
+                    // SEND THE UPDATED REVIEW LIST TO ALL CLIENTS / RESTAURANTS
+                    for (SocketWrapper socketWrapper : serverController.getRestaurantMap().values())
+                    {
+                        socketWrapper.write(newReviewRequest);
+                    }
+                    for (SocketWrapper socketWrapper : serverController.getClientMap().values())
+                    {
+                        socketWrapper.write(newReviewRequest);
                     }
                 }
                 // CLIENT LOGGING OUT

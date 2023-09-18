@@ -1,12 +1,11 @@
 package restaurant;
 
+import client.ClientHomeController;
 import dto.*;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -19,6 +18,7 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.TextAlignment;
 import models.Food;
 import models.Restaurant;
 import models.Review;
@@ -65,51 +65,30 @@ public class RestaurantHomeController
     public AnchorPane infoListView;
     public AnchorPane addNewFoodMenu;
     public Label noOrderMessage;
-
-    public void mouseHoverEntered(MouseEvent event)
-    {
-        ImageTransitions.imageMouseHoverEntered(event);
-    }
-
-    public void mouseHoverExited(MouseEvent event)
-    {
-        ImageTransitions.imageMouseHoverExited(event);
-    }
-
-    // INTERNAL WINDOW SYSTEM
-    public static class WindowType
-    {
-        public static final int UNDEFINED = -1;
-        public static final int ORDERS = 0;
-        public static final int INFO = 1;
-        public static final int DELIVERED = 2;
-        public static final int ADD_FOODS = 3;
-    }
+    public ListView reviewMessagesListView;
+    public ImageView sendReviewButton;
+    public TextArea reviewTypeBox;
+    public AnchorPane reviewMenu;
+    public Rectangle reviewSelectionBox;
     int currentWindow = WindowType.UNDEFINED;
     // IMAGES
     Image restaurantImageMedium;
-
     // ASSETS //
     Image restaurantImageLarge;
     Image defaultFoodImage;
     Image userIconImage;
     Image deliverOrderButtonImage;
     Image orderAllImage;
-
     HashMap<Food, Image> foodImages;
-
     ConcurrentHashMap<String, HashMap<Food, Integer>> pendingOrdersList;
     ConcurrentHashMap<String, HashMap<Food, Integer>> historyOrdersList;
-
     int pendingOrderCount = 0;
+    DecimalFormat decimalFormat;
+    HashMap<Integer, ArrayList<Review>> restaurantReviews;
     // DATABASE
     private Restaurant restaurant;
     private String restaurantName;
     private RestaurantApplication application;
-
-    DecimalFormat decimalFormat;
-
-    HashMap<Integer, ArrayList<Review>> restaurantReviews;
 
     public void init()
     {
@@ -154,9 +133,9 @@ public class RestaurantHomeController
             application.getSocketWrapper().write(new RequestOfflinePendingOrDeliveryDataDTO());
             Object obj;
             // READ PENDING ORDERS
-            while((obj = application.getSocketWrapper().read()) != null)
+            while ((obj = application.getSocketWrapper().read()) != null)
             {
-                if(obj instanceof ServerToRestaurantCartOrderDTO serverToRestaurantCartOrderDTO)
+                if (obj instanceof ServerToRestaurantCartOrderDTO serverToRestaurantCartOrderDTO)
                 {
                     String username = serverToRestaurantCartOrderDTO.getUsername();
                     HashMap<Food, Integer> foodCountMap = serverToRestaurantCartOrderDTO.getCartFoodList();
@@ -169,21 +148,21 @@ public class RestaurantHomeController
 
                     updatePendingOrdersList(username, foodCountMap);
                 }
-                else if(obj instanceof StopDTO)
+                else if (obj instanceof StopDTO)
                 {
                     break;
                 }
             }
 
             // READ PREVIOUS DELIVERED ORDERS
-            while((obj = application.getSocketWrapper().read()) != null)
+            while ((obj = application.getSocketWrapper().read()) != null)
             {
-                if(obj instanceof DeliverDTO deliverDTO)
+                if (obj instanceof DeliverDTO deliverDTO)
                 {
                     System.out.println("Reading previous delivered orders");
                     updateDeliveryList(deliverDTO);
                 }
-                else if(obj instanceof StopDTO)
+                else if (obj instanceof StopDTO)
                 {
                     break;
                 }
@@ -218,7 +197,7 @@ public class RestaurantHomeController
 
         // RESTAURANT INFO
         restaurantImageView.setImage(new Image("file:src/main/resources/restaurant-images/" + restaurant.getName() + ".jpg"));
-        if(restaurantImageView.getImage().isError())
+        if (restaurantImageView.getImage().isError())
         {
             restaurantImageView.setImage(restaurantImageLarge);
         }
@@ -227,16 +206,18 @@ public class RestaurantHomeController
         priceLabel.setText(restaurant.getPrice());
         ratingLabel.setText(Double.toString(restaurant.getScore()));
         StringBuilder cats = new StringBuilder();
-        for(int i = 0; i < restaurant.getCategories().size(); i++)
+        for (int i = 0; i < restaurant.getCategories().size(); i++)
         {
             cats.append(restaurant.getCategories().get(i));
-            if(i != restaurant.getCategories().size() - 1) cats.append(", ");
+            if (i != restaurant.getCategories().size() - 1) cats.append(", ");
         }
         categoriesLabel.setText(cats.toString());
 
         listView.setVisible(false);
         infoListView.setVisible(false);
         addNewFoodMenu.setVisible(false);
+        reviewMenu.setVisible(false);
+
         switchInternalWindow(WindowType.ORDERS);
 
         updatePendingOrderNotification();
@@ -247,6 +228,13 @@ public class RestaurantHomeController
         deliveredOrderSelectionBox.setVisible(false);
         addFoodSelectionBox.setVisible(false);
         infoSelectionBox.setVisible(false);
+        reviewSelectionBox.setVisible(false);
+
+        restaurantReviews.put(1, new ArrayList<>());
+        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", "Test", 1, Review.ClientType.USER));
+        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", "KFC", 1, Review.ClientType.RESTAURANT));
+        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", "Jonayed", 1, Review.ClientType.USER));
+        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", "KFC", 1, Review.ClientType.RESTAURANT));
 
         new RestaurantReadThread(application, this);
     }
@@ -279,6 +267,11 @@ public class RestaurantHomeController
                 // Clear add food menu
                 addNewFoodMenu.setVisible(false);
                 addFoodSelectionBox.setVisible(false);
+            }
+            else if (currentWindow == WindowType.REVIEW)
+            {
+                reviewMenu.setVisible(false);
+                reviewSelectionBox.setVisible(false);
             }
         }
 
@@ -316,6 +309,13 @@ public class RestaurantHomeController
             displayVBox.getChildren().clear();
             resetAddMenuFieldsStyle();
         }
+        else if (window == WindowType.REVIEW)
+        {
+            reviewMenu.setVisible(true);
+            reviewSelectionBox.setVisible(true);
+            reviewMessagesListView.getItems().clear();
+            fillReviewMenuList();
+        }
 
         currentWindow = window;
         updateNoOrderText();
@@ -344,6 +344,60 @@ public class RestaurantHomeController
     public void infoButtonPressed(MouseEvent event)
     {
         switchInternalWindow(WindowType.INFO);
+    }
+
+    public void reviewButtonClicked(MouseEvent event)
+    {
+        switchInternalWindow(WindowType.REVIEW);
+    }
+
+    public void mouseHoverEntered(MouseEvent event)
+    {
+        ImageTransitions.imageMouseHoverEntered(event);
+    }
+
+    public void mouseHoverExited(MouseEvent event)
+    {
+        ImageTransitions.imageMouseHoverExited(event);
+    }
+
+    public void sendReviewButtonClicked(MouseEvent event)
+    {
+        String message = reviewTypeBox.getText();
+
+        reviewTypeBox.clear();
+        if (message.isEmpty()) return;
+
+        try
+        {
+            application.getSocketWrapper().write(new NewReviewRequest(new Review(message, application.getUsername(), restaurant.getId(), Review.ClientType.RESTAURANT)));
+        }
+        catch (IOException e)
+        {
+            System.err.println("Class : HomePageController | Method : sendReviewButtonClicked | While sending review to server");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+        if(restaurantReviews.containsKey(restaurant.getId()))
+        {
+            restaurantReviews.get(restaurant.getId()).add(new Review(message,application.getUsername(), restaurant.getId(),Review.ClientType.RESTAURANT));
+        }
+        else
+        {
+            ArrayList<Review> reviews = new ArrayList<>();
+            reviews.add(new Review(message,application.getUsername(), restaurant.getId(),Review.ClientType.RESTAURANT));
+            restaurantReviews.put(restaurant.getId(), reviews);
+        }
+
+        reviewMessagesListView.getItems().clear();
+        fillReviewMenuList();
+        reviewMessagesListView.scrollTo(reviewMessagesListView.getItems().size() - 1);
+    }
+
+    public void resetReviewButtonClicked(MouseEvent event)
+    {
+        reviewTypeBox.setText("");
     }
 
     public void resetAddMenuFieldsStyle()
@@ -416,7 +470,7 @@ public class RestaurantHomeController
 
     public void updatePendingOrdersList(String username, HashMap<Food, Integer> foodCountMap)
     {
-        if(foodCountMap.size() == 0) return;
+        if (foodCountMap.size() == 0) return;
 
         if (pendingOrdersList.containsKey(username))
         {
@@ -458,14 +512,14 @@ public class RestaurantHomeController
 
     public void updateDeliveryList(DeliverDTO deliverDTO)
     {
-        for(String username : deliverDTO.getDeliverList().keySet())
+        for (String username : deliverDTO.getDeliverList().keySet())
         {
-            if(historyOrdersList.containsKey(username))
+            if (historyOrdersList.containsKey(username))
             {
                 HashMap<Food, Integer> foodCount = historyOrdersList.get(username);
-                for(Food food : deliverDTO.getDeliverList().get(username).keySet())
+                for (Food food : deliverDTO.getDeliverList().get(username).keySet())
                 {
-                    if(foodCount.containsKey(food))
+                    if (foodCount.containsKey(food))
                     {
                         foodCount.put(food, foodCount.get(food) + deliverDTO.getDeliverList().get(username).get(food));
                     }
@@ -484,9 +538,9 @@ public class RestaurantHomeController
 
     public void updateNoOrderText()
     {
-        if(currentWindow == WindowType.ORDERS)
+        if (currentWindow == WindowType.ORDERS)
         {
-            if(pendingOrdersList.size() == 0)
+            if (pendingOrdersList.size() == 0)
             {
                 noOrderMessage.setText("No pending orders");
             }
@@ -495,9 +549,9 @@ public class RestaurantHomeController
                 noOrderMessage.setText("");
             }
         }
-        else if(currentWindow == WindowType.DELIVERED)
+        else if (currentWindow == WindowType.DELIVERED)
         {
-            if(historyOrdersList.size() == 0)
+            if (historyOrdersList.size() == 0)
             {
                 noOrderMessage.setText("No orders delivered");
             }
@@ -653,7 +707,7 @@ public class RestaurantHomeController
         Label orderCountLabel = new Label("X " + orderCount);
         orderCountLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-font-family: Calibri;");
 
-        Label orderPriceLabel = new Label( decimalFormat.format(food.getPrice() * orderCount) + "$");
+        Label orderPriceLabel = new Label(decimalFormat.format(food.getPrice() * orderCount) + "$");
         orderPriceLabel.setStyle("-fx-font-size: 18px; -fx-font-family: 'Roboto Black';");
 
         orderDetailsContainer.getChildren().addAll(orderCountLabel, orderPriceLabel);
@@ -804,7 +858,7 @@ public class RestaurantHomeController
         Label orderCountLabel = new Label("X " + orderCount);
         orderCountLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-font-family: Calibri;");
 
-        Label orderPriceLabel = new Label( decimalFormat.format(food.getPrice() * orderCount) + "$");
+        Label orderPriceLabel = new Label(decimalFormat.format(food.getPrice() * orderCount) + "$");
         orderPriceLabel.setStyle("-fx-font-size: 18px; -fx-font-family: 'Roboto Black';");
 
         orderDetailsContainer.getChildren().addAll(orderCountLabel, orderPriceLabel);
@@ -959,7 +1013,7 @@ public class RestaurantHomeController
         for (Food food : foodList)
         {
             itemOrderCount = 0;
-            for(HashMap<Food, Integer> foodCount : historyOrdersList.values())
+            for (HashMap<Food, Integer> foodCount : historyOrdersList.values())
             {
                 // IF HASH CODE IS NOT OVERRIDDEN THEN THIS WILL NOT WORK
                 // AS THE OBJECTS WILL BE COMPARED BY THEIR MEMORY ADDRESS
@@ -1076,5 +1130,95 @@ public class RestaurantHomeController
     public void setApplication(RestaurantApplication application)
     {
         this.application = application;
+    }
+
+    // INTERNAL WINDOW SYSTEM
+    public static class WindowType
+    {
+        public static final int UNDEFINED = -1;
+        public static final int ORDERS = 0;
+        public static final int INFO = 1;
+        public static final int DELIVERED = 2;
+        public static final int ADD_FOODS = 3;
+        public static final int REVIEW = 4;
+    }
+
+    public void newReview(Review review)
+    {
+        System.out.println("New review received");
+
+        if(!restaurantReviews.containsKey(review.getRestaurantId()))
+        {
+            restaurantReviews.put(review.getRestaurantId(), new ArrayList<>());
+        }
+        restaurantReviews.get(review.getRestaurantId()).add(review);
+
+        if(currentWindow == WindowType.REVIEW)
+        {
+            reviewMenuInit();
+        }
+    }
+
+    public void reviewMenuInit()
+    {
+        reviewTypeBox.clear();
+        reviewMessagesListView.getItems().clear();
+        fillReviewMenuList();
+    }
+
+    public void fillReviewMenuList()
+    {
+        if (!restaurantReviews.containsKey(restaurant.getId())) return;
+        for (Review review : restaurantReviews.get(restaurant.getId()))
+        {
+            addMessage(review);
+        }
+    }
+
+    public void addMessage(Review review)
+    {
+        HBox row = new HBox();
+        row.setPrefWidth(470);
+        row.setMinWidth(470);
+        row.setMinWidth(470);
+
+        VBox messageAndHeadingContainer = new VBox();
+        messageAndHeadingContainer.setPrefWidth(470);
+        messageAndHeadingContainer.maxWidth(470);
+//        messageAndHeadingContainer.setStyle("-fx-background-color: rgba(59,70,208,0.4); -fx-background-radius: 10px; ");
+
+        Label clientNameLabel = new Label(review.getUsername());
+        clientNameLabel.setStyle("-fx-font-weight: bold; -fx-font-family: Corbel; -fx-font-size: 18px;");
+        clientNameLabel.setPadding(new Insets(10, 10, 10, 10));
+        clientNameLabel.maxWidth(250);
+        clientNameLabel.setPrefWidth(250);
+
+        Label messageLabel = new Label(review.getMessage());
+        messageLabel.setWrapText(true);
+        messageLabel.setPrefWidth(250);
+        messageLabel.maxWidth(250);
+        messageLabel.setTextAlignment(TextAlignment.JUSTIFY);
+        messageLabel.setPadding(new Insets(10, 10, 10, 10));
+
+        if (review.getClientType() == Review.ClientType.USER)
+        {
+            clientNameLabel.setAlignment(Pos.CENTER_LEFT);
+            messageLabel.setAlignment(Pos.CENTER_LEFT);
+            messageAndHeadingContainer.setAlignment(Pos.CENTER_LEFT);
+            messageLabel.setStyle("-fx-background-color: rgba(33,136,176,0.4); -fx-background-radius: 10px; -fx-font-family: 'Segoe Print'; -fx-font-size: 13px;");
+        }
+        else
+        {
+            clientNameLabel.setAlignment(Pos.CENTER_RIGHT);
+            messageLabel.setAlignment(Pos.CENTER_RIGHT);
+            messageAndHeadingContainer.setAlignment(Pos.CENTER_RIGHT);
+            messageLabel.setStyle("-fx-background-color: rgba(0,100,255,0.4); -fx-background-radius: 10px; -fx-font-family: 'Segoe Print'; -fx-font-size: 13px;");
+        }
+
+        messageAndHeadingContainer.getChildren().addAll(clientNameLabel, messageLabel);
+
+        row.getChildren().add(messageAndHeadingContainer);
+
+        reviewMessagesListView.getItems().add(row);
     }
 }
