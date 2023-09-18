@@ -24,3 +24,18 @@
 5,Espresso, Coffee,25.5
 5,Iced Coffee, Drinks,12.2
 5,Iced Tea, Drinks,13.4
+6,Chicken Burrito,Burritos,10.5
+6,Steak Burrito,Burritos,11.8
+6,Veggie Burrito,Burritos,9.5
+6,Chicken Bowl,Bowls,10.5
+6,Chicken Salad,Salads,10.5
+6,Chips and Guacamole,Sides,4.5
+7,Pepperoni Pizza,Pizza,10.99
+7,Meat Lover's Pizza,Pizza,12.99
+7,BBQ Pizza,Pizza,11.99
+8,Whopper,Burgers,10.99
+8,Hamburger,Burgers,8.99
+9,Spicy Chicken Sandwich,Chicken,10.99
+9,Chicken Nuggets,Chicken,8.99
+10,Chicken Quesadilla,Chicken,10.99
+10,Chicken Soft Taco,Chicken,8.99

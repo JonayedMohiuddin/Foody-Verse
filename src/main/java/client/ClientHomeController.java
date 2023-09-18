@@ -878,6 +878,10 @@ public class ClientHomeController
             ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByName(searchTextField.getText(), application.getRestaurantList());
             resetFlowPane();
             addRestaurantListToFlowPane(restaurants);
+            if(restaurants.size() == 0)
+            {
+                flowpane.getChildren().add(new Label("No restaurants found"));
+            }
         }
         else if (currentSearchFilterType.equals(Options.RESTAURANT_CATEGORY))
         {
@@ -885,6 +889,10 @@ public class ClientHomeController
             ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByCattegory(searchTextField.getText(), application.getRestaurantList());
             resetFlowPane();
             addRestaurantListToFlowPane(restaurants);
+            if(restaurants.size() == 0)
+            {
+                flowpane.getChildren().add(new Label("No restaurants found"));
+            }
         }
         else if (currentSearchFilterType.equals(Options.RESTAURANT_PRICE))
         {
@@ -910,6 +918,10 @@ public class ClientHomeController
             ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantByPrice(opt, application.getRestaurantList());
             resetFlowPane();
             addRestaurantListToFlowPane(restaurants);
+            if(restaurants.size() == 0)
+            {
+                flowpane.getChildren().add(new Label("No restaurants found"));
+            }
         }
         else if (currentSearchFilterType.equals(Options.RESTAURANT_ZIPCODE))
         {
@@ -917,6 +929,10 @@ public class ClientHomeController
             ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByZipcode(searchTextField.getText(), application.getRestaurantList());
             resetFlowPane();
             addRestaurantListToFlowPane(restaurants);
+            if(restaurants.size() == 0)
+            {
+                flowpane.getChildren().add(new Label("No restaurants found"));
+            }
         }
         else if (currentSearchFilterType.equals(Options.RESTAURANT_RATING))
         {
@@ -927,6 +943,10 @@ public class ClientHomeController
             ArrayList<Restaurant> restaurants = RestaurantSearches.searchRestaurantsByRating(range.get(0), range.get(1), application.getRestaurantList());
             resetFlowPane();
             addRestaurantListToFlowPane(restaurants);
+            if(restaurants.size() == 0)
+            {
+                flowpane.getChildren().add(new Label("No restaurants found"));
+            }
         }
         else if (currentSearchFilterType.equals(Options.FOOD_NAME))
         {
@@ -934,6 +954,10 @@ public class ClientHomeController
             ArrayList<Food> foods = RestaurantSearches.searchFoodByName(searchTextField.getText(), application.getFoodList());
             resetFlowPane();
             addFoodListToFlowPane(foods);
+            if(foods.size() == 0)
+            {
+                flowpane.getChildren().add(new Label("No foods found"));
+            }
         }
         else if (currentSearchFilterType.equals(Options.FOOD_CATEGORY))
         {
@@ -941,6 +965,10 @@ public class ClientHomeController
             ArrayList<Food> foods = RestaurantSearches.searchFoodByCategory(searchTextField.getText(), application.getFoodList());
             resetFlowPane();
             addFoodListToFlowPane(foods);
+            if(foods.size() == 0)
+            {
+                flowpane.getChildren().add(new Label("No foods found"));
+            }
         }
         else if (currentSearchFilterType.equals(Options.FOOD_PRICE))
         {
@@ -951,6 +979,10 @@ public class ClientHomeController
             ArrayList<Food> foods = RestaurantSearches.searchFoodByPriceRange(range.get(0), range.get(1), application.getFoodList());
             resetFlowPane();
             addFoodListToFlowPane(foods);
+            if(foods.size() == 0)
+            {
+                flowpane.getChildren().add(new Label("No foods found"));
+            }
         }
         else
         {
