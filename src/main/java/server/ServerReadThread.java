@@ -137,7 +137,6 @@ public class ServerReadThread implements Runnable
                 else if (obj instanceof DatabaseRequestDTO databaseRequestDTO)
                 {
                     System.out.println(thread.getName() + " : " + databaseRequestDTO);
-                    serverController.log(clientName + " requested database");
 
                     if (databaseRequestDTO.getRequestType() == DatabaseRequestDTO.RequestType.RESTAURANT_LIST)
                     {
@@ -145,7 +144,7 @@ public class ServerReadThread implements Runnable
                         DatabaseDTO databaseDTO = new DatabaseDTO(serverController.getRestaurantList());
                         socketWrapper.write(databaseDTO);
                         System.out.println(thread.getName() + " : Database response sent. " + databaseDTO);
-                        serverController.log(clientName + " received database");
+                        serverController.log(clientName + " received basic database");
                     }
                     else if (databaseRequestDTO.getRequestType() == DatabaseRequestDTO.RequestType.SINGLE_RESTAURANT)
                     {
@@ -153,7 +152,7 @@ public class ServerReadThread implements Runnable
                         DatabaseDTO databaseDTO = new DatabaseDTO(serverController.getRestaurantList().get(restaurantId));
                         socketWrapper.write(databaseDTO);
                         System.out.println(thread.getName() + " : Database response sent. " + databaseDTO);
-                        serverController.log(clientName + " received database");
+                        serverController.log(clientName + " received basic database");
                     }
                     else
                     {
@@ -214,7 +213,6 @@ public class ServerReadThread implements Runnable
                 // STOP DTO MARKS THE END OF THE DATA STREAM
                 else if (obj instanceof RequestOfflineDatabaseDTO)
                 {
-                    serverController.log(clientName + " requested offline data");
                     if (clientType == ClientType.RESTAURANT)
                     {
                         // RESTAURANTS NEED PENDING , DELIVERY LIST AND REVIEW LIST
@@ -294,6 +292,8 @@ public class ServerReadThread implements Runnable
                         socketWrapper.write(reviewListDTO);
 
                         socketWrapper.write(new StopDTO());
+
+                        serverController.log(clientName + " received offline database");
                     }
                 }
                 // FOOD ADD REQUEST RECEIVED -> ADD THE FOOD TO THE RESTAURANT
@@ -337,7 +337,6 @@ public class ServerReadThread implements Runnable
                 else if (obj instanceof DeliverDTO deliverDTO)
                 {
                     System.out.println("Order delivery request received from " + clientName);
-                    serverController.log("Order delivery request received from " + clientName);
 
                     // SEND THE FOOD LIST TO ALL CLIENTS (USER)
                     for (String username : deliverDTO.getDeliverList().keySet())
@@ -391,10 +390,12 @@ public class ServerReadThread implements Runnable
                             }
                         }
                     }
+
+                    serverController.log("Orders delivered from " + clientName);
                 }
                 else if (obj instanceof NewReviewRequest newReviewRequest)
                 {
-                    serverController.log("New review received from " + clientName);
+                    serverController.log("New review added " + clientName);
                     System.out.println(thread.getName() + " : " + newReviewRequest);
                     int restaurantId = newReviewRequest.getReview().getRestaurantId();
                     System.out.println(restaurantId);
