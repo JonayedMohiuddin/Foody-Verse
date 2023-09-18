@@ -1,6 +1,5 @@
 package restaurant;
 
-import client.ClientHomeController;
 import dto.*;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -130,7 +129,7 @@ public class RestaurantHomeController
 
         try
         {
-            application.getSocketWrapper().write(new RequestOfflinePendingOrDeliveryDataDTO());
+            application.getSocketWrapper().write(new RequestOfflineDatabaseDTO());
             Object obj;
             // READ PENDING ORDERS
             while ((obj = application.getSocketWrapper().read()) != null)
@@ -161,6 +160,22 @@ public class RestaurantHomeController
                 {
                     System.out.println("Reading previous delivered orders");
                     updateDeliveryList(deliverDTO);
+                }
+                else if (obj instanceof StopDTO)
+                {
+                    break;
+                }
+            }
+
+            // READ PREVIOUS REVIEWS
+            while ((obj = application.getSocketWrapper().read()) != null)
+            {
+                if (obj instanceof ReviewListDTO reviewListDTO)
+                {
+                    System.out.println("Reading previous reviews");
+
+                    restaurantReviews.put(1, new ArrayList<>());
+                    restaurantReviews.get(1).addAll(reviewListDTO.getReviews());
                 }
                 else if (obj instanceof StopDTO)
                 {
@@ -229,12 +244,6 @@ public class RestaurantHomeController
         addFoodSelectionBox.setVisible(false);
         infoSelectionBox.setVisible(false);
         reviewSelectionBox.setVisible(false);
-
-        restaurantReviews.put(1, new ArrayList<>());
-        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", "Test", 1, Review.ClientType.USER));
-        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", "KFC", 1, Review.ClientType.RESTAURANT));
-        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", "Jonayed", 1, Review.ClientType.USER));
-        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", "KFC", 1, Review.ClientType.RESTAURANT));
 
         new RestaurantReadThread(application, this);
     }

@@ -24,6 +24,8 @@ public class ServerReadThread implements Runnable
         this.socketWrapper = socketWrapper;
         this.serverController = serverController;
         this.clientType = ClientType.UNDEFINED;
+        this.clientName = "Anonymous";
+        this.restaurantId = -1;
 
         thread = new Thread(this, "SRT #U UNDEFINED");
         thread.start();
@@ -210,13 +212,13 @@ public class ServerReadThread implements Runnable
                 }
                 // OFFLINE DATA LIKE PENDING OR DELIVERY DATA -> SEND THEM TO THE CLIENT / RESTAURANT , IF CLIENT REQUESTED
                 // STOP DTO MARKS THE END OF THE DATA STREAM
-                else if (obj instanceof RequestOfflinePendingOrDeliveryDataDTO)
+                else if (obj instanceof RequestOfflineDatabaseDTO)
                 {
                     serverController.log(clientName + " requested offline data");
                     if (clientType == ClientType.RESTAURANT)
                     {
-                        // RESTAURANTS NEED PENDING AND DELIVERY LIST
-                        // SO TWO STOP DTO WILL BE SENT SEQUENTIALLY
+                        // RESTAURANTS NEED PENDING , DELIVERY LIST AND REVIEW LIST
+                        // SO THREE STOP DTO WILL BE SENT SEQUENTIALLY
                         // CHECK IF THERE ARE ANY ORDERS FOR THIS RESTAURANT
                         // SEND THE PENDING LIST
                         if (serverController.offlineRestaurantCartList.containsKey(restaurantId))
@@ -258,7 +260,17 @@ public class ServerReadThread implements Runnable
                             System.out.println();
                         }
 
-                        // LAST STOP DTO end DELIVERY LIST
+                        // SECOND STOP DTO end DELIVERY LIST
+                        socketWrapper.write(new StopDTO());
+
+                        // SEND THE REVIEW LIST
+                        if (serverController.restaurantReviews.containsKey(restaurantId))
+                        {
+                            ReviewListDTO reviewListDTO = new ReviewListDTO(serverController.restaurantReviews.get(restaurantId));
+                            socketWrapper.write(reviewListDTO);
+                        }
+
+                        // LAST STOP DTO end REVIEW LIST
                         socketWrapper.write(new StopDTO());
                     }
                     else if (clientType == ClientType.CLIENT)
@@ -278,6 +290,12 @@ public class ServerReadThread implements Runnable
                                 System.out.println();
                             }
                         }
+
+                        socketWrapper.write(new StopDTO());
+
+
+                        ReviewListDTO reviewListDTO = new ReviewListDTO(serverController.restaurantReviews);
+                        socketWrapper.write(reviewListDTO);
 
                         socketWrapper.write(new StopDTO());
                     }
@@ -406,7 +424,7 @@ public class ServerReadThread implements Runnable
                     serverController.restaurantReviews.get(restaurantId).add(newReviewRequest.getReview());
 
                     // SEND THE UPDATED REVIEW LIST TO RESTAURANT IF IT IS FROM A CLIENT
-                    if(newReviewRequest.getReview().getClientType() != Review.ClientType.RESTAURANT)
+                    if (newReviewRequest.getReview().getClientType() != Review.ClientType.RESTAURANT)
                     {
                         for (String restaurantName : serverController.getRestaurantMap().keySet())
                         {
@@ -421,7 +439,7 @@ public class ServerReadThread implements Runnable
                     for (String clientName : serverController.getClientMap().keySet())
                     {
                         // Review is added by this customer so ignore
-                        if(newReviewRequest.getReview().getClientType() == Review.ClientType.USER && newReviewRequest.getReview().getUsername().equals(clientName))
+                        if (newReviewRequest.getReview().getClientType() == Review.ClientType.USER && newReviewRequest.getReview().getUsername().equals(clientName))
                         {
                             continue;
                         }

@@ -2,6 +2,7 @@ package util;
 
 import models.Food;
 import models.Restaurant;
+import models.Review;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class FileOperations
     private static final String RESTAURANTS_INFO_FILE_NAME = "src/main/resources/database/restaurants-info.txt";
     private static final String PENDING_ORDERS_FILE_NAME = "src/main/resources/database/pending-order-list.txt";
     private static final String DELIVERED_ORDERS_FILE_NAME = "src/main/resources/database/delivered-order-list.txt";
+    private static final String REVIEW_LIST_FILE_NAME = "src/main/resources/database/reviews-list.txt";
 
     // TEST CODE
     public static void main(String[] args)
@@ -373,5 +375,65 @@ public class FileOperations
         reader.close();
 
         return deliveredOrderRestaurantList;
+    }
+
+    public static void writeReviewList(ConcurrentHashMap<Integer, ArrayList<Review>> restaurantReviews) throws IOException
+    {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(REVIEW_LIST_FILE_NAME));
+        for(Integer restaurantId : restaurantReviews.keySet())
+        {
+            writer.write(restaurantId + "," + restaurantReviews.get(restaurantId).size());
+            writer.write("\n");
+
+            for(Review review : restaurantReviews.get(restaurantId))
+            {
+                writer.write(review.getUsername() + "," + review.getRestaurantId() + "," + review.getClientType());
+                writer.write("\n");
+                writer.write(review.getMessage());
+                writer.write("\n");
+            }
+        }
+    }
+
+    public static ConcurrentHashMap<Integer, ArrayList<Review>> readReviewList() throws IOException
+    {
+        ConcurrentHashMap<Integer, ArrayList<Review>> restaurantReviews = new ConcurrentHashMap<>();
+
+        BufferedReader reader = new BufferedReader(new FileReader(REVIEW_LIST_FILE_NAME));
+
+        while (true)
+        {
+            String line = reader.readLine();
+            if (line == null) break;
+
+            String[] tokens = line.split(",");
+
+            int restaurantId = Integer.parseInt(tokens[0]);
+            int reviewCount = Integer.parseInt(tokens[1]);
+
+            ArrayList<Review> reviews = new ArrayList<>();
+
+            for (int i = 0; i < reviewCount; i++)
+            {
+                line = reader.readLine();
+                tokens = line.split(",");
+
+                String username = tokens[0];
+                int restaurantId2 = Integer.parseInt(tokens[1]);
+                int clientType = Integer.parseInt(tokens[2]);
+
+                line = reader.readLine();
+                String message = line;
+
+                Review review = new Review(message, username, restaurantId2, clientType);
+
+                reviews.add(review);
+            }
+
+            restaurantReviews.put(restaurantId, reviews);
+        }
+        reader.close();
+
+        return restaurantReviews;
     }
 }

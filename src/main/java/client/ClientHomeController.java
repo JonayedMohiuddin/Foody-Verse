@@ -208,7 +208,7 @@ public class ClientHomeController
         // READ OFFLINE DATA
         try
         {
-            application.getSocketWrapper().write(new RequestOfflinePendingOrDeliveryDataDTO());
+            application.getSocketWrapper().write(new RequestOfflineDatabaseDTO());
 
             Object obj;
             while ((obj = application.getSocketWrapper().read()) != null)
@@ -232,6 +232,27 @@ public class ClientHomeController
                         {
                             System.out.println("Food name " + food.getName() + " count " + deliveredFoodList.get(restId).get(food));
                         }
+                    }
+                }
+                else if (obj instanceof StopDTO stopDTO)
+                {
+                    break;
+                }
+                else
+                {
+                    System.out.println("Unknown DTO, expected StopDTO or RequestOfflinePendingOrDeliveryDataDTO");
+                    System.out.println("Class : HomePageController | Method : init | While reading offline data from server");
+                    application.logoutCleanup();
+                }
+            }
+
+            while ((obj = application.getSocketWrapper().read()) != null)
+            {
+                if (obj instanceof ReviewListDTO reviewListDTO)
+                {
+                    for (Integer restaurantId : reviewListDTO.getRestaurantReviews().keySet())
+                    {
+                        this.restaurantReviews.put(restaurantId, reviewListDTO.getRestaurantReviews().get(restaurantId));
                     }
                 }
                 else if (obj instanceof StopDTO stopDTO)
@@ -311,12 +332,6 @@ public class ClientHomeController
         viewChoiceBox.setValue(Options.VIEW_RESTAURANT);
 
         currentWindowType = Options.HOME_WINDOW;
-
-        restaurantReviews.put(1, new ArrayList<>());
-        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", application.getUsername(), 1, Review.ClientType.USER));
-        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", application.getRestaurantList().get(1).getName(), 1, Review.ClientType.RESTAURANT));
-        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", application.getUsername(), 1, Review.ClientType.USER));
-        restaurantReviews.get(1).add(new Review("Hello, I am very satisfied with the service of your restaurant. The foods taste amazing and they are like garden fresh. THANK YOU VERY MUCH!", application.getRestaurantList().get(1).getName(), 1, Review.ClientType.RESTAURANT));
 
         System.out.println("Creating new thread to read from server");
         System.out.println();
@@ -1516,16 +1531,16 @@ public class ClientHomeController
 
         if (review.getClientType() == Review.ClientType.USER)
         {
-            clientNameLabel.setAlignment(Pos.CENTER_LEFT);
-            messageLabel.setAlignment(Pos.CENTER_LEFT);
-            messageAndHeadingContainer.setAlignment(Pos.CENTER_LEFT);
+            clientNameLabel.setAlignment(Pos.CENTER_RIGHT);
+            messageLabel.setAlignment(Pos.CENTER_RIGHT);
+            messageAndHeadingContainer.setAlignment(Pos.CENTER_RIGHT);
             messageLabel.setStyle("-fx-background-color: rgba(59,70,208,0.4); -fx-background-radius: 10px; -fx-font-family: 'Segoe Print'; -fx-font-size: 13px;");
         }
         else
         {
-            clientNameLabel.setAlignment(Pos.CENTER_RIGHT);
-            messageLabel.setAlignment(Pos.CENTER_RIGHT);
-            messageAndHeadingContainer.setAlignment(Pos.CENTER_RIGHT);
+            clientNameLabel.setAlignment(Pos.CENTER_LEFT);
+            messageLabel.setAlignment(Pos.CENTER_LEFT);
+            messageAndHeadingContainer.setAlignment(Pos.CENTER_LEFT);
             messageLabel.setStyle("-fx-background-color: rgba(78,140,140,0.4); -fx-background-radius: 10px; -fx-font-family: 'Segoe Print'; -fx-font-size: 13px;");
         }
 

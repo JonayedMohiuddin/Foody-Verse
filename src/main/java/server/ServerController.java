@@ -137,6 +137,7 @@ public class ServerController implements Runnable
             restaurantList = FileOperations.readRestaurants();
             offlineRestaurantCartList = FileOperations.readPendingOrderList();
             deliveryList = FileOperations.readDeliveredOrderList();
+            restaurantReviews = FileOperations.readReviewList();
         }
         catch (IOException e)
         {
@@ -219,6 +220,16 @@ public class ServerController implements Runnable
         catch (IOException e)
         {
             System.out.println("Class : ServerController | Method : shutDownServer | While writing delivered orders to file");
+            System.out.println("Error : " + e.getMessage());
+        }
+
+        try
+        {
+            FileOperations.writeReviewList(restaurantReviews);
+        }
+        catch (IOException e)
+        {
+            System.out.println("Class : ServerController | Method : shutDownServer | While writing review list to file");
             System.out.println("Error : " + e.getMessage());
         }
 
