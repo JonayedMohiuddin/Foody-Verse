@@ -380,6 +380,7 @@ public class FileOperations
     public static void writeReviewList(ConcurrentHashMap<Integer, ArrayList<Review>> restaurantReviews) throws IOException
     {
         BufferedWriter writer = new BufferedWriter(new FileWriter(REVIEW_LIST_FILE_NAME));
+
         for(Integer restaurantId : restaurantReviews.keySet())
         {
             writer.write(restaurantId + "," + restaurantReviews.get(restaurantId).size());
@@ -393,6 +394,7 @@ public class FileOperations
                 writer.write("\n");
             }
         }
+        writer.close();
     }
 
     public static ConcurrentHashMap<Integer, ArrayList<Review>> readReviewList() throws IOException

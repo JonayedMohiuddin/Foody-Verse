@@ -55,6 +55,8 @@ public class ClientHomeController
     public ImageView searchFilterImageView;
     public ImageView viewImageView;
 
+    int lastDeliveredCount = 0;
+
     // HOME
     public AnchorPane homeMenu;
     // CART MENU
@@ -296,7 +298,8 @@ public class ClientHomeController
         }
 
         updateNotification();
-
+        deliveredItemCountBg.setVisible(false);
+        deliveredItemCountLabel.setVisible(false);
 
         // POPULATE RESTAURANT SEARCH OPTIONS
         restaurantSearchOptions = new ArrayList<>();
@@ -532,15 +535,15 @@ public class ClientHomeController
             cartItemCountBg.setVisible(true);
         }
 
-        if (deliveredTotalItems == 0)
-        {
-            deliveredItemCountBg.setVisible(false);
-            deliveredItemCountLabel.setVisible(false);
-        }
+//        if (lastDeliveredCount > deliveredTotalItems)
+//        {
+//            deliveredItemCountBg.setVisible(false);
+//            deliveredItemCountLabel.setVisible(false);
+//        }
 //        else
 //        {
-//            System.out.println("Delivered total items : " + deliveredTotalItems);
-//            deliveredItemCountLabel.setText(String.valueOf(deliveredTotalItems));
+//            System.out.println("Delivered total items : " + lastDeliveredCount - deliveredTotalItems);
+//            deliveredItemCountLabel.setText(String.valueOf(lastDeliveredCount - deliveredTotalItems));
 //            deliveredItemCountLabel.setVisible(true);
 //            deliveredItemCountBg.setVisible(true);
 //        }
@@ -1197,7 +1200,7 @@ public class ClientHomeController
         // <HBox>
         HBox foodButtonsContainer = new HBox();
 
-        int buttonSide = 45;
+        int buttonSide = 35;
 
         VBox removeButtonContainer = new VBox();
         removeButtonContainer.setAlignment(Pos.CENTER);
@@ -1228,9 +1231,11 @@ public class ClientHomeController
         VBox addButtonContainer = new VBox();
 
         ImageView addButton = new ImageView(addButtonImage);
+
+        addButton.setFitWidth(buttonSide);
+        addButton.setFitHeight(buttonSide);
         removeButton.setFitWidth(buttonSide);
         removeButton.setFitHeight(buttonSide);
-
 
         addButton.setOnMouseClicked(event -> {
             cartItemAddButtonClicked(food, foodCountLabel, foodPriceLabel);
@@ -1316,11 +1321,15 @@ public class ClientHomeController
         HBox row = new HBox();
 
         StackPane restaurantImageContainer = new StackPane();
-        ImageView foodSmallImageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurantName + ".jpg");
-        foodSmallImageView.setFitWidth(60);
-        foodSmallImageView.setFitHeight(40);
+        ImageView restaurantImageView = new ImageView("file:src/main/resources/restaurant-images/" + restaurantName + ".jpg");
+        if (restaurantImageView.getImage().isError())
+        {
+            restaurantImageView = new ImageView(restaurantDefaultImage);
+        }
+        restaurantImageView.setFitWidth(60);
+        restaurantImageView.setFitHeight(40);
         restaurantImageContainer.setPadding(new Insets(5, 20, 5, 5)); // top right bottom left
-        restaurantImageContainer.getChildren().add(foodSmallImageView);
+        restaurantImageContainer.getChildren().add(restaurantImageView);
 
         Label restaurantNameLabel = new Label(restaurantName);
         restaurantNameLabel.setFont(robotoBoldFont20);

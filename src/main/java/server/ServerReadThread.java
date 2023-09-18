@@ -469,7 +469,10 @@ public class ServerReadThread implements Runnable
                         serverController.removeRestaurantFromListView(clientName);
                     }
 
-                    socketWrapper.closeConnection();
+                    if (!socketWrapper.isClosed)
+                    {
+                        socketWrapper.closeConnection();
+                    }
                     break;
                 }
                 else
@@ -483,32 +486,20 @@ public class ServerReadThread implements Runnable
         {
             serverController.log(clientName + " closed connection.");
 
-            System.out.println(thread.getName() + " : Class : ServerReadThread | Method : run | Error in " + thread.getName() + " while reading/writing from socket");
-            System.out.println(thread.getName() + " : Error : " + e.getMessage());
-            System.out.println(thread.getName() + " : Closing connection with client");
-
-            try
+            if (clientType == ClientType.CLIENT)
             {
-                if (clientType == ClientType.CLIENT)
-                {
-                    serverController.getClientMap().remove(clientName);
-                    serverController.updateClientCountDetails();
-                    serverController.removeClientFromListView(clientName);
-                }
-                else if (clientType == ClientType.RESTAURANT)
-                {
-                    serverController.getRestaurantMap().remove(clientName);
-                    serverController.updateClientCountDetails();
-                    serverController.removeRestaurantFromListView(clientName);
-                }
-                socketWrapper.closeConnection();
+                serverController.getClientMap().remove(clientName);
+                serverController.updateClientCountDetails();
+                serverController.removeClientFromListView(clientName);
             }
-            catch (IOException ex)
+            else if (clientType == ClientType.RESTAURANT)
             {
-                System.err.println("Class : ServerReadThread | Method : run | While closing connection");
-                System.err.println("Error : " + ex.getMessage());
+                serverController.getRestaurantMap().remove(clientName);
+                serverController.updateClientCountDetails();
+                serverController.removeRestaurantFromListView(clientName);
             }
-        } finally
+        }
+        finally
         {
             try
             {
@@ -520,6 +511,7 @@ public class ServerReadThread implements Runnable
             catch (IOException e)
             {
                 System.out.println("Couldn't properly close connection.");
+                e.printStackTrace();
             }
         }
     }

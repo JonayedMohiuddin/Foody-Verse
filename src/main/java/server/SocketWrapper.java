@@ -47,6 +47,6 @@ public class SocketWrapper
 
     public boolean isClosed()
     {
-        return isClosed;
+        return isClosed || socket==null;
     }
 }

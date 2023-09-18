@@ -141,7 +141,7 @@ public class ServerController implements Runnable
         }
         catch (IOException e)
         {
-            System.out.println("Class : ServerController | Method : init");
+            System.out.println("Class : ServerController | Method : init | while reading from file");
             System.out.println("Error : " + e.getMessage());
         }
 
@@ -172,7 +172,7 @@ public class ServerController implements Runnable
             shutDownServerCleanup();
         }));
 
-        thread = new Thread(this, "Server Thread");
+        thread = new Thread(this, "Main Server Thread");
         thread.start();
     }
 
@@ -187,49 +187,23 @@ public class ServerController implements Runnable
         try
         {
             FileOperations.writeRestaurants(restaurantList, restaurantInfos);
-        }
-        catch (IOException e)
-        {
-            System.out.println("Class : ServerController | Method : shutDownServer | While writing restaurants to file");
-            System.out.println("Error : " + e.getMessage());
-        }
-        try
-        {
             FileOperations.writeUserinfo(userInfos);
-        }
-        catch (IOException e)
-        {
-            System.out.println("Class : ServerController | Method : shutDownServer | While writing userinfo to file");
-            System.out.println("Error : " + e.getMessage());
-        }
-
-        try
-        {
             FileOperations.writePendingOrdersList(offlineRestaurantCartList);
-        }
-        catch (IOException e)
-        {
-            System.out.println("Class : ServerController | Method : shutDownServer | While writing pending orders to file");
-            System.out.println("Error : " + e.getMessage());
-        }
-
-        try
-        {
             FileOperations.writeDeliveredOrderList(deliveryList);
-        }
-        catch (IOException e)
-        {
-            System.out.println("Class : ServerController | Method : shutDownServer | While writing delivered orders to file");
-            System.out.println("Error : " + e.getMessage());
-        }
-
-        try
-        {
             FileOperations.writeReviewList(restaurantReviews);
+
+            for (Integer restaurantId : restaurantReviews.keySet())
+            {
+                System.out.println("Restaurant ID : " + restaurantId);
+                for (Review review : restaurantReviews.get(restaurantId))
+                {
+                    System.out.println("Username : " + review.getUsername() + " | Message : " + review.getMessage());
+                }
+            }
         }
         catch (IOException e)
         {
-            System.out.println("Class : ServerController | Method : shutDownServer | While writing review list to file");
+            System.out.println("Class : ServerController | Method : shutDownServer | While writing to file");
             System.out.println("Error : " + e.getMessage());
         }
 
@@ -245,7 +219,7 @@ public class ServerController implements Runnable
         }
         catch (IOException e)
         {
-            System.err.println("Class : ServerController | Method : shutdownServerButtonClicked");
+            System.err.println("Class : ServerController | Method : shutdownServerButtonClicked | While closing server socket");
             System.err.println("Error : " + e.getMessage());
         }
 
@@ -360,8 +334,9 @@ public class ServerController implements Runnable
         }
         catch (IOException e)
         {
-            System.err.println("Class : ServerController | Method : init");
-            System.err.println("Error : " + e.getMessage());
+//            System.err.println("Class : Main Server Thread | Method : Run");
+//            System.err.println("Error : " + e.getMessage());
+            System.out.println("Server closed successfully.");
         }
     }
 

@@ -478,6 +478,10 @@ public class RestaurantHomeController
         }
         application.getRestaurant().addFood(food);
 
+        foodNameTextField.setText("");
+        foodCategoryField.setText("");
+        foodPriceTextField.setText("");
+
         System.out.println("Food added to restaurant");
         food.print(restaurantName);
 

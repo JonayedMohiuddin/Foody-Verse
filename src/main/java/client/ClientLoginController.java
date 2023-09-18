@@ -32,6 +32,7 @@ public class ClientLoginController
     public void init()
     {
         signInMessageText.setText("");
+        signUpLabel.setStyle("-fx-font-family: Corbel; -fx-font-weight: 16px; -fx-text-fill: #0d00ff; -fx-underline: false;");
 
         signUpLabel.setOnMouseClicked(event -> {
             signUpButtonClicked();
@@ -102,5 +103,15 @@ public class ClientLoginController
             System.err.println("Class : LoginController | Method : userLoginSignupButtonPressed | While showing signup page");
             System.err.println("Error : " + e.getMessage());
         }
+    }
+
+    public void mouseHoveringEntered(MouseEvent event)
+    {
+        signUpLabel.setStyle("-fx-font-family: Corbel; -fx-font-weight: 18px; -fx-text-fill: #00137a; -fx-underline: true;");
+    }
+
+    public void mouseHoveringExited(MouseEvent event)
+    {
+        signUpLabel.setStyle("-fx-font-family: Corbel; -fx-font-weight: 16px; -fx-text-fill: #0d00ff; -fx-underline: false;");
     }
 }

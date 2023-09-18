@@ -79,18 +79,21 @@
             <Font name="Corbel Bold" size="16.0" />
          </font>
       </Button>
-      <Label layoutX="120.0" layoutY="428.0" text="Don't have an account?">
+      <Label layoutX="120.0" layoutY="430.0" text="Don't have an account?">
          <font>
             <Font size="13.0" />
          </font>
       </Label>
-      <Label fx:id="signUpLabel" layoutX="264.0" layoutY="427.0" text="Sign Up" textFill="#0d00ff">
+      <Label fx:id="signUpLabel" layoutX="261.0" layoutY="429.0" onMouseEntered="#mouseHoveringEntered" onMouseExited="#mouseHoveringExited" text="Sign Up" textFill="#0d00ff">
          <font>
-            <Font size="14.0" />
+            <Font name="Corbel" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="376.0" layoutY="126.0" text="User" />
-      <Label fx:id="signInMessageText" layoutX="53.0" layoutY="367.0" prefHeight="34.0" prefWidth="244.0" text="Label" wrapText="true">
+      <Label layoutX="370.0" layoutY="129.0" prefWidth="34.0" text="User">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Label fx:id="signInMessageText" alignment="CENTER" layoutX="51.0" layoutY="362.0" prefHeight="44.0" prefWidth="244.0" text="Label" textAlignment="JUSTIFY" wrapText="true">
          <font>
             <Font name="Calibri" size="15.0" />
          </font>
