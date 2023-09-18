@@ -3,7 +3,7 @@ package restaurant;
 import dto.NewReviewRequest;
 import dto.ServerToRestaurantCartOrderDTO;
 import javafx.application.Platform;
-import models.Food;
+import prototypes.Food;
 import server.SocketWrapper;
 
 import java.io.IOException;

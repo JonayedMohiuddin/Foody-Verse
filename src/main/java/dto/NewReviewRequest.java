@@ -1,6 +1,6 @@
 package dto;
 
-import models.Review;
+import prototypes.Review;
 
 import java.io.Serializable;
 

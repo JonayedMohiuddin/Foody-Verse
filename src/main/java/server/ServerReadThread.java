@@ -1,9 +1,9 @@
 package server;
 
 import dto.*;
-import models.Food;
-import models.Restaurant;
-import models.Review;
+import prototypes.Food;
+import prototypes.Restaurant;
+import prototypes.Review;
 
 import java.io.IOException;
 import java.util.ArrayList;

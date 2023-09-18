@@ -1,6 +1,4 @@
-package models;
-
-import javafx.scene.image.Image;
+package prototypes;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package dto;
 
-import models.Restaurant;
+import prototypes.Restaurant;
 
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;

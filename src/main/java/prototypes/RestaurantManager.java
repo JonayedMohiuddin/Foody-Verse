@@ -1,4 +1,4 @@
-package models;
+package prototypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,7 +1,6 @@
-package models;
+package prototypes;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
 public class Food implements Serializable
 {

@@ -11,10 +11,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.WindowEvent;
-import models.Food;
-import models.Restaurant;
-import models.Review;
-import util.FileOperations;
+import prototypes.Food;
+import prototypes.Restaurant;
+import prototypes.Review;
+import misc.FileOperations;
 
 import java.io.IOException;
 import java.net.InetAddress;

@@ -14,11 +14,11 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import models.Food;
-import models.Restaurant;
-import models.RestaurantSearches;
-import models.Review;
-import util.ImageTransitions;
+import prototypes.Food;
+import prototypes.Restaurant;
+import prototypes.RestaurantSearches;
+import prototypes.Review;
+import misc.ImageTransitions;
 
 import java.io.IOException;
 import java.text.DecimalFormat;

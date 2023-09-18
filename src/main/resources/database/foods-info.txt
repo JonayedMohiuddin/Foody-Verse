@@ -2,7 +2,6 @@
 1,3 pc. Breast and Wing Combo,Chicken Wings,20.99
 1,6 pc. Breast and Wing Combo,Chicken Wings,38.99
 1,Crispy Taco,Fast Food,1.19
-1,Test1,testcat,123.0
 2,Big Mac, Burgers,10.99
 2,Quarter Pounder with Cheese, Burgers,11.99
 2,McChicken, Burgers,6.99
@@ -25,4 +24,3 @@
 5,Espresso, Coffee,25.5
 5,Iced Coffee, Drinks,12.2
 5,Iced Tea, Drinks,13.4
-6,Crabby crabs,Category 1,100.2

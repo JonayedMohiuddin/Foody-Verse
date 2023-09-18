@@ -1,6 +1,6 @@
 package dto;
 
-import models.Restaurant;
+import prototypes.Restaurant;
 
 public class RestaurantAddUpdateDTO implements java.io.Serializable
 {

@@ -8,13 +8,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import models.Food;
-import models.Restaurant;
+import prototypes.Food;
+import prototypes.Restaurant;
 import server.SocketWrapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientApplication extends Application

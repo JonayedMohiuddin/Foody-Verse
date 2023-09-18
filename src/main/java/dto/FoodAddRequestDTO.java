@@ -1,6 +1,6 @@
 package dto;
 
-import models.Food;
+import prototypes.Food;
 
 public class FoodAddRequestDTO implements java.io.Serializable
 {

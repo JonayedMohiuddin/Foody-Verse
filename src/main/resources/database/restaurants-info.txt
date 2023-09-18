@@ -1,6 +1,5 @@
-1,KFC,123,4.5,$$,1205,Fast Food,Chicken Wings
-2,McDonald,123,3.0,$,1205,Fast Food,Burgers
-3,Subway,123,3.5,$,1565,Sandwiches,Drinks
-4,IHOP,123,4.0,$$,1565,Breakfast,Drinks
-5,Starbucks,123,4.1,$,1565,Coffee,Drinks
-6,Tasty Crabs,123,3.9,$$,12345,TestCategory1,Category2,Spicy,Blah blah
+1,KFC,1,4.5,$$,1205,Fast Food,Chicken Wings
+2,McDonald,2,3.0,$,1205,Fast Food,Burgers
+3,Subway,3,3.5,$,1565,Sandwiches,Drinks
+4,IHOP,4,4.0,$$,1565,Breakfast,Drinks
+5,Starbucks,5,4.1,$,1565,Coffee,Drinks

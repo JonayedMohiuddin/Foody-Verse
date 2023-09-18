@@ -1,4 +1,4 @@
-package util;
+package misc;
 
 import javafx.animation.ScaleTransition;
 import javafx.scene.effect.ColorAdjust;

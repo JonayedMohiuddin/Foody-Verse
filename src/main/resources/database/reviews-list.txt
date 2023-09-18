@@ -1,5 +1,0 @@
-1,2
-KFC,1,1
-Hello user?
-a,1,0
-How are  you?

@@ -1,8 +1,8 @@
-package util;
+package misc;
 
-import models.Food;
-import models.Restaurant;
-import models.Review;
+import prototypes.Food;
+import prototypes.Restaurant;
+import prototypes.Review;
 
 import java.io.*;
 import java.util.ArrayList;

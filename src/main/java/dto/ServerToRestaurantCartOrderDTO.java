@@ -1,6 +1,6 @@
 package dto;
 
-import models.Food;
+import prototypes.Food;
 
 import java.io.Serializable;
 import java.util.HashMap;
