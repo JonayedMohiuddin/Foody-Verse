@@ -182,7 +182,7 @@ public class ServerReadThread implements Runnable
                         }
                         else
                         {
-                            serverController.log("Restaurant " + restaurantName + " is offline. Could not send order.");
+                            serverController.log("Restaurant " + restaurantName + " is offline. Order will be sent when online...");
                             System.out.println(thread.getName() + " : Restaurant " + restaurantName + " is offline");
                         }
 

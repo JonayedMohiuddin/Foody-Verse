@@ -8,3 +8,4 @@
 8,Burgers King,123,4.5,$,1795,Burgers
 9,Wendy's,123,4.3,$,1798,Fast Food,Burgers
 10,Taco Bell,123,4.6,$,1798,Mexican,Tex-Mex
+11,Test Restaurant,123,4.7,$$,123456,Burgers,Mexican,Chinese

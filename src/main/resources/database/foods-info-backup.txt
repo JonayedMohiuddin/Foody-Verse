@@ -1,7 +1,8 @@
 1,2 pc. Breast and Wing Combo,Chicken Wings,11.99
-1,3 pc. Breast and Wing Combo,Chicken Wings,20.99
-1,6 pc. Breast and Wing Combo,Chicken Wings,38.99
+1,Chicken Tenders,Chicken,20.99
+1,Kentucky Grilled Chicken,Chicken,38.99
 1,Crispy Taco,Fast Food,1.19
+1,Crab Burger,Burgers,12.55
 2,Big Mac, Burgers,10.99
 2,Quarter Pounder with Cheese, Burgers,11.99
 2,McChicken, Burgers,6.99
@@ -39,3 +40,4 @@
 9,Chicken Nuggets,Chicken,8.99
 10,Chicken Quesadilla,Chicken,10.99
 10,Chicken Soft Taco,Chicken,8.99
+11,Test Food,Test Category,12.87
