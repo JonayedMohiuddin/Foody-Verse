@@ -148,6 +148,11 @@ public class ClientHomeController
         cartMenuUsernameLabel.setText(application.getUsername());
         deliveredMenuUsernameLabel.setText(application.getUsername());
 
+        // LAODING ALL IMAGES PRIOR TO SHOWING HOME PAGE
+        // SO THE SCREEN WILL TAKE TIME TO LOAD BUT AFTER THAT IT WILL BE SMOOTH
+        // USER CAN SMOOTHLY VIEW AS MANY RESTAURANTS OR FOOD WITHOUT ANY LAG DUE
+        // AS IT WAS LOADED FIRST
+
         // LOAD IMAGES
         searchByNameImage = new Image("file:src/main/resources/assets/name-search-icon.png");
         searchByRatingImage = new Image("file:src/main/resources/assets/rating-search-icon.png");

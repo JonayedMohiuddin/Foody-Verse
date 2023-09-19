@@ -1,0 +1,6 @@
+1,1
+Jonayed,4
+Crispy Taco,Fast Food,1.19,1,1
+2 pc. Breast and Wing Combo,Chicken Wings,11.99,1,1
+Chicken Tenders,Chicken,20.99,1,1
+Kentucky Grilled Chicken,Chicken,38.99,1,1
